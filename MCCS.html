@@ -1,0 +1,3098 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a1f3c" />
+<meta name="description" content="Mahinda College Commerce section — A/L commerce learning platform" />
+<title>Mahinda College</title>
+
+<style>
+:root{
+  --navy:#0a1f3c; --navy-2:#12305a; --navy-3:#173f6e;
+  --gold:#c9a227; --gold-2:#e6c65c;
+  --bg:#f3f5f9; --card:#ffffff; --text:#152338; --muted:#5d6b82; --line:#e3e8f0;
+  --ok:#1f9d55; --no:#d64545;
+  --radius:18px; --shadow:0 6px 22px rgba(10,31,60,.08); --shadow-hover:0 14px 34px rgba(10,31,60,.15);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Poppins','Noto Sans Sinhala',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img{max-width:100%}
+h1,h2,h3,h4{margin:0 0 .5em;line-height:1.28;font-weight:700;letter-spacing:-.2px}
+p{margin:0 0 .9em}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.center{text-align:center}
+
+.logo-badge{position:relative;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;overflow:hidden;background:linear-gradient(145deg,#173f6e,#0a1f3c);border:2px solid var(--gold);box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.logo-badge img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.logo-badge .monogram{font-weight:700;color:var(--gold-2);letter-spacing:.5px}
+.logo-badge.small{width:44px;height:44px}
+.logo-badge.small .monogram{font-size:15px}
+
+#intro{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center;color:#fff;background:radial-gradient(circle at 50% 32%,#17406f 0%,#0a1f3c 45%,#050f1f 100%);transition:opacity .6s ease,visibility .6s ease}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-inner{max-width:560px;animation:introIn .9s cubic-bezier(.2,.8,.3,1) both}
+@keyframes introIn{from{opacity:0;transform:scale(.88) translateY(14px)}to{opacity:1;transform:none}}
+.intro-logo{width:118px;height:118px;margin:0 auto 24px;animation:pulseLogo 2.6s ease-in-out infinite}
+.intro-logo .monogram{font-size:34px}
+@keyframes pulseLogo{0%,100%{transform:scale(1);box-shadow:0 6px 18px rgba(0,0,0,.22)}50%{transform:scale(1.06);box-shadow:0 10px 34px rgba(201,162,39,.35)}}
+.intro-title{font-size:1.15rem;line-height:1.7;letter-spacing:.5px;font-weight:600;margin-bottom:10px}
+.intro-title span{color:var(--gold-2);font-size:1.5rem;display:inline-block;margin:2px 0}
+
+/* ============================================================
+   PETAL RAIN (after intro) + ENHANCED FLOWER BURST (click)
+   ============================================================ */
+@keyframes petalFall{
+  0%{opacity:0;transform:translateY(-100vh) translateX(0) rotate(0deg) scale(.4);filter:blur(3px)}
+  8%{opacity:1;filter:blur(1px)}
+  50%{opacity:1;filter:blur(.5px)}
+  85%{opacity:.9;filter:blur(1px)}
+  100%{opacity:0;transform:translateY(105vh) translateX(var(--drift,40px)) rotate(720deg) scale(1.15);filter:blur(6px)}
+}
+.petal-rain-particle{
+  position:fixed;top:-70px;pointer-events:none;z-index:250;
+  animation:petalFall linear forwards;
+  will-change:transform,opacity,filter;
+  filter:drop-shadow(0 2px 4px rgba(10,31,60,.15));
+}
+
+@keyframes flowerBurstEnhanced{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.15) rotate(0deg);filter:blur(0px)}
+  25%{opacity:1;transform:translate(calc(-50% + var(--dx) * .25),calc(-50% + var(--dy) * .25)) scale(1) rotate(calc(var(--rot) * .15));filter:blur(0px)}
+  70%{opacity:.95;filter:blur(1px)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.35) rotate(var(--rot,360deg));filter:blur(6px)}
+}
+.flower-particle{
+  position:fixed;pointer-events:none;z-index:9999;user-select:none;
+  animation-timing-function:cubic-bezier(.15,.6,.4,1);
+  will-change:transform,opacity,filter;
+  filter:drop-shadow(0 3px 6px rgba(10,31,60,.2));
+}
+
+.topbar{position:sticky;top:0;z-index:80;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;color:#fff;background:rgba(10,31,60,.97);backdrop-filter:blur(10px);box-shadow:0 2px 16px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-text{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.brand-text strong{font-size:.82rem;letter-spacing:.6px;white-space:nowrap}
+.brand-text small{font-size:.7rem;color:var(--gold-2);letter-spacing:.4px}
+.desktop-nav{display:none;gap:2px;align-items:center}
+.desktop-nav a{padding:8px 12px;border-radius:10px;font-size:.83rem;font-weight:500;color:#d7e0ee;transition:.2s}
+.desktop-nav a:hover,.desktop-nav a.active{background:rgba(255,255,255,.1);color:var(--gold-2)}
+.menu-btn{font-size:1.35rem;line-height:1;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.1)}
+.topbar-user{display:none;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:99px;background:rgba(255,255,255,.1);cursor:pointer;transition:.2s}
+.topbar-user:hover{background:rgba(255,255,255,.18)}
+.topbar-user .avatar{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:.7rem;font-weight:700}
+.topbar-user span{font-size:.78rem;font-weight:600;color:var(--gold-2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(min-width:900px){
+  .desktop-nav{display:flex}
+  .menu-btn{display:none}
+  .topbar-user{display:flex}
+}
+
+.drawer{position:fixed;top:0;right:0;height:100%;width:280px;max-width:84vw;z-index:130;background:linear-gradient(180deg,#0a1f3c,#12305a);color:#fff;transform:translateX(105%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:12px;overflow-y:auto}
+.drawer.open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 10px 14px;font-weight:700;letter-spacing:.5px;color:var(--gold-2)}
+.drawer-head button{font-size:1.1rem;color:#fff;padding:4px 8px;border-radius:8px}
+.drawer-user{display:flex;align-items:center;gap:10px;padding:10px 12px;margin:0 4px 10px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.drawer-user .avatar{width:38px;height:38px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:700;font-size:.9rem;flex:0 0 auto}
+.drawer-user-info{min-width:0;line-height:1.3}
+.drawer-user-info strong{font-size:.85rem;color:#fff;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drawer-user-info small{font-size:.7rem;color:var(--gold-2)}
+.drawer a{padding:13px 12px;border-radius:12px;font-size:.94rem;color:#e3eaf5;border-bottom:1px solid rgba(255,255,255,.06);transition:.2s}
+.drawer a:hover,.drawer a.active{background:rgba(255,255,255,.1);color:var(--gold-2)}
+.drawer-backdrop{position:fixed;inset:0;z-index:120;background:rgba(5,15,31,.55);opacity:0;visibility:hidden;transition:.3s}
+.drawer-backdrop.show{opacity:1;visibility:visible}
+
+main{max-width:1180px;margin:0 auto;padding:18px 15px 104px;animation:fadeUp .45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(min-width:900px){main{padding-bottom:48px}}
+
+.grid{display:grid;gap:14px}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.grid-4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:26px 0 12px}
+.section-head h2{font-size:1.08rem;margin:0}
+.section-head a{font-size:.82rem;color:var(--navy);font-weight:600;border-bottom:2px solid var(--gold)}
+
+.card{background:var(--card);border-radius:var(--radius);padding:17px;border:1px solid rgba(227,232,240,.9);box-shadow:var(--shadow);transition:transform .24s ease,box-shadow .24s ease;display:block}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.card h3{font-size:.98rem;margin-bottom:4px}
+.card .muted{font-size:.82rem;margin:0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:13px;font-weight:600;font-size:.92rem;transition:transform .2s,filter .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.975)}
+.btn-primary{background:linear-gradient(135deg,var(--gold),#b58e1c);color:#22190a;box-shadow:0 6px 16px rgba(201,162,39,.35)}
+.btn-primary:hover{filter:brightness(1.07)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-outline{background:#fff;border:1.5px solid var(--line);color:var(--navy)}
+.btn-outline:hover{border-color:var(--navy)}
+.btn-ghost{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-sm{padding:8px 14px;font-size:.82rem;border-radius:10px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-danger{background:#fff;border:1.5px solid rgba(214,69,69,.4);color:var(--no)}
+
+.hero{position:relative;overflow:hidden;color:#fff;border-radius:24px;padding:26px 22px;background:linear-gradient(135deg,#0a1f3c 0%,#173f6e 100%);box-shadow:0 18px 40px rgba(10,31,60,.28)}
+.hero::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;right:-110px;top:-120px;background:radial-gradient(circle,rgba(201,162,39,.32),transparent 66%)}
+.hero::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;left:-90px;bottom:-110px;background:radial-gradient(circle,rgba(255,255,255,.09),transparent 68%)}
+.hero > *{position:relative;z-index:1}
+.hero h1{font-size:1.5rem;margin-bottom:6px}
+.hero h1 span{color:var(--gold-2)}
+.hero p{color:#cfdcee;font-size:.92rem;max-width:560px}
+.hero .tagline{display:inline-block;font-size:.72rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold-2);margin-bottom:10px;font-weight:600}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+@media(min-width:700px){.hero{padding:34px 30px}.hero h1{font-size:1.95rem}}
+
+.quick{display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:16px;padding:16px 15px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .24s,box-shadow .24s,border-color .24s}
+.quick:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(201,162,39,.55)}
+.quick .ico{font-size:1.5rem;line-height:1}
+.quick strong{font-size:.9rem}
+.quick small{color:var(--muted);font-size:.76rem}
+
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:600;background:#eef2f8;color:var(--navy-2);letter-spacing:.2px}
+.pill.gold{background:rgba(201,162,39,.15);color:#8a6d10}
+.pill.ok{background:rgba(31,157,85,.13);color:var(--ok)}
+.pill.soon{background:rgba(214,69,69,.12);color:var(--no)}
+.pill.navy{background:var(--navy);color:#fff}
+
+.bar{height:9px;border-radius:99px;background:#e6ebf3;overflow:hidden}
+.bar > i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .6s cubic-bezier(.3,.9,.3,1)}
+
+.notice{display:flex;gap:10px;padding:13px 15px;border-radius:14px;font-size:.83rem;background:#fff8e5;border:1px solid #f0dfa8;color:#6b5310;margin-bottom:16px}
+.notice.info{background:#eaf2ff;border-color:#c7dbff;color:#1c3d75}
+.notice.ok{background:rgba(31,157,85,.08);border-color:rgba(31,157,85,.3);color:#14663a}
+
+.search{width:100%;padding:12px 15px;border-radius:13px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:.9rem;color:var(--text);transition:.2s;margin-bottom:14px}
+.search:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,31,60,.08)}
+select.search{cursor:pointer}
+
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:9px 18px;border-radius:11px;font-size:.85rem;font-weight:600;background:#fff;border:1.5px solid var(--line);color:var(--muted);transition:.2s}
+.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+
+.lesson-card{position:relative}
+.lesson-card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.lesson-card h3{font-size:.95rem}
+.lesson-card .en{font-size:.76rem;color:var(--muted);margin:0 0 8px}
+.done-chip{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:700;background:#eef2f8;color:#b9c4d4}
+.done-chip.on{background:var(--ok);color:#fff}
+
+.quiz-head{margin-bottom:16px}
+.quiz-progress{height:8px;border-radius:99px;background:#e6ebf3;overflow:hidden}
+.quiz-progress > i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .4s}
+.quiz-meta{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:7px;font-weight:600}
+.quiz-q{font-size:1.03rem;margin-bottom:16px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{text-align:left;padding:14px 16px;border-radius:14px;background:#fff;border:1.5px solid var(--line);font-size:.9rem;font-weight:500;transition:.2s;display:flex;gap:10px;align-items:flex-start;color:var(--text)}
+.option:hover:not(:disabled){border-color:var(--navy);background:#f7f9fd;transform:translateX(3px)}
+.option:disabled{cursor:default}
+.option.correct{background:rgba(31,157,85,.1);border-color:var(--ok);color:#14663a;font-weight:600}
+.option.wrong{background:rgba(214,69,69,.08);border-color:var(--no);color:#a12c2c}
+.quiz-feedback{margin-top:16px}
+.fb-box{padding:14px 16px;border-radius:14px;margin-bottom:14px;font-size:.85rem;animation:fadeUp .3s both}
+.fb-box strong{display:block;margin-bottom:4px}
+.fb-box p{margin:0;color:inherit;opacity:.9}
+.fb-box.ok{background:rgba(31,157,85,.1);border:1px solid rgba(31,157,85,.3);color:#14663a}
+.fb-box.no{background:rgba(214,69,69,.08);border:1px solid rgba(214,69,69,.28);color:#a12c2c}
+
+.result-box{text-align:center;padding:8px 0}
+.result-ring{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;font-size:1.6rem;font-weight:700;color:var(--navy);background:conic-gradient(var(--gold) 0deg,var(--gold-2) 0deg,#e6ebf3 0deg);position:relative}
+.result-ring::before{content:'';position:absolute;inset:9px;border-radius:50%;background:#fff}
+.result-ring > span{position:relative;z-index:1}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 20px}
+.result-grid > div{background:#f5f7fb;border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;gap:2px}
+.result-grid strong{font-size:1.25rem;color:var(--navy)}
+.result-grid span{font-size:.72rem;color:var(--muted)}
+
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match-col{display:flex;flex-direction:column;gap:9px}
+.match-item{padding:12px 13px;border-radius:13px;background:#fff;border:1.5px solid var(--line);font-size:.82rem;text-align:left;transition:.18s;min-height:56px;display:flex;align-items:center}
+.match-item:hover:not(:disabled){border-color:var(--navy)}
+.match-item.sel{border-color:var(--gold);background:#fff9e8;box-shadow:0 0 0 3px rgba(201,162,39,.15)}
+.match-item.matched{background:rgba(31,157,85,.1);border-color:var(--ok);color:#14663a;opacity:.75}
+.match-item.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.fill-item{margin-bottom:16px}
+.fill-item .sentence{font-size:.92rem;margin-bottom:8px;font-weight:500}
+.fill-item input{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);font-family:inherit;font-size:.9rem;background:#fff;transition:.2s}
+.fill-item input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,31,60,.08)}
+.fill-item input.correct{border-color:var(--ok);background:rgba(31,157,85,.07)}
+.fill-item input.wrong{border-color:var(--no);background:rgba(214,69,69,.06)}
+.fill-item .hint{font-size:.76rem;color:var(--muted);margin-top:5px}
+
+.stat{background:#fff;border-radius:16px;padding:16px;border:1px solid var(--line);box-shadow:var(--shadow);text-align:center}
+.stat strong{display:block;font-size:1.5rem;color:var(--navy);line-height:1.2}
+.stat span{font-size:.74rem;color:var(--muted);letter-spacing:.2px}
+
+.quote{position:relative;padding:26px 22px;border-radius:20px;color:#fff;text-align:center;background:linear-gradient(135deg,#12305a,#0a1f3c);overflow:hidden}
+.quote::before{content:'"';position:absolute;font-size:7rem;line-height:1;left:12px;top:-14px;color:rgba(201,162,39,.22);font-family:Georgia,serif}
+.quote p{font-size:.98rem;margin:0 0 8px;position:relative;z-index:1}
+.quote small{color:var(--gold-2);font-size:.76rem;letter-spacing:.6px}
+
+.countdown{display:flex;justify-content:center;gap:10px;margin:18px 0}
+.cd-unit{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-width:66px;box-shadow:var(--shadow)}
+.cd-unit strong{display:block;font-size:1.4rem;color:var(--navy);line-height:1.2}
+.cd-unit span{font-size:.68rem;color:var(--muted)}
+
+.site-footer{background:var(--navy);color:#c7d4e6;padding:30px 18px 96px;margin-top:30px}
+@media(min-width:900px){.site-footer{padding-bottom:36px}}
+.footer-inner{max-width:1180px;margin:0 auto;text-align:center}
+.footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.footer-brand strong{font-size:.86rem;letter-spacing:.7px;color:#fff;display:block}
+.footer-brand p{margin:2px 0 0;font-size:.76rem;color:var(--gold-2)}
+.footer-note{font-size:.78rem;color:#93a5bf;max-width:640px;margin:0 auto 12px}
+.footer-copy{font-size:.72rem;color:#6b7f9c;margin:0}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:95;display:flex;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);box-shadow:0 -4px 20px rgba(10,31,60,.09);padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 9px;font-size:.64rem;color:var(--muted);font-weight:500;transition:.2s;position:relative}
+.bottom-nav a span{font-size:1.15rem;line-height:1.2;filter:grayscale(.35);transition:.2s}
+.bottom-nav a.active{color:var(--navy);font-weight:700}
+.bottom-nav a.active span{filter:none;transform:translateY(-1px)}
+.bottom-nav a.active::after{content:'';position:absolute;top:0;width:26px;height:3px;border-radius:0 0 4px 4px;background:var(--gold)}
+@media(min-width:900px){.bottom-nav{display:none}}
+
+.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:11px 20px;border-radius:12px;font-size:.84rem;z-index:200;opacity:0;pointer-events:none;transition:.35s;box-shadow:0 10px 28px rgba(10,31,60,.35);max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:900px){.toast{bottom:30px}}
+
+.divider{height:1px;background:var(--line);margin:20px 0}
+.kv{display:flex;flex-wrap:wrap;gap:8px}
+.lesson-body h3{font-size:1rem;margin-top:22px;color:var(--navy);display:flex;align-items:center;gap:8px}
+.lesson-body h3::before{content:'';width:4px;height:18px;border-radius:3px;background:var(--gold)}
+.term-list{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.term{background:#f7f9fd;border:1px solid var(--line);border-radius:12px;padding:10px 13px;font-size:.83rem}
+.term b{color:var(--navy);display:block;font-size:.86rem}
+.term span{color:var(--muted)}
+
+/* LOGIN */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 30% 20%,#17406f 0%,#0a1f3c 50%,#050f1f 100%);position:relative;overflow:hidden}
+.login-page::before{content:'';position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,39,.28),transparent 70%);top:-220px;right:-180px;pointer-events:none}
+.login-page::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);bottom:-160px;left:-140px;pointer-events:none}
+.login-card{position:relative;z-index:1;background:#fff;border-radius:24px;padding:36px 30px;max-width:430px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-card .logo-badge{width:84px;height:84px;margin:0 auto 18px}
+.login-card .logo-badge .monogram{font-size:26px}
+.login-card h1{font-size:1.35rem;color:var(--navy);margin-bottom:4px}
+.login-sub{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.login-form{text-align:left}
+.login-form label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+.login-form input{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:.92rem;font-family:inherit;margin-bottom:14px;transition:.2s}
+.login-form input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,31,60,.1)}
+.login-form button{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--gold),#b58e1c);color:#22190a;font-weight:700;font-size:.95rem;margin-top:4px;transition:.2s}
+.login-form button:hover{filter:brightness(1.07)}
+.login-error{color:var(--no);font-size:.82rem;margin-top:8px;min-height:20px;text-align:center;font-weight:600}
+.login-footer{margin-top:22px;font-size:.76rem;color:var(--muted);line-height:1.6}
+.login-footer a{color:var(--navy);font-weight:600;border-bottom:1px solid var(--gold)}
+
+/* RANKING */
+.rank-table{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.rank-row{display:grid;grid-template-columns:44px 1fr 60px 70px 80px;gap:8px;padding:12px 14px;align-items:center;border-bottom:1px solid var(--line);font-size:.85rem}
+.rank-row:last-child{border-bottom:0}
+.rank-row.head{background:#f3f5f9;font-weight:700;font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.rank-row.top1{background:linear-gradient(90deg,rgba(201,162,39,.14),rgba(201,162,39,.03))}
+.rank-row.top2{background:linear-gradient(90deg,rgba(163,175,192,.14),rgba(163,175,192,.03))}
+.rank-row.top3{background:linear-gradient(90deg,rgba(184,115,51,.14),rgba(184,115,51,.03))}
+.rank-pos{font-weight:700;font-size:1rem;color:var(--navy);text-align:center}
+.rank-pos.medal{font-size:1.2rem}
+.rank-name{font-weight:600;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-name small{display:block;font-weight:400;color:var(--muted);font-size:.7rem}
+.rank-avg{font-weight:700;color:var(--ok)}
+.rank-total{font-weight:600;text-align:right}
+.rank-quiz{text-align:center;color:var(--muted)}
+@media(max-width:600px){
+  .rank-row{grid-template-columns:36px 1fr 60px 55px;gap:6px;padding:10px 11px;font-size:.8rem}
+  .rank-row .rank-total{display:none}
+  .rank-row.head .rank-total{display:none}
+}
+.rank-empty{padding:40px 20px;text-align:center;color:var(--muted)}
+
+/* ADMIN PANEL */
+.admin-banner{background:linear-gradient(135deg,#0a1f3c,#173f6e);color:#fff;border-radius:18px;padding:18px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.admin-banner h2{margin:0;font-size:1.1rem}
+.admin-banner p{margin:2px 0 0;font-size:.8rem;opacity:.85}
+.admin-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px;padding:6px;background:#fff;border-radius:14px;border:1px solid var(--line)}
+.admin-tabs button{padding:8px 14px;border-radius:10px;font-size:.82rem;font-weight:600;color:var(--muted);transition:.2s}
+.admin-tabs button.active{background:var(--navy);color:#fff}
+.admin-tabs button:hover:not(.active){background:#f5f7fb;color:var(--navy)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);font-family:inherit;font-size:.87rem;background:#fff;color:var(--text)}
+.field textarea{min-height:90px;resize:vertical;font-family:'Menlo','Courier New',monospace;font-size:.8rem}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,31,60,.08)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.field-row{grid-template-columns:1fr}}
+.admin-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fff;flex-wrap:wrap}
+.admin-item strong{font-size:.87rem;display:block}
+.admin-item small{color:var(--muted);font-size:.74rem;display:block;margin-top:2px}
+.admin-item .actions{display:flex;gap:6px;flex-wrap:wrap}
+.admin-item .actions button{font-size:.76rem;padding:6px 10px;border-radius:8px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--navy);transition:.15s}
+.admin-item .actions button:hover{background:#f5f7fb;border-color:var(--navy)}
+.admin-item .actions button.danger{color:var(--no);border-color:rgba(214,69,69,.3)}
+.admin-item .actions button.danger:hover{background:rgba(214,69,69,.06)}
+.file-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:8px;background:rgba(31,157,85,.1);color:var(--ok);font-size:.7rem;font-weight:600;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.login-box{max-width:400px;margin:40px auto;background:#fff;border-radius:20px;padding:32px 26px;box-shadow:var(--shadow);text-align:center}
+.login-box .logo-badge{width:70px;height:70px;margin:0 auto 16px}
+.login-box .logo-badge .monogram{font-size:22px}
+.login-box h2{font-size:1.1rem;margin-bottom:6px}
+.login-box p{font-size:.83rem;color:var(--muted);margin-bottom:20px}
+.paper-year-group{background:#fff;border-radius:14px;padding:14px 16px;border:1px solid var(--line);margin-bottom:12px}
+.paper-year-group h3{font-size:.92rem;margin:0 0 10px;color:var(--navy);display:flex;align-items:center;gap:8px}
+.paper-year-group h3::before{content:'';width:4px;height:16px;background:var(--gold);border-radius:3px}
+
+/* STUDENT ADMIN */
+.stu-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;transition:.2s}
+.stu-card:hover{box-shadow:var(--shadow-hover)}
+.stu-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.stu-name{font-weight:700;color:var(--navy);font-size:.95rem}
+.stu-meta{font-size:.76rem;color:var(--muted);margin-top:2px}
+.cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+@media(max-width:600px){.cred-grid{grid-template-columns:1fr}}
+.cred{background:#f7f9fd;border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:.8rem}
+.cred-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600;margin-bottom:2px}
+.cred-val{font-family:'Menlo','Courier New',monospace;font-weight:700;color:var(--navy);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.link-box{background:linear-gradient(135deg,rgba(201,162,39,.12),rgba(201,162,39,.05));border:1px dashed rgba(201,162,39,.5);border-radius:10px;padding:8px 11px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.76rem;margin-bottom:10px}
+.link-box code{font-family:'Menlo','Courier New',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:var(--navy);font-weight:600}
+.link-box button{background:var(--navy);color:#fff;padding:5px 11px;border-radius:7px;font-size:.72rem;font-weight:600;flex:0 0 auto}
+.link-box button:hover{background:var(--navy-3)}
+.stu-stats{display:flex;gap:10px;font-size:.74rem;color:var(--muted);flex-wrap:wrap;margin-bottom:10px}
+.stu-stats span{display:flex;align-items:center;gap:4px}
+.stu-actions{display:flex;gap:6px;flex-wrap:wrap}
+.stu-actions button{font-size:.76rem;padding:6px 12px;border-radius:8px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--navy)}
+.stu-actions button:hover{background:#f5f7fb;border-color:var(--navy)}
+.stu-actions button.danger{color:var(--no);border-color:rgba(214,69,69,.3)}
+.stu-actions button.danger:hover{background:rgba(214,69,69,.06)}
+.stu-actions button.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.stu-actions button.navy:hover{background:var(--navy-3)}
+.common-card{background:linear-gradient(135deg,#0a1f3c,#173f6e);color:#fff;border-radius:16px;padding:16px 18px;margin-bottom:16px}
+.common-card h3{margin:0 0 4px;font-size:.95rem;color:var(--gold-2)}
+.common-card p{font-size:.76rem;color:#c7d4e6;margin:0 0 12px}
+.common-card .cred{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+.common-card .cred-label{color:#b1c1d6}
+.common-card .cred-val{color:#fff}
+.common-card .link-box{background:rgba(255,255,255,.1);border-color:rgba(201,162,39,.5)}
+.common-card .link-box code{color:var(--gold-2)}
+.common-card .link-box button{background:var(--gold);color:var(--navy)}
+.common-card .link-box button:hover{background:var(--gold-2)}
+
+/* CHATBOT */
+.chatbot-fab{position:fixed;bottom:86px;right:16px;z-index:110;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy-3));color:#fff;display:grid;place-items:center;font-size:1.5rem;box-shadow:0 10px 28px rgba(10,31,60,.4);transition:transform .2s,box-shadow .2s}
+.chatbot-fab:hover{transform:scale(1.07);box-shadow:0 14px 34px rgba(10,31,60,.5)}
+.chatbot-fab .dot{position:absolute;top:2px;right:2px;width:13px;height:13px;border-radius:50%;background:var(--ok);border:2px solid #fff;display:none}
+.chatbot-fab .dot.show{display:block}
+@media(min-width:900px){.chatbot-fab{bottom:24px;right:24px}}
+
+.chat-panel{position:fixed;bottom:86px;right:16px;z-index:115;width:calc(100vw - 32px);max-width:390px;height:min(600px,calc(100vh - 130px));background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(10,31,60,.35);transform:translateY(18px) scale(.94);opacity:0;visibility:hidden;transition:transform .3s cubic-bezier(.2,.8,.3,1),opacity .3s,visibility .3s}
+.chat-panel.open{transform:none;opacity:1;visibility:visible}
+@media(min-width:900px){.chat-panel{bottom:24px;right:24px}}
+.chat-head{background:linear-gradient(135deg,var(--navy),var(--navy-3));color:#fff;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chat-head-info{display:flex;align-items:center;gap:10px}
+.chat-avatar{width:38px;height:38px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:700;font-size:.8rem;flex:0 0 auto}
+.chat-head strong{font-size:.9rem;display:block;letter-spacing:.2px}
+.chat-head small{font-size:.7rem;color:var(--gold-2);display:flex;align-items:center;gap:4px}
+.chat-head small::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block}
+.chat-head .close-btn{color:#fff;font-size:1rem;padding:5px 9px;border-radius:8px;background:rgba(255,255,255,.12)}
+.chat-body{flex:1;overflow-y:auto;padding:14px;background:#f5f8fc;display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth}
+.chat-msg{max-width:84%;padding:10px 13px;border-radius:14px;font-size:.86rem;line-height:1.55;word-wrap:break-word;animation:fadeUp .22s both}
+.chat-msg.bot{background:#fff;color:var(--text);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+.chat-msg.user{background:var(--navy);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+.chat-msg a{color:var(--gold);font-weight:600;text-decoration:underline}
+.chat-msg.bot strong{color:var(--navy)}
+.chat-typing{display:flex;gap:3px;padding:11px 15px;background:#fff;border:1px solid var(--line);border-radius:14px;border-bottom-left-radius:4px;align-self:flex-start}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:typing 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.chat-quick{padding:8px 10px;background:#fff;border-top:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;flex-wrap:nowrap}
+.chat-quick::-webkit-scrollbar{height:0}
+.chat-quick button{padding:6px 12px;border-radius:99px;background:#eef2f8;color:var(--navy);font-size:.74rem;font-weight:600;white-space:nowrap;border:1px solid var(--line);transition:.15s}
+.chat-quick button:hover{background:var(--navy);color:#fff}
+.chat-input-row{display:flex;gap:6px;padding:10px;background:#fff;border-top:1px solid var(--line)}
+.chat-input-row input{flex:1;padding:10px 13px;border-radius:10px;border:1.5px solid var(--line);font-family:inherit;font-size:.86rem;background:#fff}
+.chat-input-row input:focus{outline:none;border-color:var(--navy)}
+.chat-input-row button{width:44px;height:44px;border-radius:10px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1rem;transition:.15s}
+.chat-input-row button:hover{background:var(--navy-3)}
+.chat-input-row button:disabled{opacity:.5}
+
+@media(max-width:600px){
+  .admin-item{flex-direction:column;align-items:flex-start}
+  .admin-item .actions{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-inner">
+    <div class="logo-badge intro-logo">
+      <img src="Mahinda_College_Crest.png" alt="Mahinda College Logo"
+           onerror="this.style.display='none';this.parentElement.classList.add('no-img')">
+      <span class="monogram">MC</span>
+    </div>
+    <div class="intro-title">WELCOME TO<br><span>MCCS</span></div>
+  </div>
+</div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#/home">
+    <div class="logo-badge small">
+      <img src="logos/logo.png" alt="Mahinda College"
+           onerror="this.style.display='none';this.parentElement.classList.add('no-img')">
+      <span class="monogram">MC</span>
+    </div>
+    <div class="brand-text">
+      <strong>MAHINDA COLLEGE</strong>
+      <small>Business Studies</small>
+    </div>
+  </a>
+
+  <nav class="desktop-nav" id="desktopNav">
+    <a href="#/home" data-nav="home">Home</a>
+    <a href="#/lessons" data-nav="lessons">Lessons</a>
+    <a href="#/papers" data-nav="papers">Papers</a>
+    <a href="#/games" data-nav="games">Games</a>
+    <a href="#/daily" data-nav="daily">Daily</a>
+    <a href="#/rankings" data-nav="rankings">Rankings</a>
+    <a href="#/resources" data-nav="resources">Resources</a>
+    <a href="#/about" data-nav="about">About</a>
+  </nav>
+
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="topbar-user" id="topbarUser" onclick="logoutStudent()" title="Logout">
+      <div class="avatar" id="topbarAvatar">👤</div>
+      <span id="topbarName">User</span>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <span>MENU</span>
+    <button id="closeDrawer" aria-label="Close menu">✕</button>
+  </div>
+  <div class="drawer-user" id="drawerUser"></div>
+  <a href="#/home" data-nav="home">🏠 Home</a>
+  <a href="#/lessons" data-nav="lessons">📚 Lessons</a>
+  <a href="#/papers" data-nav="papers">📄 Past Papers</a>
+  <a href="#/games" data-nav="games">🎮 Educational Games</a>
+  <a href="#/daily" data-nav="daily">🗓️ Daily Quiz</a>
+  <a href="#/rankings" data-nav="rankings">🏆 Rankings</a>
+  <a href="#/resources" data-nav="resources">📘 Resources</a>
+  <a href="#/progress" data-nav="progress">📊 My Progress</a>
+  <a href="#/about" data-nav="about">ℹ️ About Us</a>
+  <div style="height:1px;background:rgba(255,255,255,.12);margin:10px 8px"></div>
+  <a href="#/admin" data-nav="admin">⚙️ Admin Panel</a>
+  <a href="javascript:logoutStudent()" style="color:#ffb3b3">🚪 Logout</a>
+</aside>
+
+<main id="app"></main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-badge small">
+        <img src="logos/logo.png" alt="Mahinda College"
+             onerror="this.style.display='none';this.parentElement.classList.add('no-img')">
+        <span class="monogram">MC</span>
+      </div>
+      <div style="text-align:left">
+        <strong>MAHINDA COLLEGE C</strong>
+        <p>Learn. Explore. Practice. Succeed.</p>
+      </div>
+    </div>
+    <p class="footer-note">
+      Mahinda College, Galle, Sri Lanka · A/L Commerce Learning Platform<br>
+      Curriculum reference: National Institute of Education (NIE) teacher guides &amp; syllabus.
+    </p>
+    <p class="footer-copy">© <span id="year"></span> Mahinda College. Educational use only.</p>
+  </div>
+</footer>
+
+<nav class="bottom-nav" id="bottomNav">
+  <a href="#/home" data-nav="home"><span>🏠</span>Home</a>
+  <a href="#/lessons" data-nav="lessons"><span>📚</span>Lessons</a>
+  <a href="#/papers" data-nav="papers"><span>📄</span>Papers</a>
+  <a href="#/games" data-nav="games"><span>🎮</span>Games</a>
+  <a href="#/rankings" data-nav="rankings"><span>🏆</span>Rank</a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<button class="chatbot-fab" id="chatFab" aria-label="Open chat assistant" style="display:none">
+  💬
+  <span class="dot show" id="chatDot"></span>
+</button>
+
+<div class="chat-panel" id="chatPanel" aria-hidden="true">
+  <div class="chat-head">
+    <div class="chat-head-info">
+      <div class="chat-avatar">MC</div>
+      <div>
+        <strong id="chatBotName">MC Assistant</strong>
+        <small>Online · Business Studies</small>
+      </div>
+    </div>
+    <button class="close-btn" id="chatClose" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off" maxlength="300">
+    <button id="chatSend" aria-label="Send">➤</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   1. DEFAULT DATA
+   ============================================================ */
+
+const DEFAULT_LESSONS = {
+  g12: [
+    {id:'g12-1', unit:'Unit 1', title:'ව්‍යාපාර හා ව්‍යාපාර පරිසරය', titleEn:'Business and the Business Environment',
+     keyTerms:[{si:'ව්‍යාපාරය', en:'Business'},{si:'ව්‍යාපාර පරිසරය', en:'Business Environment'},{si:'අභ්‍යන්තර පරිසරය', en:'Internal Environment'},{si:'බාහිර පරිසරය', en:'External Environment'},{si:'අවශ්‍යතා ඇති පාර්ශව', en:'Stakeholders'}]},
+    {id:'g12-2', unit:'Unit 2', title:'ව්‍යවසායකත්වය', titleEn:'Entrepreneurship',
+     keyTerms:[{si:'ව්‍යවසායකයා', en:'Entrepreneur'},{si:'ව්‍යවසායකත්වය', en:'Entrepreneurship'},{si:'නවෝත්පාදනය', en:'Innovation'},{si:'අවදානම', en:'Risk'},{si:'ව්‍යාපාරික අවස්ථාව', en:'Business Opportunity'}]},
+    {id:'g12-3', unit:'Unit 3', title:'ව්‍යාපාර සංවිධානය හා ආරම්භ කිරීම', titleEn:'Business Ownership and Formation',
+     keyTerms:[{si:'තනි පුද්ගල ව්‍යාපාරය', en:'Sole Proprietorship'},{si:'හවුල් ව්‍යාපාරය', en:'Partnership'},{si:'සමාගම', en:'Company'},{si:'ව්‍යාපාර සැලසුම', en:'Business Plan'},{si:'වගකීම', en:'Liability'}]},
+    {id:'g12-4', unit:'Unit 4', title:'කළමනාකරණය', titleEn:'Management',
+     keyTerms:[{si:'කළමනාකරණය', en:'Management'},{si:'සැලසුම්කරණය', en:'Planning'},{si:'සංවිධානය කිරීම', en:'Organizing'},{si:'මෙහෙයවීම', en:'Leading'},{si:'පාලනය කිරීම', en:'Controlling'}]},
+    {id:'g12-5', unit:'Unit 5', title:'මූල්‍ය ගිණුම්කරණයේ මූලිකාංග', titleEn:'Fundamentals of Financial Accounting',
+     keyTerms:[{si:'වත්කම්', en:'Assets'},{si:'වගකීම්', en:'Liabilities'},{si:'හිමිකම්', en:'Equity'},{si:'ආදායම', en:'Revenue'},{si:'වියදම්', en:'Expenses'},{si:'දළ ලාභය', en:'Gross Profit'},{si:'ශුද්ධ ලාභය', en:'Net Profit'}]}
+  ],
+  g13: [
+    {id:'g13-1', unit:'Unit 6', title:'අලෙවිකරණය', titleEn:'Marketing',
+     keyTerms:[{si:'අලෙවිකරණය', en:'Marketing'},{si:'අලෙවිකරණ මිශ්‍රණය', en:'Marketing Mix (4P)'},{si:'වෙළඳපොල බෙදීම', en:'Market Segmentation'},{si:'ප්‍රවර්ධනය', en:'Promotion'},{si:'වෙළඳ නාමය', en:'Branding'}]},
+    {id:'g13-2', unit:'Unit 7', title:'මානව සම්පත් කළමනාකරණය', titleEn:'Human Resource Management',
+     keyTerms:[{si:'මානව සම්පත් කළමනාකරණය', en:'Human Resource Management'},{si:'බඳවා ගැනීම', en:'Recruitment'},{si:'තෝරා ගැනීම', en:'Selection'},{si:'පුහුණුව', en:'Training'},{si:'අභිප්‍රේරණය', en:'Motivation'},{si:'කාර්ය සාධන ඇගයීම', en:'Performance Appraisal'}]},
+    {id:'g13-3', unit:'Unit 8', title:'නිෂ්පාදන හා මෙහෙයුම් කළමනාකරණය', titleEn:'Production and Operations Management',
+     keyTerms:[{si:'නිෂ්පාදනය', en:'Production'},{si:'මෙහෙයුම් කළමනාකරණය', en:'Operations Management'},{si:'ඵලදායිතාව', en:'Productivity'},{si:'ගුණාත්මක පාලනය', en:'Quality Control'},{si:'තොග', en:'Inventory'},{si:'සැපයුම් දාමය', en:'Supply Chain'}]},
+    {id:'g13-4', unit:'Unit 9', title:'මූල්‍ය කළමනාකරණය', titleEn:'Financial Management',
+     keyTerms:[{si:'මූල්‍ය කළමනාකරණය', en:'Financial Management'},{si:'ප්‍රාග්ධනය', en:'Capital'},{si:'ද්‍රවශීලතාවය', en:'Liquidity'},{si:'ලාභාලාභ ලක්ෂ්‍යය', en:'Break-even Point'},{si:'මුදල් ප්‍රවාහය', en:'Cash Flow'},{si:'අයවැය', en:'Budget'}]},
+    {id:'g13-5', unit:'Unit 10', title:'ව්‍යාපාර නීතිය හා සමාජ වගකීම', titleEn:'Business Law and Social Responsibility',
+     keyTerms:[{si:'ව්‍යාපාර නීතිය', en:'Business Law'},{si:'ගිවිසුම', en:'Contract'},{si:'සමාජ වගකීම', en:'Corporate Social Responsibility'},{si:'ව්‍යාපාර ආචාරධර්ම', en:'Business Ethics'},{si:'පාරිභෝගික ආරක්ෂණය', en:'Consumer Protection'}]}
+  ]
+};
+
+const DEFAULT_PAPERS = (function(){
+  const years = [2025,2024,2023,2022,2021,2020,2019];
+  const combos = [['Sinhala','Question Paper'],['English','Question Paper'],['Sinhala','Marking Scheme'],['English','Marking Scheme']];
+  const out = [];
+  years.forEach(function(y){ combos.forEach(function(c){
+    out.push({id:'p'+y+'-'+c[0]+'-'+c[1].replace(/\s/g,''), year:y, medium:c[0], type:c[1], url:null, pdfKey:null, pdfName:null, pdfSize:null});
+  });});
+  return out;
+})();
+
+const DEFAULT_RESOURCES = [
+  {id:'r1', grade:12, lessonId:'g12-1', title:'ව්‍යාපාර පරිසරය – කෙටි සටහන්', titleEn:'Business Environment – Short Notes', type:'Short Notes', url:null, pdfKey:null},
+  {id:'r2', grade:12, lessonId:'g12-4', title:'කළමනාකරණය – සාරාංශය', titleEn:'Management – Summary', type:'Lesson Summary', url:null, pdfKey:null},
+  {id:'r3', grade:12, lessonId:'g12-5', title:'ගිණුම් සමීකරණය – රූප සටහන්', titleEn:'Accounting Equation – Diagrams', type:'Diagrams', url:null, pdfKey:null},
+  {id:'r4', grade:13, lessonId:'g13-1', title:'අලෙවිකරණ මිශ්‍රණය – වචන මාලාව', titleEn:'Marketing Mix – Glossary', type:'Terminology', url:null, pdfKey:null},
+  {id:'r5', grade:13, lessonId:'g13-2', title:'මානව සම්පත් – පුනරීක්ෂණ ප්‍රශ්න', titleEn:'HRM – Revision Questions', type:'Revision', url:null, pdfKey:null},
+  {id:'r6', grade:13, lessonId:'g13-4', title:'මූල්‍ය කළමනාකරණය – වැදගත් නිර්වචන', titleEn:'Financial Management – Key Definitions', type:'Definitions', url:null, pdfKey:null}
+];
+
+const DEFAULT_MCQ_BANK = [
+  {lesson:'g12-1', difficulty:'Easy', q:'ව්‍යාපාර පරිසරයේ අභ්‍යන්තර අංගයක් වන්නේ කුමක්ද?', options:['සැපයුම්කරුවන්','සේවකයින්','තරඟකරුවන්','රජයේ ප්‍රතිපත්ති'], answer:1, explain:'සේවකයින් ව්‍යාපාරයේ අභ්‍යන්තර පරිසරයට අයත් වේ.'},
+  {lesson:'g13-1', difficulty:'Easy', q:'අලෙවිකරණ මිශ්‍රණයේ (Marketing Mix) 4P වලට අයත් නොවන්නේ?', options:['Product','Price','Profit','Place'], answer:2, explain:'4P = Product, Price, Place, Promotion.'},
+  {lesson:'g12-5', difficulty:'Easy', q:'ගිණුම් සමීකරණය නිවැරදිව දක්වන්නේ කුමක්ද?', options:['වත්කම් = වගකීම් − හිමිකම්','වත්කම් = වගකීම් + හිමිකම්','හිමිකම් = වත්කම් + වගකීම්','වගකීම් = වත්කම් + හිමිකම්'], answer:1, explain:'මූලික ගිණුම් සමීකරණය: වත්කම් = වගකීම් + හිමිකම්.'},
+  {lesson:'g12-2', difficulty:'Easy', q:'ව්‍යවසායකයෙකුගේ ලක්ෂණයක් නොවන්නේ?', options:['අවදානම දැරීම','නවෝත්පාදනය','අවස්ථා හඳුනා ගැනීම','අවදානම සම්පූර්ණයෙන් මඟහැරීම'], answer:3, explain:'ව්‍යවසායකයා ගණනය කළ අවදානමක් දරයි.'},
+  {lesson:'g12-4', difficulty:'Easy', q:'SMART අරමුණුවල "M" අදහස් කරන්නේ කුමක්ද?', options:['Measurable','Manageable','Motivational','Marketable'], answer:0, explain:'SMART = Specific, Measurable, Achievable, Relevant, Time-bound.'},
+  {lesson:'g12-4', difficulty:'Easy', q:'කළමනාකරණ ක්‍රියාවලියේ පළමු කාර්යය කුමක්ද?', options:['සංවිධානය කිරීම','සැලසුම් කිරීම','මෙහෙයවීම','පාලනය කිරීම'], answer:1, explain:'සැලසුම්කරණය පළමු කාර්යයයි.'},
+  {lesson:'g13-2', difficulty:'Easy', q:'මානව සම්පත් කළමනාකරණයට අයත් නොවන්නේ?', options:['බඳවා ගැනීම','පුහුණු කිරීම','වැටුප් කළමනාකරණය','බඩු තොග පාලනය'], answer:3, explain:'බඩු තොග පාලනය මෙහෙයුම් කළමනාකරණයට අයත්.'},
+  {lesson:'g12-5', difficulty:'Easy', q:'ලාභය ගණනය කරන්නේ කෙසේද?', options:['ආදායම − වියදම්','ආදායම + වියදම්','වත්කම් − වගකීම්','වියදම් − ආදායම'], answer:0, explain:'ලාභය = මුළු ආදායම − මුළු වියදම්.'},
+  {lesson:'g13-4', difficulty:'Medium', q:'ද්‍රවශීලතාවය මනින්නේ කුමන හැකියාවද?', options:['දිගුකාලීන ලාභදායීතාවය','කෙටිකාලීනව ණය ගෙවීමේ හැකියාව','වත්කම් වර්ධනය','අලෙවිය වැඩි කිරීම'], answer:1, explain:'ද්‍රවශීලතාවය = කෙටිකාලීන වගකීම් ගෙවීමේ හැකියාව.'},
+  {lesson:'g13-1', difficulty:'Medium', q:'පාරිභෝගික අවශ්‍යතා හඳුනාගැනීම හා තෘප්ත කිරීම කේන්ද්‍ර කරගත් දර්ශනය?', options:['නිෂ්පාදන දර්ශනය','අලෙවිකරණ දර්ශනය','විකුණුම් දර්ශනය','සමාජ දර්ශනය'], answer:1, explain:'අලෙවිකරණ දර්ශනයේ කේන්ද්‍රය පාරිභෝගික තෘප්තියයි.'},
+  {lesson:'g12-5', difficulty:'Medium', q:'ශුද්ධ ලාභය = දළ ලාභය − ______', options:['අලෙවිය','මෙහෙයුම් වියදම්','වත්කම්','ප්‍රාග්ධනය'], answer:1, explain:'ශුද්ධ ලාභය = දළ ලාභය − මෙහෙයුම් වියදම්.'},
+  {lesson:'g13-3', difficulty:'Medium', q:'පහත කුමක් ස්ථාවර පිරිවැයක් ද?', options:['අමුද්‍රව්‍ය පිරිවැය','ගොඩනැගිලි කුලිය','අමතර වැඩ වැටුප්','ඇසුරුම් පිරිවැය'], answer:1, explain:'ගොඩනැගිලි කුලිය ස්ථාවර පිරිවැයකි.'},
+  {lesson:'g12-3', difficulty:'Medium', q:'සීමිත වගකීම ලැබෙන්නේ කුමන ව්‍යාපාර ස්වරූපයටද?', options:['තනි පුද්ගල ව්‍යාපාරය','සාමාන්‍ය හවුල් ව්‍යාපාරය','සීමිත වගකීම් සමාගම','අනියම් හවුල් ව්‍යාපාරය'], answer:2, explain:'සීමිත වගකීම් සමාගමේ කොටස් හිමියන්ගේ වගකීම ආයෝජනයට සීමා වේ.'},
+  {lesson:'g13-4', difficulty:'Medium', q:'ලාභාලාභ ලක්ෂ්‍යය යනු කුමක්ද?', options:['ලාභය උපරිම වන ලක්ෂ්‍යය','මුළු ආදායම = මුළු පිරිවැය වන ලක්ෂ්‍යය','අලෙවිය ශුන්‍ය වන ලක්ෂ්‍යය','වත්කම් = වගකීම් වන ලක්ෂ්‍යය'], answer:1, explain:'ලාභාලාභ ලක්ෂ්‍යයේදී ලාභය හෝ අලාභය නොමැත.'},
+  {lesson:'g13-5', difficulty:'Medium', q:'සමාජ වගකීම (CSR) යනු කුමක්ද?', options:['ලාභය උපරිම කිරීම','සමාජයට හා පරිසරයට වගකීමක් දැරීම','රජයට බදු ගෙවීම','පාරිභෝගිකයන්ට විකිණීම'], answer:1, explain:'CSR = සමාජ/පරිසර වගකීම.'},
+  {lesson:'g13-4', difficulty:'Hard', q:'ප්‍රාග්ධන ප්‍රභවයක් නොවන්නේ?', options:['බැංකු ණය','කොටස් නිකුත් කිරීම','වෙළඳ ණය','ජල විදුලි බිල්'], answer:3, explain:'ජල විදුලි බිල් යනු වියදමකි.'},
+  {lesson:'g13-1', difficulty:'Hard', q:'Marketing 4C හි "Customer Cost" අදාළ වන්නේ 4P හි කුමන අංගයටද?', options:['Product','Price','Place','Promotion'], answer:1, explain:'Customer Cost = Price.'},
+  {lesson:'g12-3', difficulty:'Hard', q:'ව්‍යාපාර සැලසුමක ඇතුළත් නොවිය යුතු අංගය කුමක්ද?', options:['අලෙවිකරණ සැලසුම','මූල්‍ය පුරෝකථන','ව්‍යාපාර විස්තරය','සේවකයින්ගේ පෞද්ගලික ජීවිත විස්තර'], answer:3, explain:'පෞද්ගලික ජීවිත විස්තර අයත් නොවේ.'},
+  {lesson:'g12-5', difficulty:'Hard', q:'දළ ලාභය = අලෙවිය − ______', options:['මෙහෙයුම් වියදම්','විකුණන ලද භාණ්ඩවල පිරිවැය','බදු','පොලිය'], answer:1, explain:'දළ ලාභය = අලෙවිය − COGS.'},
+  {lesson:'g13-3', difficulty:'Hard', q:'සැපයුම් දාම කළමනාකරණයේ ප්‍රධාන ඉලක්කය කුමක්ද?', options:['පිරිවැය වැඩි කිරීම','අමුද්‍රව්‍යවල සිට පාරිභෝගිකයා දක්වා කාර්යක්ෂම ගලායාම','සේවක සංඛ්‍යාව අඩු කිරීම','බදු අඩු කිරීම'], answer:1, explain:'SCM = කාර්යක්ෂම සැපයුම් ගලායාම.'}
+];
+
+const DEFAULT_TF_BANK = [
+  {q:'වත්කම් යනු ව්‍යාපාරයට ඇති හිමිකම් ය.', answer:true, explain:'වත්කම් = වටිනාකමක් ඇති සම්පත්.'},
+  {q:'කළමනාකරණයේ පළමු කාර්යය පාලනය කිරීමයි.', answer:false, explain:'පළමු කාර්යය සැලසුම්කරණයයි.'},
+  {q:'අලෙවිකරණ මිශ්‍රණයේ 4P වලට Profit ඇතුළත් වේ.', answer:false, explain:'4P = Product, Price, Place, Promotion.'},
+  {q:'වත්කම් = වගකීම් + හිමිකම් යනු නිවැරදි ගිණුම් සමීකරණයයි.', answer:true, explain:'මූලික ගිණුම් සමීකරණය.'},
+  {q:'තනි පුද්ගල ව්‍යාපාරයේ හිමිකරුගේ වගකීම සීමිතය.', answer:false, explain:'අසීමිත වගකීම.'},
+  {q:'CSR යනු සමාජ වගකීමයි.', answer:true, explain:'Corporate Social Responsibility.'},
+  {q:'අලෙවිකරණයේ ප්‍රධාන අරමුණ පාරිභෝගික තෘප්තිය සැලසීමයි.', answer:true, explain:'අලෙවිකරණ දර්ශනයේ කේන්ද්‍රය.'},
+  {q:'දළ ලාභය = අලෙවිය − මෙහෙයුම් වියදම්.', answer:false, explain:'දළ ලාභය = අලෙවිය − COGS.'}
+];
+
+const DEFAULT_MATCH_PAIRS = [
+  {term:'වත්කම්', def:'ව්‍යාපාරය සතු වටිනාකමක් ඇති සම්පත්'},
+  {term:'වගකීම්', def:'ව්‍යාපාරය ගෙවිය යුතු ණය'},
+  {term:'ප්‍රාග්ධනය', def:'හිමිකරු ව්‍යාපාරයට ආයෝජනය කළ මුදල'},
+  {term:'අලෙවිකරණ මිශ්‍රණය', def:'Product, Price, Place, Promotion'},
+  {term:'ව්‍යවසායකයා', def:'අවදානම දරා නව ව්‍යාපාර ආරම්භ කරන්නා'},
+  {term:'දළ ලාභය', def:'අලෙවිය − විකුණන ලද භාණ්ඩවල පිරිවැය'}
+];
+
+const DEFAULT_FILL_BANK = [
+  {sentence:'වත්කම් = වගකීම් + ______', answer:'හිමිකම්', accept:['equity','owners equity'], hint:'Equity'},
+  {sentence:'අලෙවිකරණ මිශ්‍රණයේ 4P: Product, Price, Place, ______', answer:'Promotion', accept:['ප්‍රවර්ධනය'], hint:'ප්‍රවර්ධනය'},
+  {sentence:'ලාභය = ආදායම − ______', answer:'වියදම්', accept:['expenses','expense'], hint:'Expenses'},
+  {sentence:'දළ ලාභය = අලෙවිය − ______', answer:'විකුණන ලද භාණ්ඩවල පිරිවැය', accept:['cogs','cost of goods sold'], hint:'COGS'},
+  {sentence:'______ යනු අවදානම දරා නව ව්‍යාපාර ආරම්භ කරන්නාය', answer:'ව්‍යවසායකයා', accept:['entrepreneur'], hint:'Entrepreneur'},
+  {sentence:'SMART අරමුණුවල S = ______', answer:'Specific', accept:['විශේෂිත'], hint:'විශේෂිත'}
+];
+
+const DEFAULT_SCENARIO_BANK = [
+  {q:'ඔබ නව ආහාර ව්‍යාපාරයක් ආරම්භ කරයි. ආරම්භක ප්‍රාග්ධනය සීමිතය. වඩාත් සුදුසු තීරණය කුමක්ද?', options:['විශාල ණයක් ගෙන විශාල කර්මාන්තශාලාවක් ගොඩනැගීම','කුඩා පරිමාණයෙන් ආරම්භ කර වෙළඳපොල පරීක්ෂා කර ක්‍රමයෙන් ව්‍යාප්ත වීම','සියලු මුදල් ප්‍රවර්ධනයට වැය කිරීම','සේවකයින් බඳවා නොගැනීම'], answer:1, explain:'සීමිත ප්‍රාග්ධනයක් සහිතව කුඩා පරිමාණයෙන් ආරම්භ කිරීම ව්‍යවසායක උපායයකි.'},
+  {q:'ව්‍යාපාරයක අලෙවිය ඉහළ ගියද ලාභය අඩුය. පළමු පියවර කුමක්ද?', options:['මිල වහාම දෙගුණ කිරීම','පිරිවැය ව්‍යුහය විශ්ලේෂණය කිරීම','සියලු සේවකයින් නෙරපා හැරීම','නිෂ්පාදනය නතර කිරීම'], answer:1, explain:'පිරිවැය ව්‍යුහය විශ්ලේෂණය කිරීම.'},
+  {q:'සේවකයින්ගේ පිටවීම් අනුපාතය ඉහළ යයි. පළමු ක්‍රියාමාර්ගය කුමක්ද?', options:['වැටුප් වහාම දෙගුණ කිරීම','පිටවීමට හේතු හඳුනා ගැනීමට සේවක සමීක්ෂණයක්','සියලු දෙනාට දඬුවම්','බඳවා ගැනීම නතර කිරීම'], answer:1, explain:'මූල හේතුව හඳුනා ගැනීම.'},
+  {q:'නව නිෂ්පාදනයක් හඳුන්වා දීමේදී සුදුසු මිල නිර්ණය ක්‍රමය?', options:['අහඹු ලෙස මිල','පිරිවැය, තරඟකාරී මිල හා පාරිභෝගික අපේක්ෂා සලකා','උපරිම මිල පමණක්','මිල ශුන්‍ය කිරීම'], answer:1, explain:'සාධක ත්‍රිත්වය සැලකීම.'}
+];
+
+const DEFAULT_GAMES = [
+  {id:'quiz-env', type:'mcq', title:'ව්‍යාපාර පරිසරය – MCQ Quiz', lessonId:'g12-1', grade:12, desc:'ව්‍යාපාර පරිසරය පිළිබඳ බහුවරණ ප්‍රශ්න.'},
+  {id:'tf-mgmt', type:'tf', title:'කළමනාකරණය – True / False', lessonId:'g12-4', grade:12, desc:'කළමනාකරණ ක්‍රියාවලිය පිළිබඳ සත්‍ය/අසත්‍ය.'},
+  {id:'match-terms', type:'match', title:'ව්‍යාපාර යෙදුම් ගැලපීම', lessonId:'g12-5', grade:12, desc:'යෙදුම් ඒවායේ නිර්වචන සමඟ ගැලපීම.'},
+  {id:'fill-fin', type:'fill', title:'මූල්‍ය සූත්‍ර – හිස්තැන් පිරවීම', lessonId:'g13-4', grade:13, desc:'වැදගත් සූත්‍ර හා යෙදුම් සම්පූර්ණ කිරීම.'},
+  {id:'scenario-ent', type:'scenario', title:'ව්‍යාපාරික අභියෝගය', lessonId:'g12-2', grade:12, desc:'සැබෑ අවස්ථා සඳහා සුදුසු තීරණය තෝරන්න.'},
+  {id:'timed-mixed', type:'timed', title:'වේග පරීක්ෂණය (60s)', lessonId:'g12-1', grade:12, desc:'තත්පර 60ක් තුළ පිළිතුරු දෙන්න.'}
+];
+
+const DEFAULT_CONFIG = { adminPassword: 'mahinda2024' };
+
+/* ============================================================
+   2. CONTENT MANAGEMENT
+   ============================================================ */
+const CONTENT_KEY = 'mcbs_content_v1';
+const ADMIN_SESSION_KEY = 'mcbs_admin_session';
+const SESSION_KEY = 'mcbs_session_v1';
+const SCORES_KEY = 'mcbs_scores_v1';
+
+function defaultContent(){
+  return {
+    lessons: JSON.parse(JSON.stringify(DEFAULT_LESSONS)),
+    papers: JSON.parse(JSON.stringify(DEFAULT_PAPERS)),
+    resources: JSON.parse(JSON.stringify(DEFAULT_RESOURCES)),
+    mcqBank: JSON.parse(JSON.stringify(DEFAULT_MCQ_BANK)),
+    tfBank: JSON.parse(JSON.stringify(DEFAULT_TF_BANK)),
+    matchPairs: JSON.parse(JSON.stringify(DEFAULT_MATCH_PAIRS)),
+    fillBank: JSON.parse(JSON.stringify(DEFAULT_FILL_BANK)),
+    scenarioBank: JSON.parse(JSON.stringify(DEFAULT_SCENARIO_BANK)),
+    games: JSON.parse(JSON.stringify(DEFAULT_GAMES)),
+    students: [],
+    commonAccount: { username: 'common', password: 'mahinda123', name: 'Common User', class: '-', studentId: '-' },
+    dailyConfig: { openHour: 20, openMinute: 0, questionCount: 10, passMark: 50, enabled: true },
+    gameConfig: {
+      'quiz-env':    { questionCount: 10, timeLimit: 0 },
+      'tf-mgmt':     { questionCount: 10, timeLimit: 0 },
+      'match-terms': { questionCount: 6,  timeLimit: 0 },
+      'fill-fin':    { questionCount: 6,  timeLimit: 0 },
+      'scenario-ent':{ questionCount: 4,  timeLimit: 0 },
+      'timed-mixed': { questionCount: 10, timeLimit: 60 }
+    },
+    chatbot: {
+      enabled: true, name: 'MC Assistant',
+      welcome: 'ආයුබෝවන්! 👋 මම MC Assistant. පාඩම්, ප්‍රශ්න පත්‍ර, ක්‍රීඩා, දිනපතා ප්‍රශ්නාවලිය ගැන මගෙන් අහන්න පුළුවන්.'
+    },
+    config: Object.assign({}, DEFAULT_CONFIG)
+  };
+}
+
+function loadContent(){
+  try {
+    const raw = localStorage.getItem(CONTENT_KEY);
+    if(!raw) return defaultContent();
+    const parsed = JSON.parse(raw);
+    const merged = Object.assign(defaultContent(), parsed);
+    if(!merged.students) merged.students = [];
+    if(!merged.commonAccount) merged.commonAccount = defaultContent().commonAccount;
+    if(!merged.dailyConfig) merged.dailyConfig = defaultContent().dailyConfig;
+    if(!merged.gameConfig) merged.gameConfig = defaultContent().gameConfig;
+    return merged;
+  } catch(e){ return defaultContent(); }
+}
+
+function saveContent(){
+  try { localStorage.setItem(CONTENT_KEY, JSON.stringify(content)); }
+  catch(e){ toast('Storage error: ' + e.message); }
+}
+
+let content = loadContent();
+let LESSONS = content.lessons;
+let PAPERS = content.papers;
+let RESOURCES = content.resources;
+let MCQ_BANK = content.mcqBank;
+let TF_BANK = content.tfBank;
+let MATCH_PAIRS = content.matchPairs;
+let FILL_BANK = content.fillBank;
+let SCENARIO_BANK = content.scenarioBank;
+let GAMES = content.games;
+let DAILY_CONFIG = content.dailyConfig;
+let GAME_CONFIG = content.gameConfig;
+
+function refreshContentRefs(){
+  LESSONS = content.lessons;
+  PAPERS = content.papers;
+  RESOURCES = content.resources;
+  MCQ_BANK = content.mcqBank;
+  TF_BANK = content.tfBank;
+  MATCH_PAIRS = content.matchPairs;
+  FILL_BANK = content.fillBank;
+  SCENARIO_BANK = content.scenarioBank;
+  GAMES = content.games;
+  DAILY_CONFIG = content.dailyConfig;
+  GAME_CONFIG = content.gameConfig;
+}
+
+function commitContent(){
+  refreshContentRefs();
+  saveContent();
+}
+
+/* ============================================================
+   3. INDEXEDDB
+   ============================================================ */
+const DB_NAME = 'mcbs_pdfs';
+const DB_VERSION = 1;
+const PDF_STORE = 'files';
+let _dbPromise = null;
+
+function openDB(){
+  if(_dbPromise) return _dbPromise;
+  _dbPromise = new Promise((resolve, reject) => {
+    if(!('indexedDB' in window)){ reject(new Error('IndexedDB not supported')); return; }
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if(!db.objectStoreNames.contains(PDF_STORE)) db.createObjectStore(PDF_STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => { _dbPromise = null; reject(req.error); };
+  });
+  return _dbPromise;
+}
+async function idbPut(key, blob){ const db = await openDB(); return new Promise((r,j)=>{const tx=db.transaction(PDF_STORE,'readwrite');tx.objectStore(PDF_STORE).put(blob,key);tx.oncomplete=()=>r();tx.onerror=()=>j(tx.error);}); }
+async function idbGet(key){ const db = await openDB(); return new Promise((r,j)=>{const tx=db.transaction(PDF_STORE,'readonly');const q=tx.objectStore(PDF_STORE).get(key);q.onsuccess=()=>r(q.result||null);q.onerror=()=>j(q.error);}); }
+async function idbDel(key){ const db = await openDB(); return new Promise((r,j)=>{const tx=db.transaction(PDF_STORE,'readwrite');tx.objectStore(PDF_STORE).delete(key);tx.oncomplete=()=>r();tx.onerror=()=>j(tx.error);}); }
+async function idbClearAll(){ const db = await openDB(); return new Promise((r,j)=>{const tx=db.transaction(PDF_STORE,'readwrite');tx.objectStore(PDF_STORE).clear();tx.oncomplete=()=>r();tx.onerror=()=>j(tx.error);}); }
+
+/* ============================================================
+   4. AUTH
+   ============================================================ */
+function isAdmin(){ return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true'; }
+function setAdmin(v){ if(v) sessionStorage.setItem(ADMIN_SESSION_KEY, 'true'); else sessionStorage.removeItem(ADMIN_SESSION_KEY); }
+
+function getSession(){
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); }
+  catch(e){ return null; }
+}
+function setSession(s){
+  if(s) sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
+  else sessionStorage.removeItem(SESSION_KEY);
+  updateTopbarUser();
+}
+function findAccount(username){
+  if(!username) return null;
+  const u = String(username).trim().toLowerCase();
+  if(content.commonAccount && content.commonAccount.username.toLowerCase() === u){
+    return Object.assign({}, content.commonAccount, { type: 'common' });
+  }
+  const s = (content.students || []).find(x => x.username.toLowerCase() === u);
+  return s ? Object.assign({}, s, { type: 'student' }) : null;
+}
+function logoutStudent(){
+  if(!getSession()) return;
+  if(!confirm('Logout from this device?')) return;
+  setSession(null);
+  toast('Logged out');
+  location.hash = '#/home';
+}
+
+function updateTopbarUser(){
+  const s = getSession();
+  const topUser = document.getElementById('topbarUser');
+  const topName = document.getElementById('topbarName');
+  const topAv = document.getElementById('topbarAvatar');
+  const drUser = document.getElementById('drawerUser');
+  if(s){
+    const initial = (s.name || s.username || 'U').trim().charAt(0).toUpperCase();
+    if(topName) topName.textContent = (s.name || s.username).split(' ')[0];
+    if(topAv) topAv.textContent = initial;
+    if(topUser) topUser.style.display = 'flex';
+    if(drUser) drUser.innerHTML = `
+      <div class="avatar">${esc(initial)}</div>
+      <div class="drawer-user-info">
+        <strong>${esc(s.name || s.username)}</strong>
+        <small>${s.type === 'common' ? 'Common' : (s.class || '') + (s.studentId ? ' · ' + s.studentId : '')}</small>
+      </div>
+    `;
+  } else {
+    if(topUser) topUser.style.display = 'none';
+    if(drUser) drUser.innerHTML = '';
+  }
+}
+
+/* ============================================================
+   5. STATE & SCORES
+   ============================================================ */
+const STORE_KEY = 'mcbs_state_v1';
+function defaultState(){ return { lessonsDone:{}, gamesPlayed:0, bestScores:{}, quizBest:0, recentGames:[], daily:{} }; }
+let state = loadState();
+function loadState(){ try { const raw = localStorage.getItem(STORE_KEY); return raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState(); } catch(e){ return defaultState(); } }
+function saveState(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){} }
+
+function loadScores(){
+  try { return JSON.parse(localStorage.getItem(SCORES_KEY) || '{}'); }
+  catch(e){ return {}; }
+}
+function saveScores(s){
+  try { localStorage.setItem(SCORES_KEY, JSON.stringify(s)); } catch(e){}
+}
+function recordDailyScore(username, date, score, total){
+  if(!username) return;
+  const scores = loadScores();
+  if(!scores[username]) scores[username] = {};
+  const existing = scores[username][date];
+  if(!existing || score > existing.score){
+    scores[username][date] = { score, total, at: Date.now() };
+    saveScores(scores);
+  }
+}
+function getStudentDailyAvg(username){
+  const scores = loadScores();
+  const entries = Object.values(scores[username] || {});
+  const t = entries.reduce((a,e)=>a+e.score,0);
+  const tp = entries.reduce((a,e)=>a+e.total,0);
+  return { quizzes: entries.length, total: t, totalPossible: tp, avg: tp > 0 ? Math.round(t/tp*100) : 0 };
+}
+function getRankings(){
+  const scores = loadScores();
+  const all = [];
+  (content.students || []).forEach(s => {
+    const entries = Object.values(scores[s.username] || {});
+    if(entries.length === 0) return;
+    const t = entries.reduce((a,e)=>a+e.score,0);
+    const tp = entries.reduce((a,e)=>a+e.total,0);
+    all.push({
+      name: s.name, studentId: s.studentId, class: s.class,
+      username: s.username, quizzes: entries.length, total: t, totalPossible: tp,
+      avg: tp > 0 ? Math.round(t/tp*100) : 0, type: 'student'
+    });
+  });
+  if(content.commonAccount){
+    const entries = Object.values(scores[content.commonAccount.username] || {});
+    if(entries.length > 0){
+      const t = entries.reduce((a,e)=>a+e.score,0);
+      const tp = entries.reduce((a,e)=>a+e.total,0);
+      all.push({
+        name: content.commonAccount.name || 'Common', studentId: '-', class: content.commonAccount.class || '-',
+        username: content.commonAccount.username, quizzes: entries.length, total: t, totalPossible: tp,
+        avg: tp > 0 ? Math.round(t/tp*100) : 0, type: 'common'
+      });
+    }
+  }
+  all.sort((a,b) => {
+    if(b.avg !== a.avg) return b.avg - a.avg;
+    if(b.total !== a.total) return b.total - a.total;
+    if(b.quizzes !== a.quizzes) return b.quizzes - a.quizzes;
+    return a.name.localeCompare(b.name);
+  });
+  return all;
+}
+
+/* ============================================================
+   6. HELPERS
+   ============================================================ */
+const app = document.getElementById('app');
+
+function esc(s){
+  return String(s==null?'':s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); const t=a[i];a[i]=a[j];a[j]=t; }
+  return a;
+}
+function allLessons(){ return LESSONS.g12.concat(LESSONS.g13); }
+function findLesson(id){ return allLessons().filter(function(l){ return l.id===id; })[0] || null; }
+function lessonGrade(id){ return id.indexOf('g13')===0 ? 13 : 12; }
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+}
+function pad(n){ return n<10 ? '0'+n : ''+n; }
+function todayKey(){ const d = new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function fmtBytes(b){
+  if(!b) return '0 B';
+  if(b < 1024) return b + ' B';
+  if(b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+  return (b/1024/1024).toFixed(2) + ' MB';
+}
+function genPassword(len){
+  len = len || 6;
+  const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+  let out = '';
+  for(let i=0;i<len;i++) out += chars.charAt(Math.floor(Math.random()*chars.length));
+  return out;
+}
+function getLoginLink(username){
+  return location.origin + location.pathname + '#/login/' + encodeURIComponent(username);
+}
+async function copyToClipboard(text){
+  try { await navigator.clipboard.writeText(text); toast('Copied to clipboard! ✓'); }
+  catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('Copied ✓'); } catch(err){ toast('Copy failed'); }
+    ta.remove();
+  }
+}
+
+async function handlePaperView(paperId){
+  const p = PAPERS.find(x => x.id === paperId); if(!p) return;
+  if(p.pdfKey){ try { const blob = await idbGet(p.pdfKey); if(blob){ const url = URL.createObjectURL(blob); window.open(url,'_blank'); setTimeout(()=>URL.revokeObjectURL(url), 120000); return; } } catch(e){ console.error(e); } }
+  if(p.url){ window.open(p.url, '_blank'); return; }
+  toast('PDF ගොනුව තවම එක් කර නැත');
+}
+async function handlePaperDownload(paperId){
+  const p = PAPERS.find(x => x.id === paperId); if(!p) return;
+  const name = p.pdfName || (p.year + '-' + p.medium + '-' + p.type + '.pdf');
+  if(p.pdfKey){ try { const blob = await idbGet(p.pdfKey); if(blob){ const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),120000); return; } } catch(e){} }
+  if(p.url){ const a = document.createElement('a'); a.href=p.url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); return; }
+  toast('PDF ගොනුව තවම එක් කර නැත');
+}
+async function handleResourceView(resId){
+  const r = RESOURCES.find(x => x.id === resId); if(!r) return;
+  if(r.pdfKey){ try { const blob = await idbGet(r.pdfKey); if(blob){ const url = URL.createObjectURL(blob); window.open(url,'_blank'); setTimeout(()=>URL.revokeObjectURL(url), 120000); return; } } catch(e){} }
+  if(r.url){ window.open(r.url,'_blank'); return; }
+  toast('ගොනුව තවම එක් කර නැත');
+}
+
+/* ============================================================
+   7. INTRO + PETAL RAIN + ENHANCED FLOWER BURST
+   ============================================================ */
+function showPetalRain(){
+  const petals = ['🌸','🌺','🌼','🌷','💮','🏵️','🌻','🪷','❀','✿','❁','⚘','🌹'];
+  const count = 55;
+  for(let i = 0; i < count; i++){
+    setTimeout(() => {
+      const p = document.createElement('div');
+      p.className = 'petal-rain-particle';
+      p.textContent = petals[Math.floor(Math.random() * petals.length)];
+      const size = 14 + Math.random() * 26;
+      const left = Math.random() * 100;
+      const duration = 3 + Math.random() * 2.8;
+      const drift = (Math.random() - 0.5) * 240;
+      p.style.cssText = `left:${left}vw;font-size:${size}px;animation-duration:${duration}s;--drift:${drift}px;opacity:${0.85 + Math.random()*0.15};`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), duration * 1000 + 600);
+    }, i * 55);
+  }
+}
+
+(function initIntro(){
+  const intro = document.getElementById('intro');
+  let t = setTimeout(hideIntro, 2000);
+  function hideIntro(){
+    clearTimeout(t);
+    if(!intro) return;
+    intro.classList.add('hide');
+    setTimeout(function(){ if(intro.parentNode) intro.parentNode.removeChild(intro); }, 700);
+    // ✨ Petal shower after intro fades ✨
+    setTimeout(showPetalRain, 500);
+  }
+})();
+
+(function initFlowerAnimation(){
+  const FLOWERS = ['🌸','🌺','🌼','🌷','💮','🏵️','🌻','🪷','❀','✿','❁','⚘','🌹'];
+  document.addEventListener('click', function(e){
+    const target = e.target.closest('button, .btn, .tab, .quick, .card, .option');
+    if(!target) return;
+    if(target.disabled) return;
+    const rect = target.getBoundingClientRect();
+    const x = (e.clientX && e.clientX > 0) ? e.clientX : (rect.left + rect.width/2);
+    const y = (e.clientY && e.clientY > 0) ? e.clientY : (rect.top + rect.height/2);
+    const count = 9 + Math.floor(Math.random() * 5);
+    for(let i = 0; i < count; i++){
+      const f = document.createElement('div');
+      f.className = 'flower-particle';
+      f.textContent = FLOWERS[Math.floor(Math.random() * FLOWERS.length)];
+      const size = 16 + Math.random() * 22;
+      const duration = 0.9 + Math.random() * 0.75;
+      const delay = Math.random() * 0.12;
+      f.style.cssText = `left:${x}px;top:${y}px;font-size:${size}px;animation:flowerBurstEnhanced ${duration}s ease-out forwards;animation-delay:${delay}s;`;
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.9;
+      const dist = 60 + Math.random() * 120;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist - 30;
+      const rot = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 540);
+      f.style.setProperty('--dx', dx + 'px');
+      f.style.setProperty('--dy', dy + 'px');
+      f.style.setProperty('--rot', rot + 'deg');
+      document.body.appendChild(f);
+      setTimeout(() => f.remove(), (duration + delay) * 1000 + 150);
+    }
+  }, { passive: true });
+})();
+
+(function initNav(){
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const backdrop = document.getElementById('drawerBackdrop');
+  const closeBtn = document.getElementById('closeDrawer');
+  function open(){ drawer.classList.add('open'); backdrop.classList.add('show'); drawer.setAttribute('aria-hidden','false'); menuBtn.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; }
+  function close(){ drawer.classList.remove('open'); backdrop.classList.remove('show'); drawer.setAttribute('aria-hidden','true'); menuBtn.setAttribute('aria-expanded','false'); document.body.style.overflow = ''; }
+  if(menuBtn) menuBtn.addEventListener('click', open);
+  if(closeBtn) closeBtn.addEventListener('click', close);
+  if(backdrop) backdrop.addEventListener('click', close);
+  if(drawer) drawer.addEventListener('click', function(e){ if(e.target.tagName === 'A') close(); });
+})();
+
+function setActiveNav(route){
+  document.querySelectorAll('[data-nav]').forEach(function(a){
+    a.classList.toggle('active', a.getAttribute('data-nav') === route);
+  });
+}
+
+/* ============================================================
+   8. ROUTER (no login gate — public browsing)
+   ============================================================ */
+let dailyTimerId = null;
+
+function router(){
+  if(dailyTimerId){ clearInterval(dailyTimerId); dailyTimerId = null; }
+
+  const raw = location.hash.replace(/^#\/?/, '');
+  const parts = raw.split('/');
+  const route = parts[0] || 'home';
+  const param = parts[1] || '';
+
+  const session = getSession();
+
+  // Already logged in + visiting login page → redirect
+  if(route === 'login' && session){
+    const target = (param === 'daily') ? 'daily' : 'home';
+    location.hash = '#/' + target;
+    return;
+  }
+
+  setActiveNav(route);
+  window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  updateTopbarUser();
+
+  const isLoginPage = route === 'login';
+  document.getElementById('topbar').style.display = isLoginPage ? 'none' : '';
+  document.querySelector('.site-footer').style.display = isLoginPage ? 'none' : '';
+  document.getElementById('bottomNav').style.display = isLoginPage ? 'none' : '';
+  const fab = document.getElementById('chatFab');
+  if(fab && content.chatbot && content.chatbot.enabled !== false && !isLoginPage) fab.style.display = 'grid';
+  else if(fab) fab.style.display = 'none';
+
+  switch(route){
+    case 'login':     renderLogin(param); break;
+    case 'home':      renderHome(); break;
+    case 'lessons':   renderLessons(); break;
+    case 'lesson':    renderLessonDetail(param); break;
+    case 'papers':    renderPapers(); break;
+    case 'games':     renderGames(); break;
+    case 'game':      renderGame(param); break;
+    case 'daily':     renderDaily(); break;
+    case 'rankings':  renderRankings(); break;
+    case 'resources': renderResources(); break;
+    case 'progress':  renderProgress(); break;
+    case 'about':     renderAbout(); break;
+    case 'admin':     renderAdmin(param); break;
+    default:          renderNotFound();
+  }
+}
+
+/* ============================================================
+   9. LOGIN
+   ============================================================ */
+function renderLogin(param){
+  let prefillUsername = '';
+  let redirectTo = 'home';
+  if(param === 'daily') redirectTo = 'daily';
+  else if(param === 'home') redirectTo = 'home';
+  else if(param) prefillUsername = param;
+
+  app.innerHTML = `
+    <div class="login-page">
+      <div class="login-card">
+        <div class="logo-badge">
+          <img src="Mahinda_College_Crest.png" alt="Mahinda College"
+               onerror="this.style.display='none';this.parentElement.classList.add('no-img')">
+          <span class="monogram" style="font-size:26px">MC</span>
+        </div>
+        <h1>Welcome to MCCS</h1>
+        <p class="login-sub">Mahinda College · Business Studies Platform</p>
+        ${redirectTo === 'daily' ? '<div class="notice info" style="text-align:left;margin-bottom:18px;font-size:.8rem"><span>📝</span><div>Daily Quiz සඳහා පිවිසීම අවශ්‍යයි. Login වූ පසු ප්‍රශ්නාවලිය ස්වයංක්‍රීයව ආරම්භ වේ.</div></div>' : ''}
+        <form class="login-form" id="loginForm" autocomplete="on">
+          <label>Username</label>
+          <input id="loginUser" placeholder="Enter username" value="${esc(prefillUsername||'')}" autocomplete="username" autocapitalize="off">
+          <label>Password</label>
+          <input id="loginPass" type="password" placeholder="Enter password" autocomplete="current-password">
+          <div class="login-error" id="loginError"></div>
+          <button type="submit">🔓 Login</button>
+        </form>
+        <div class="login-footer">
+          Use the credentials given by your teacher.<br>
+          <a href="#/home">← Back to Home</a> · <a href="#/admin">Admin login</a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const form = document.getElementById('loginForm');
+  const userEl = document.getElementById('loginUser');
+  const passEl = document.getElementById('loginPass');
+  const errEl = document.getElementById('loginError');
+
+  if(prefillUsername) setTimeout(() => passEl.focus(), 100);
+  else setTimeout(() => userEl.focus(), 100);
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    errEl.textContent = '';
+    const u = userEl.value.trim();
+    const p = passEl.value;
+    if(!u || !p){ errEl.textContent = 'Please fill both fields'; return; }
+    const account = findAccount(u);
+    if(!account){ errEl.textContent = 'Username not found'; return; }
+    if(account.password !== p){ errEl.textContent = 'Incorrect password'; return; }
+    setSession({
+      username: account.username,
+      name: account.name,
+      class: account.class,
+      studentId: account.studentId,
+      type: account.type,
+      loginAt: Date.now()
+    });
+    toast('Welcome, ' + account.name + '! 👋');
+    location.hash = '#/' + redirectTo;
+  });
+}
+
+/* ============================================================
+   10. HOME
+   ============================================================ */
+function renderHome(){
+  const session = getSession();
+  const totalLessons = allLessons().length;
+  const done = Object.keys(state.lessonsDone).length;
+  const pct = totalLessons ? Math.round(done/totalLessons*100) : 0;
+  const featured = allLessons().slice(0,3);
+  const recentPapers = PAPERS.slice(0,4);
+  const popularGames = GAMES.slice(0,3);
+  const rankings = getRankings();
+  const topRank = rankings.slice(0,3);
+  const firstName = (session && session.name) ? session.name.split(' ')[0] : '';
+
+  app.innerHTML = `
+    <section class="hero">
+      <span class="tagline">Mahinda College · Galle</span>
+      <h1>${firstName ? ('Hi, <span>'+esc(firstName)+'</span>!') : 'Welcome to <span>Business Studies</span>'}</h1>
+      <p>A/L Business Studies සිසුන් සඳහා විශේෂයෙන් නිර්මාණය කළ ඩිජිටල් ඉගෙනුම් වේදිකාව. පාඩම් අධ්‍යයනය කරන්න, අතීත ප්‍රශ්න පත්‍ර බලන්න, ක්‍රීඩා කරන්න සහ ඔබේ දැනුම වර්ධනය කරගන්න.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#/lessons">📚 පාඩම් ආරම්භ කරන්න</a>
+        <a class="btn btn-ghost" href="#/daily">🗓️ අද දින ප්‍රශ්නාවලිය</a>
+      </div>
+    </section>
+
+    <div class="section-head"><h2>ඉක්මන් ප්‍රවේශය</h2></div>
+    <div class="grid grid-4">
+      <a class="quick" href="#/lessons"><span class="ico">📚</span><strong>පාඩම්</strong><small>Grade 12 &amp; 13</small></a>
+      <a class="quick" href="#/papers"><span class="ico">📄</span><strong>අතීත ප්‍රශ්න පත්‍ර</strong><small>වර්ෂ අනුව</small></a>
+      <a class="quick" href="#/games"><span class="ico">🎮</span><strong>අධ්‍යාපනික ක්‍රීඩා</strong><small>පාඩම් හා සම්බන්ධ</small></a>
+      <a class="quick" href="#/rankings"><span class="ico">🏆</span><strong>ශ්‍රේණිගත කිරීම්</strong><small>Daily Quiz</small></a>
+    </div>
+
+    <div class="section-head"><h2>ඔබේ ප්‍රගතිය</h2><a href="#/progress">සියල්ල බලන්න →</a></div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong style="font-size:.9rem">සම්පූර්ණ කළ පාඩම්: ${done} / ${totalLessons}</strong>
+        <span class="pill gold">${pct}%</span>
+      </div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <p class="muted small" style="margin:10px 0 0">ක්‍රීඩා ${state.gamesPlayed}ක් ක්‍රීඩා කර ඇත · හොඳම ලකුණු ${state.quizBest}%</p>
+    </div>
+
+    ${topRank.length ? `
+    <div class="section-head"><h2>🏆 Top 3 · Daily Quiz</h2><a href="#/rankings">සියල්ල →</a></div>
+    <div class="grid grid-3">
+      ${topRank.map(function(r, i){
+        const medals = ['🥇','🥈','🥉'];
+        return `<a class="card" href="#/rankings" style="text-align:center">
+          <div style="font-size:2rem;line-height:1">${medals[i]}</div>
+          <h3 style="font-size:.92rem;margin-top:8px">${esc(r.name)}</h3>
+          <p class="muted small">${esc(r.class||'')} ${r.studentId && r.studentId!=='-' ? '· '+esc(r.studentId) : ''}</p>
+          <span class="pill ok">${r.avg}% avg</span>
+        </a>`;
+      }).join('')}
+    </div>` : ''}
+
+    <div class="section-head"><h2>විශේෂිත පාඩම්</h2><a href="#/lessons">සියල්ල →</a></div>
+    <div class="grid grid-3">
+      ${featured.map(function(l){
+        const isDone = !!state.lessonsDone[l.id];
+        return `<a class="card lesson-card" href="#/lesson/${l.id}">
+          <div class="top"><span class="pill">${esc(l.unit)}</span>
+          <span class="done-chip ${isDone?'on':''}">${isDone?'✓':'○'}</span></div>
+          <h3>${esc(l.title)}</h3>
+          <p class="en">${esc(l.titleEn)}</p>
+          <span class="pill ${lessonGrade(l.id)===12?'navy':'gold'}">Grade ${lessonGrade(l.id)}</span>
+        </a>`;
+      }).join('')}
+    </div>
+
+    <div class="section-head"><h2>අලුතින් එක් කළ ප්‍රශ්න පත්‍ර</h2><a href="#/papers">සියල්ල →</a></div>
+    <div class="grid grid-2">
+      ${recentPapers.map(function(p){
+        const available = !!(p.url || p.pdfKey);
+        return `<div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span class="pill navy">${p.year} A/L</span>
+            <span class="pill ${available?'ok':'soon'}">${available?'Available':'Coming Soon'}</span>
+          </div>
+          <h3 style="font-size:.9rem">${esc(p.type)}</h3>
+          <p class="muted small">${esc(p.medium)} Medium</p>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="section-head"><h2>ජනප්‍රිය ක්‍රීඩා</h2><a href="#/games">සියල්ල →</a></div>
+    <div class="grid grid-3">
+      ${popularGames.map(function(g){
+        const best = state.bestScores[g.id];
+        return `<a class="card" href="#/game/${g.id}">
+          <span class="pill gold">${gameTypeLabel(g.type)}</span>
+          <h3 style="margin-top:8px">${esc(g.title)}</h3>
+          <p class="muted small">${esc(g.desc)}</p>
+          <p class="muted small" style="margin-top:8px">${best?('හොඳම ලකුණු: '+best+'%'):'තවම ක්‍රීඩා කර නැත'}</p>
+        </a>`;
+      }).join('')}
+    </div>
+
+    <div class="section-head"><h2>අද දින අභිප්‍රේරණය</h2></div>
+    <div class="quote">
+      <p>"සාර්ථකත්වය යනු එක් රැයකින් ලැබෙන දෙයක් නොවේ. එය දිනපතා කරන කුඩා උත්සාහයන්ගේ එකතුවයි."</p>
+      <small>— A/L BUSINESS STUDIES · MAHINDA COLLEGE</small>
+    </div>
+  `;
+}
+
+/* ============================================================
+   11. LESSONS
+   ============================================================ */
+let currentGrade = 12;
+
+function renderLessons(){
+  app.innerHTML = `
+    <div class="section-head"><h2>A/L Business Studies පාඩම්</h2></div>
+    <div class="tabs" id="gradeTabs">
+      <button class="tab ${currentGrade===12?'active':''}" data-grade="12">Grade 12</button>
+      <button class="tab ${currentGrade===13?'active':''}" data-grade="13">Grade 13</button>
+    </div>
+    <input class="search" id="lessonSearch" type="search" placeholder="🔍 පාඩම් සොයන්න (Sinhala හෝ English)..." autocomplete="off">
+    <div class="grid grid-3" id="lessonList"></div>
+  `;
+
+  document.getElementById('gradeTabs').addEventListener('click', function(e){
+    const b = e.target.closest('.tab'); if(!b) return;
+    currentGrade = parseInt(b.dataset.grade, 10);
+    document.querySelectorAll('#gradeTabs .tab').forEach(function(t){ t.classList.toggle('active', t === b); });
+    paintLessonList(document.getElementById('lessonSearch').value);
+  });
+
+  document.getElementById('lessonSearch').addEventListener('input', function(e){ paintLessonList(e.target.value); });
+  paintLessonList('');
+}
+
+function paintLessonList(query){
+  const list = document.getElementById('lessonList');
+  const q = (query||'').trim().toLowerCase();
+  const src = currentGrade === 12 ? LESSONS.g12 : LESSONS.g13;
+
+  const filtered = src.filter(function(l){
+    if(!q) return true;
+    return l.title.toLowerCase().indexOf(q) > -1 || l.titleEn.toLowerCase().indexOf(q) > -1
+        || l.keyTerms.some(function(t){ return t.en.toLowerCase().indexOf(q) > -1 || t.si.indexOf(q) > -1; });
+  });
+
+  if(!filtered.length){
+    list.innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center"><p class="muted" style="margin:0">පාඩම් හමු නොවිණි.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(function(l){
+    const isDone = !!state.lessonsDone[l.id];
+    return `<a class="card lesson-card" href="#/lesson/${l.id}">
+      <div class="top">
+        <span class="pill">${esc(l.unit)}</span>
+        <span class="done-chip ${isDone?'on':''}">${isDone?'✓':'○'}</span>
+      </div>
+      <h3>${esc(l.title)}</h3>
+      <p class="en">${esc(l.titleEn)}</p>
+      <div class="kv">
+        <span class="pill gold">Grade ${lessonGrade(l.id)}</span>
+        <span class="pill">${l.keyTerms.length} key terms</span>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function renderLessonDetail(id){
+  const l = findLesson(id);
+  if(!l){ renderNotFound(); return; }
+  const isDone = !!state.lessonsDone[l.id];
+  const relatedGames = GAMES.filter(function(g){ return g.lessonId === l.id; });
+  const grade = lessonGrade(l.id);
+  const siblings = grade === 12 ? LESSONS.g12 : LESSONS.g13;
+  const idx = siblings.findIndex(function(x){ return x.id === l.id; });
+  const prev = idx > 0 ? siblings[idx-1] : null;
+  const next = idx < siblings.length-1 ? siblings[idx+1] : null;
+  const lessonPool = MCQ_BANK.filter(q => q.lesson === l.id);
+
+  app.innerHTML = `
+    <div style="margin-bottom:14px"><a href="#/lessons" class="pill">← පාඩම් ලැයිස්තුවට</a></div>
+    <div class="card" style="padding:22px">
+      <div class="kv" style="margin-bottom:10px">
+        <span class="pill navy">Grade ${grade}</span>
+        <span class="pill">${esc(l.unit)}</span>
+        ${isDone?'<span class="pill ok">✓ සම්පූර්ණයි</span>':'<span class="pill">සම්පූර්ණ කර නැත</span>'}
+      </div>
+      <h1 style="font-size:1.35rem">${esc(l.title)}</h1>
+      <p class="muted" style="margin:0">${esc(l.titleEn)}</p>
+    </div>
+
+    <div class="lesson-body card" style="margin-top:16px">
+      <h3>ප්‍රධාන යෙදුම් (Key Terms)</h3>
+      <div class="term-list">
+        ${l.keyTerms.map(function(t){ return `<div class="term"><b>${esc(t.si)}</b><span>${esc(t.en)}</span></div>`; }).join('')}
+      </div>
+
+      <h3>පුනරීක්ෂණ ක්‍රියාකාරකම්</h3>
+      ${relatedGames.length ? `
+        <p class="muted small">මෙම පාඩමට සම්බන්ධ ක්‍රීඩා:</p>
+        <div class="grid grid-2">
+          ${relatedGames.map(function(g){
+            return `<a class="card" href="#/game/${g.id}" style="padding:14px">
+              <span class="pill gold">${gameTypeLabel(g.type)}</span>
+              <h3 style="margin-top:6px;font-size:.9rem">${esc(g.title)}</h3>
+            </a>`;
+          }).join('')}
+        </div>` : '<p class="muted small">මෙම පාඩමට ක්‍රීඩා තවම එක් කර නැත.</p>'}
+
+      <h3>පාඩම් ප්‍රශ්න පුහුණුව (${lessonPool.length} ප්‍රශ්න)</h3>
+      <p class="muted small">මෙම පාඩමට අදාළ ප්‍රශ්නවලින් අහඹු ලෙස ප්‍රශ්න 10ක් පුහුණු වන්න.</p>
+      <button class="btn btn-primary" id="practiceLessonBtn" ${lessonPool.length < 3 ? 'disabled' : ''}>🎯 පුහුණුව අරඹන්න</button>
+      <div id="lessonPractice" style="margin-top:14px"></div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+      <button class="btn ${isDone?'btn-outline':'btn-primary'}" id="markBtn">
+        ${isDone?'✓ සම්පූර්ණයි (ඉවත් කරන්න)':'පාඩම සම්පූර්ණ කර ලකුණු කරන්න'}
+      </button>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      ${prev?`<a class="card" href="#/lesson/${prev.id}"><span class="pill">← පෙර</span><h3 style="font-size:.88rem;margin-top:6px">${esc(prev.title)}</h3></a>`:'<div></div>'}
+      ${next?`<a class="card" href="#/lesson/${next.id}"><span class="pill">ඊළඟ →</span><h3 style="font-size:.88rem;margin-top:6px">${esc(next.title)}</h3></a>`:'<div></div>'}
+    </div>
+  `;
+
+  document.getElementById('markBtn').addEventListener('click', function(){
+    if(state.lessonsDone[l.id]){ delete state.lessonsDone[l.id]; toast('පාඩම් සම්පූර්ණ ලකුණ ඉවත් කරන ලදි'); }
+    else { state.lessonsDone[l.id] = true; toast('පාඩම සම්පූර්ණ ලෙස ලකුණු කරන ලදි ✓'); }
+    saveState(); renderLessonDetail(l.id);
+  });
+
+  const practiceBtn = document.getElementById('practiceLessonBtn');
+  if(practiceBtn) practiceBtn.addEventListener('click', function(){
+    const pool = MCQ_BANK.filter(q => q.lesson === l.id);
+    const qs = shuffle(pool).slice(0, Math.min(10, pool.length));
+    mountQuiz(document.getElementById('lessonPractice'), qs, {
+      onFinish: function(s,t){ toast('පුහුණුව අවසන්! ලකුණු ' + s + '/' + t); state.gamesPlayed = (state.gamesPlayed||0) + 1; saveState(); }
+    });
+    document.getElementById('lessonPractice').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+}
+
+/* ============================================================
+   12. PAPERS
+   ============================================================ */
+function renderPapers(){
+  app.innerHTML = `
+    <div class="section-head"><h2>A/L අතීත ප්‍රශ්න පත්‍ර පුස්තකාලය</h2></div>
+    <div class="grid grid-2" style="margin-bottom:14px">
+      <input class="search" id="paperSearch" type="search" placeholder="🔍 වර්ෂය/වර්ගය අනුව සොයන්න..." style="margin:0" autocomplete="off">
+      <select class="search" id="paperMedium" style="margin:0">
+        <option value="All">සියලු මාධ්‍ය</option>
+        <option value="Sinhala">සිංහල මාධ්‍ය</option>
+        <option value="English">English Medium</option>
+        <option value="Tamil">Tamil Medium</option>
+      </select>
+    </div>
+    <div id="paperResults"></div>
+  `;
+  document.getElementById('paperSearch').addEventListener('input', paintPapers);
+  document.getElementById('paperMedium').addEventListener('change', paintPapers);
+  paintPapers();
+}
+
+function paintPapers(){
+  const q = (document.getElementById('paperSearch').value || '').trim();
+  const medium = document.getElementById('paperMedium').value;
+  let list = PAPERS.filter(function(p){
+    if(medium !== 'All' && p.medium !== medium) return false;
+    if(q && String(p.year).indexOf(q) === -1 && p.type.toLowerCase().indexOf(q.toLowerCase()) === -1) return false;
+    return true;
+  });
+  const box = document.getElementById('paperResults');
+  if(!list.length){ box.innerHTML = '<div class="card center"><p class="muted" style="margin:0">ප්‍රශ්න පත්‍ර හමු නොවිණි.</p></div>'; return; }
+  const years = []; list.forEach(p => { if(years.indexOf(p.year) === -1) years.push(p.year); });
+  years.sort((a,b) => b-a);
+  box.innerHTML = years.map(function(y){
+    const items = list.filter(p => p.year === y);
+    return `
+      <div class="section-head" style="margin-top:18px"><h2 style="font-size:1rem">${y} A/L ප්‍රශ්න පත්‍රය</h2></div>
+      <div class="grid grid-2">
+        ${items.map(function(p){
+          const available = !!(p.url || p.pdfKey);
+          return `<div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span class="pill">${esc(p.medium)}</span>
+              <span class="pill ${available?'ok':'soon'}">${available?'Available':'Coming Soon'}</span>
+            </div>
+            <h3 style="font-size:.92rem">${esc(p.type)}</h3>
+            <p class="muted small">${y} · ${esc(p.medium)} Medium</p>
+            ${available ? `
+              <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+                <button class="btn btn-sm btn-navy" data-pv="${esc(p.id)}">👁 View</button>
+                <button class="btn btn-sm btn-outline" data-pd="${esc(p.id)}">⬇ Download</button>
+              </div>
+            ` : `<p class="muted small" style="margin-top:10px">PDF ගොනුව තවම එක් කර නැත.</p>`}
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
+  box.querySelectorAll('[data-pv]').forEach(b => b.addEventListener('click', () => handlePaperView(b.dataset.pv)));
+  box.querySelectorAll('[data-pd]').forEach(b => b.addEventListener('click', () => handlePaperDownload(b.dataset.pd)));
+}
+
+/* ============================================================
+   13. GAMES
+   ============================================================ */
+function gameTypeLabel(type){
+  return ({mcq:'Multiple Choice', tf:'True / False', match:'Match the Following', fill:'Fill in the Blanks', scenario:'Business Scenario', timed:'Timed Challenge'})[type] || type;
+}
+
+function renderGames(){
+  app.innerHTML = `
+    <div class="section-head"><h2>අධ්‍යාපනික ක්‍රීඩා</h2></div>
+    <p class="muted small" style="margin-top:-6px">සෑම ක්‍රීඩාවක්ම Business Studies පාඩමකට සම්බන්ධයි.</p>
+    <div class="tabs" id="gameTabs">
+      <button class="tab active" data-g="all">සියල්ල</button>
+      <button class="tab" data-g="12">Grade 12</button>
+      <button class="tab" data-g="13">Grade 13</button>
+    </div>
+    <div class="grid grid-3" id="gameList"></div>
+  `;
+  document.getElementById('gameTabs').addEventListener('click', function(e){
+    const b = e.target.closest('.tab'); if(!b) return;
+    document.querySelectorAll('#gameTabs .tab').forEach(t => t.classList.toggle('active', t===b));
+    paintGames(b.dataset.g);
+  });
+  paintGames('all');
+}
+
+function paintGames(filter){
+  const list = document.getElementById('gameList');
+  const games = GAMES.filter(g => filter==='all' || String(g.grade)===filter);
+  list.innerHTML = games.map(function(g){
+    const best = state.bestScores[g.id];
+    const l = findLesson(g.lessonId);
+    return `<a class="card" href="#/game/${g.id}">
+      <div class="kv" style="margin-bottom:8px">
+        <span class="pill gold">${gameTypeLabel(g.type)}</span>
+        <span class="pill">Grade ${g.grade}</span>
+      </div>
+      <h3>${esc(g.title)}</h3>
+      <p class="muted small">${esc(g.desc)}</p>
+      <p class="muted small" style="margin-top:8px">📚 ${l?esc(l.title):'—'}<br>${best?('🏆 හොඳම ලකුණු: '+best+'%'):'තවම ක්‍රීඩා කර නැත'}</p>
+    </a>`;
+  }).join('');
+}
+
+function renderGame(id){
+  const g = GAMES.find(x => x.id === id);
+  if(!g){ renderNotFound(); return; }
+  const l = findLesson(g.lessonId);
+  const best = state.bestScores[g.id];
+
+  app.innerHTML = `
+    <div style="margin-bottom:14px"><a href="#/games" class="pill">← ක්‍රීඩා ලැයිස්තුවට</a></div>
+    <div class="card" style="padding:22px">
+      <div class="kv" style="margin-bottom:10px">
+        <span class="pill gold">${gameTypeLabel(g.type)}</span>
+        <span class="pill navy">Grade ${g.grade}</span>
+        ${best?`<span class="pill ok">හොඳම ලකුණු ${best}%</span>`:''}
+      </div>
+      <h1 style="font-size:1.3rem">${esc(g.title)}</h1>
+      <p class="muted">${esc(g.desc)}</p>
+      <p class="muted small">📚 සම්බන්ධ පාඩම: ${l?`<a href="#/lesson/${l.id}" style="color:var(--navy);font-weight:600">${esc(l.title)}</a>`:'—'}</p>
+    </div>
+    <div id="gameStage" style="margin-top:16px"></div>
+  `;
+
+  const stage = document.getElementById('gameStage');
+  let difficulty = 'All';
+
+  if(g.type === 'mcq' || g.type === 'timed'){
+    stage.innerHTML = `
+      <div class="card">
+        <h3 style="font-size:.95rem">දුෂ්කරතා මට්ටම තෝරන්න</h3>
+        <div class="tabs" id="diffTabs" style="margin-bottom:14px">
+          <button class="tab active" data-d="All">සියල්ල</button>
+          <button class="tab" data-d="Easy">Easy</button>
+          <button class="tab" data-d="Medium">Medium</button>
+          <button class="tab" data-d="Hard">Hard</button>
+        </div>
+        <button class="btn btn-primary" id="startBtn">▶ ක්‍රීඩාව අරඹන්න</button>
+      </div>
+      <div id="playArea" style="margin-top:16px"></div>
+    `;
+    stage.querySelector('#diffTabs').addEventListener('click', function(e){
+      const b = e.target.closest('.tab'); if(!b) return;
+      difficulty = b.dataset.d;
+      stage.querySelectorAll('#diffTabs .tab').forEach(t => t.classList.toggle('active', t===b));
+    });
+    stage.querySelector('#startBtn').addEventListener('click', function(){
+      stage.querySelector('.card').style.display = 'none';
+      startGameInto(stage.querySelector('#playArea'), g, difficulty);
+    });
+  } else {
+    stage.innerHTML = `<div class="card"><button class="btn btn-primary" id="startBtn">▶ ක්‍රීඩාව අරඹන්න</button></div><div id="playArea" style="margin-top:16px"></div>`;
+    stage.querySelector('#startBtn').addEventListener('click', function(){
+      stage.querySelector('.card').style.display = 'none';
+      startGameInto(stage.querySelector('#playArea'), g, 'All');
+    });
+  }
+}
+
+function getMCQPool(difficulty, n, lessonId){
+  let pool = MCQ_BANK.filter(function(q){
+    if(lessonId && q.lesson !== lessonId) return false;
+    return !difficulty || difficulty === 'All' || q.difficulty === difficulty;
+  });
+  if(pool.length < 3) pool = MCQ_BANK.slice();
+  const cap = Math.min(Math.max(n||10, 1), 100);
+  return shuffle(pool).slice(0, Math.min(cap, pool.length));
+}
+
+function startGameInto(mount, g, difficulty){
+  const cfg = (GAME_CONFIG && GAME_CONFIG[g.id]) || { questionCount: 10 };
+  const qCount = Math.min(Math.max(cfg.questionCount || 10, 1), 100);
+  const timeLimit = cfg.timeLimit || 0;
+
+  if(g.type === 'mcq'){ mountQuiz(mount, getMCQPool(difficulty, qCount, g.lessonId), { onFinish: (s,t) => recordGame(g.id, s, t) }); }
+  else if(g.type === 'timed'){ mountQuiz(mount, getMCQPool(difficulty, qCount), { timeLimit: timeLimit || 60, onFinish: (s,t) => recordGame(g.id, s, t) }); }
+  else if(g.type === 'tf'){
+    const qs = shuffle(TF_BANK).slice(0, qCount).map(t => ({q:t.q, options:['සත්‍ය (True)','අසත්‍ය (False)'], answer:t.answer?0:1, explain:t.explain}));
+    mountQuiz(mount, qs, { onFinish: (s,t) => recordGame(g.id, s, t) });
+  }
+  else if(g.type === 'scenario'){
+    const qs = shuffle(SCENARIO_BANK).slice(0, qCount).map(s => ({q:s.q, options:s.options, answer:s.answer, explain:s.explain}));
+    mountQuiz(mount, qs, { onFinish: (s,t) => recordGame(g.id, s, t) });
+  }
+  else if(g.type === 'match'){
+    mountMatch(mount, shuffle(MATCH_PAIRS).slice(0, qCount), {
+      onFinish: function(matched, total, mistakes){ recordGame(g.id, Math.max(0, total - mistakes), total); }
+    });
+  }
+  else if(g.type === 'fill'){
+    mountFill(mount, shuffle(FILL_BANK).slice(0, qCount), { onFinish: (s,t) => recordGame(g.id, s, t) });
+  }
+}
+
+function recordGame(gameId, score, total){
+  state.gamesPlayed = (state.gamesPlayed || 0) + 1;
+  const pct = total ? Math.round(score / total * 100) : 0;
+  if(!state.bestScores[gameId] || pct > state.bestScores[gameId]) state.bestScores[gameId] = pct;
+  if(pct > (state.quizBest || 0)) state.quizBest = pct;
+  state.recentGames = [gameId].concat((state.recentGames||[]).filter(x => x!==gameId)).slice(0,6);
+  saveState();
+}
+
+function mountQuiz(root, questions, opts){
+  opts = opts || {};
+  let i = 0, score = 0, wrong = 0, locked = false, done = false;
+  let timeLeft = opts.timeLimit || 0;
+  let timerId = null;
+  const total = questions.length;
+  if(!total){ root.innerHTML = '<div class="card center"><p class="muted">ප්‍රශ්න නොමැත.</p></div>'; return; }
+
+  root.innerHTML = `<div class="card"><div class="quiz-head"><div class="quiz-progress"><i id="qbar"></i></div><div class="quiz-meta"><span id="qcount">1 / ${total}</span><span id="qtimer"></span></div></div><div id="qbody"></div></div>`;
+  const qbody = root.querySelector('#qbody');
+  const qbar = root.querySelector('#qbar');
+  const qcount = root.querySelector('#qcount');
+  const qtimer = root.querySelector('#qtimer');
+
+  if(opts.timeLimit){
+    qtimer.textContent = '⏱ ' + timeLeft + 's';
+    timerId = setInterval(function(){
+      timeLeft--;
+      if(qtimer) qtimer.textContent = '⏱ ' + Math.max(0,timeLeft) + 's';
+      if(timeLeft <= 0){ clearInterval(timerId); timerId = null; finish(); }
+    }, 1000);
+  }
+
+  renderQuestion();
+
+  function renderQuestion(){
+    const q = questions[i];
+    locked = false;
+    qcount.textContent = (i+1) + ' / ' + total;
+    qbar.style.width = ((i) / total * 100) + '%';
+    let html = '<h3 class="quiz-q">' + esc(q.q) + '</h3><div class="options">';
+    q.options.forEach((o, idx) => { html += '<button class="option" data-i="' + idx + '">' + esc(o) + '</button>'; });
+    html += '</div><div class="quiz-feedback" id="fb"></div>';
+    qbody.innerHTML = html;
+    qbody.querySelectorAll('.option').forEach(b => b.addEventListener('click', onPick));
+  }
+
+  function onPick(e){
+    if(locked) return;
+    locked = true;
+    const q = questions[i];
+    const pick = parseInt(e.currentTarget.dataset.i, 10);
+    const btns = qbody.querySelectorAll('.option');
+    btns.forEach((b, idx) => {
+      b.disabled = true;
+      if(idx === q.answer) b.classList.add('correct');
+      else if(idx === pick) b.classList.add('wrong');
+    });
+    if(pick === q.answer) score++; else wrong++;
+    const fb = qbody.querySelector('#fb');
+    fb.innerHTML = `<div class="fb-box ${pick===q.answer?'ok':'no'}"><strong>${pick===q.answer?'නිවැරදි! ✓':'වැරදි ✗'}</strong><p>${esc(q.explain || '')}</p></div><button class="btn btn-primary" id="nextBtn">${i===total-1?'ප්‍රතිඵල බලන්න':'ඊළඟ ප්‍රශ්නය →'}</button>`;
+    fb.querySelector('#nextBtn').addEventListener('click', next);
+  }
+
+  function next(){ if(i === total-1){ finish(); return; } i++; renderQuestion(); }
+
+  function finish(){
+    if(done) return;
+    done = true;
+    if(timerId){ clearInterval(timerId); timerId = null; }
+    const pct = total ? Math.round(score / total * 100) : 0;
+    qbar.style.width = '100%';
+    qcount.textContent = total + ' / ' + total;
+    if(qtimer) qtimer.textContent = '';
+
+    // 1. Record score FIRST
+    if(opts.onFinish) opts.onFinish(score, total);
+
+    // 2. Compute ranking AFTER recording
+    let rankingHtml = '';
+    const session = getSession();
+    if(opts.isDaily && session && session.username){
+      const rankings = getRankings();
+      const myPos = rankings.findIndex(r => r.username === session.username);
+      if(myPos >= 0){
+        const medal = myPos === 0 ? '🥇' : myPos === 1 ? '🥈' : myPos === 2 ? '🥉' : '🏅';
+        const passMark = (DAILY_CONFIG && DAILY_CONFIG.passMark) || 50;
+        const passed = pct >= passMark;
+        rankingHtml = `
+          <div style="margin:16px auto;max-width:340px;padding:18px;border-radius:16px;background:linear-gradient(135deg,rgba(201,162,39,.1),rgba(201,162,39,.03));border:1.5px solid rgba(201,162,39,.4);text-align:center">
+            <div style="font-size:2.4rem;line-height:1;margin-bottom:6px">${medal}</div>
+            <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:700">Your Rank</div>
+            <div style="font-size:2.2rem;font-weight:800;color:var(--navy);line-height:1;margin:4px 0">#${myPos+1}</div>
+            <div class="muted small">of ${rankings.length} students</div>
+            <div style="margin-top:10px;font-size:.82rem;font-weight:600">${esc(session.name)} <span class="pill ${passed?'ok':'soon'}" style="margin-left:4px">${passed?'Pass':'Fail'}</span></div>
+            <a href="#/rankings" class="btn btn-sm btn-outline" style="margin-top:12px">🏆 View Full Rankings</a>
+          </div>`;
+      }
+    }
+
+    qbody.innerHTML = `<div class="result-box">
+      <div class="result-ring" style="background:conic-gradient(var(--gold) ${pct*3.6}deg, #e6ebf3 ${pct*3.6}deg)"><span>${pct}%</span></div>
+      <h3>ප්‍රතිඵල සාරාංශය</h3>
+      <div class="result-grid">
+        <div><strong>${score}</strong><span>නිවැරදි</span></div>
+        <div><strong>${wrong}</strong><span>වැරදි</span></div>
+        <div><strong>${total}</strong><span>මුළු ප්‍රශ්න</span></div>
+      </div>
+      ${rankingHtml}
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+        <button class="btn btn-primary" id="againBtn">🔄 නැවත ක්‍රීඩා කරන්න</button>
+        <a class="btn btn-outline" href="#/games">ක්‍රීඩා ලැයිස්තුව</a>
+      </div>
+    </div>`;
+    qbody.querySelector('#againBtn').addEventListener('click', () => { location.hash = '#/games'; });
+  }
+}
+
+function mountMatch(root, pairs, opts){
+  const left = shuffle(pairs.map((p,i) => ({i, text:p.term})));
+  const right = shuffle(pairs.map((p,i) => ({i, text:p.def})));
+  let selectedLeft = null, matched = 0, mistakes = 0;
+
+  root.innerHTML = `<div class="card"><p class="muted small">වම් පස යෙදුමක් තෝරන්න, පසුව දකුණු පස අදාළ නිර්වචනය තෝරන්න.</p><div class="match-wrap" style="margin-top:14px"><div class="match-col" id="colL"></div><div class="match-col" id="colR"></div></div><p class="muted small" style="margin-top:14px">ගැලපීම්: <strong id="mCount">0</strong> / ${pairs.length} · වැරදි: <strong id="mWrong">0</strong></p><div id="matchResult" style="margin-top:14px"></div></div>`;
+
+  const colL = root.querySelector('#colL');
+  const colR = root.querySelector('#colR');
+  const mCount = root.querySelector('#mCount');
+  const mWrong = root.querySelector('#mWrong');
+
+  left.forEach(item => {
+    const b = document.createElement('button');
+    b.className = 'match-item'; b.textContent = item.text; b.dataset.i = item.i;
+    b.addEventListener('click', () => pickLeft(b));
+    colL.appendChild(b);
+  });
+  right.forEach(item => {
+    const b = document.createElement('button');
+    b.className = 'match-item'; b.textContent = item.text; b.dataset.i = item.i;
+    b.addEventListener('click', () => pickRight(b));
+    colR.appendChild(b);
+  });
+
+  function pickLeft(btn){
+    if(btn.classList.contains('matched')) return;
+    colL.querySelectorAll('.match-item').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel'); selectedLeft = btn;
+  }
+  function pickRight(btn){
+    if(btn.classList.contains('matched')) return;
+    if(!selectedLeft){ toast('මුලින්ම වම් පස යෙදුමක් තෝරන්න'); return; }
+    if(selectedLeft.dataset.i === btn.dataset.i){
+      selectedLeft.classList.remove('sel'); selectedLeft.classList.add('matched');
+      btn.classList.add('matched'); selectedLeft.disabled = true; btn.disabled = true;
+      selectedLeft = null; matched++; mCount.textContent = matched;
+      if(matched === pairs.length) finish();
+    } else {
+      mistakes++; mWrong.textContent = mistakes;
+      btn.classList.add('shake'); selectedLeft.classList.add('shake');
+      const l = selectedLeft;
+      setTimeout(() => { btn.classList.remove('shake'); if(l) l.classList.remove('shake'); }, 380);
+    }
+  }
+  function finish(){
+    const score = Math.max(0, pairs.length - mistakes);
+    root.querySelector('#matchResult').innerHTML = `<div class="result-box"><h3>සම්පූර්ණයි! 🎉</h3><div class="result-grid"><div><strong>${pairs.length}</strong><span>මුළු ගැලපීම්</span></div><div><strong>${mistakes}</strong><span>වැරදි</span></div><div><strong>${score}</strong><span>ලකුණු</span></div></div><a class="btn btn-primary" href="#/games">ක්‍රීඩා ලැයිස්තුව</a></div>`;
+    if(opts.onFinish) opts.onFinish(matched, pairs.length, mistakes);
+  }
+}
+
+function mountFill(root, items, opts){
+  let checked = false;
+  root.innerHTML = `<div class="card"><p class="muted small">හිස්තැන් සම්පූර්ණ කර "පිළිතුරු පරීක්ෂා කරන්න" බොත්තම ඔබන්න.</p><div id="fillBody" style="margin-top:14px">${items.map((it, idx) => `<div class="fill-item" data-idx="${idx}"><div class="sentence">${idx+1}. ${esc(it.sentence)}</div><input type="text" autocomplete="off" placeholder="පිළිතුර මෙහි ලියන්න..."><div class="hint">ඉඟිය: ${esc(it.hint)}</div></div>`).join('')}</div><button class="btn btn-primary" id="checkFill">පිළිතුරු පරීක්ෂා කරන්න</button><div id="fillResult" style="margin-top:16px"></div></div>`;
+
+  root.querySelector('#checkFill').addEventListener('click', function(){
+    if(checked) return; checked = true;
+    let score = 0;
+    root.querySelectorAll('.fill-item').forEach((el, idx) => {
+      const input = el.querySelector('input');
+      const item = items[idx];
+      const val = normalize(input.value);
+      const accepted = [item.answer].concat(item.accept || []).map(normalize);
+      const ok = val.length > 0 && accepted.indexOf(val) > -1;
+      input.classList.remove('correct','wrong'); input.classList.add(ok ? 'correct' : 'wrong'); input.disabled = true;
+      if(ok) score++;
+      const hint = el.querySelector('.hint');
+      hint.innerHTML = ok ? '✓ නිවැරදි' : '✗ නිවැරදි: <strong>' + esc(item.answer) + '</strong>';
+    });
+    const total = items.length;
+    const pct = Math.round(score / total * 100);
+    root.querySelector('#fillResult').innerHTML = `<div class="result-box"><div class="result-ring" style="background:conic-gradient(var(--gold) ${pct*3.6}deg, #e6ebf3 ${pct*3.6}deg)"><span>${pct}%</span></div><h3>ප්‍රතිඵලය</h3><div class="result-grid"><div><strong>${score}</strong><span>නිවැරදි</span></div><div><strong>${total-score}</strong><span>වැරදි</span></div><div><strong>${total}</strong><span>මුළු</span></div></div><a class="btn btn-primary" href="#/games">ක්‍රීඩා ලැයිස්තුව</a></div>`;
+    if(opts.onFinish) opts.onFinish(score, total);
+  });
+
+  function normalize(s){ return String(s||'').toLowerCase().replace(/[\s.,!?'"()\-]/g,'').trim(); }
+}
+
+/* ============================================================
+   14. DAILY QUIZ (login required)
+   ============================================================ */
+function dailyQuestions(key){
+  let h = 0;
+  for(let i=0;i<key.length;i++) h = (h*31 + key.charCodeAt(i)) >>> 0;
+  function rnd(){ h = (h * 1664525 + 1013904223) >>> 0; return h / 4294967296; }
+  const pool = MCQ_BANK.slice();
+  for(let i=pool.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); const t=pool[i];pool[i]=pool[j];pool[j]=t; }
+  const n = Math.min(Math.max((DAILY_CONFIG && DAILY_CONFIG.questionCount) || 10, 1), 100);
+  return pool.slice(0, Math.min(n, pool.length));
+}
+
+function renderDaily(){
+  const session = getSession();
+  if(!session){
+    app.innerHTML = `
+      <div class="section-head"><h2>දිනපතා ප්‍රශ්නාවලිය</h2></div>
+      <div class="card center" style="padding:32px 20px;max-width:520px;margin:0 auto">
+        <div style="font-size:3rem;line-height:1;margin-bottom:14px">🔒</div>
+        <h3 style="font-size:1.1rem;margin-bottom:8px">Login අවශ්‍යයි</h3>
+        <p class="muted small" style="margin-bottom:18px">දිනපතා ප්‍රශ්නාවලියට සහභාගී වීමට පිවිසෙන්න. ඔබගේ ලකුණු rankings වලට එක් වේ.</p>
+        <a href="#/login/daily" class="btn btn-primary">🔓 Login to take Daily Quiz</a>
+        <div style="margin-top:14px;font-size:.76rem;color:var(--muted)">ගිණුමක් නැද්ද? ඔබේ ගුරුතුමාගෙන් ඉල්ලා සිටින්න.</div>
+      </div>
+      <div style="text-align:center;margin-top:16px"><a href="#/rankings" class="btn btn-outline">🏆 View Rankings</a></div>
+    `;
+    return;
+  }
+
+  const cfg = DAILY_CONFIG || { openHour: 20, openMinute: 0, questionCount: 10 };
+  if(cfg.enabled === false){
+    app.innerHTML = `<div class="section-head"><h2>දිනපතා ප්‍රශ්නාවලිය</h2></div><div class="card center" style="padding:32px 20px"><span class="pill soon">තාවකාලිකව නතර කර ඇත</span><p class="muted" style="margin-top:14px">දිනපතා ප්‍රශ්නාවලිය දැනට අක්‍රීය කර ඇත.</p></div>`;
+    return;
+  }
+  const key = todayKey();
+  const now = new Date();
+  const openHour = cfg.openHour != null ? cfg.openHour : 20;
+  const openMin = cfg.openMinute || 0;
+  const qCount = Math.min(Math.max(cfg.questionCount || 10, 1), 100);
+  const opensAt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), openHour, openMin, 0, 0);
+  const isOpen = now.getTime() >= opensAt.getTime();
+  const todayResult = state.daily && state.daily.date === key ? state.daily : null;
+
+  app.innerHTML = `
+    <div class="section-head"><h2>දිනපතා ප්‍රශ්නාවලිය</h2></div>
+    <div class="card" style="padding:22px;text-align:center">
+      <span class="pill gold">දිනපතා · ප්‍රශ්න ${qCount}</span>
+      <h1 style="font-size:1.25rem;margin-top:12px">අද දින Business Studies ප්‍රශ්නාවලිය</h1>
+      <p class="muted small">සෑම දිනකම ${pad(openHour)}:${pad(openMin)} ට නව ප්‍රශ්න ${qCount}ක් විවෘත වේ.</p>
+      <div class="muted small" style="margin-top:6px">👤 ${esc(session.name)} · ${esc(session.class||'')}</div>
+      <div id="dailyStatus"></div>
+    </div>
+    <div id="dailyStage" style="margin-top:16px"></div>
+    <div style="text-align:center;margin-top:16px"><a href="#/rankings" class="btn btn-outline">🏆 Full Rankings</a></div>
+  `;
+
+  const status = document.getElementById('dailyStatus');
+  const stage = document.getElementById('dailyStage');
+
+  if(todayResult){
+    status.innerHTML = `<p class="pill ok" style="margin-top:12px">අද දින සම්පූර්ණයි · ලකුණු ${todayResult.score}/${todayResult.total}</p><div style="margin-top:14px"><button class="btn btn-outline" id="practiceBtn">නැවත පුහුණු වන්න (ලකුණු සුරැකේ නැත)</button></div>`;
+    document.getElementById('practiceBtn').addEventListener('click', () => startDaily(stage, key, false));
+    return;
+  }
+
+  if(!isOpen){
+    status.innerHTML = `<div class="countdown" id="cd"><div class="cd-unit"><strong id="cdH">--</strong><span>පැය</span></div><div class="cd-unit"><strong id="cdM">--</strong><span>මිනිත්තු</span></div><div class="cd-unit"><strong id="cdS">--</strong><span>තත්පර</span></div></div><p class="muted small">${pad(openHour)}:${pad(openMin)} ට ප්‍රශ්නාවලිය ආරම්භ වේ.</p>`;
+    function tick(){
+      const n = new Date();
+      const target = new Date(n.getFullYear(), n.getMonth(), n.getDate(), openHour, openMin, 0, 0);
+      let diff = target.getTime() - n.getTime();
+      if(diff <= 0){ clearInterval(dailyTimerId); dailyTimerId = null; renderDaily(); return; }
+      const hh = Math.floor(diff / 3600000);
+      const mm = Math.floor((diff % 3600000) / 60000);
+      const ss = Math.floor((diff % 60000) / 1000);
+      const hEl = document.getElementById('cdH');
+      if(!hEl){ clearInterval(dailyTimerId); dailyTimerId = null; return; }
+      hEl.textContent = pad(hh);
+      document.getElementById('cdM').textContent = pad(mm);
+      document.getElementById('cdS').textContent = pad(ss);
+    }
+    tick(); dailyTimerId = setInterval(tick, 1000);
+    return;
+  }
+
+  status.innerHTML = `<p class="pill ok" style="margin-top:12px">🔓 ප්‍රශ්නාවලිය දැන් විවෘතයි</p><p class="muted small" style="margin-top:10px">ස්වයංක්‍රීයව ආරම්භ වේ...</p>`;
+  setTimeout(function(){
+    if(location.hash.indexOf('/daily') === -1) return;
+    startDaily(stage, key, true);
+  }, 1200);
+}
+
+function startDaily(stage, key, saveResult){
+  const qs = dailyQuestions(key);
+  stage.innerHTML = '';
+  mountQuiz(stage, qs, {
+    isDaily: !!saveResult,
+    onFinish: function(score, total){
+      if(!saveResult) return;
+      state.daily = { date: key, score: score, total: total };
+      saveState();
+      const session = getSession();
+      if(session && session.username){
+        recordDailyScore(session.username, key, score, total);
+      }
+    }
+  });
+}
+
+/* ============================================================
+   15. RANKINGS
+   ============================================================ */
+function renderRankings(){
+  const rankings = getRankings();
+  const session = getSession();
+  const myPos = session ? rankings.findIndex(r => r.username === session.username) : -1;
+
+  app.innerHTML = `
+    <div class="section-head"><h2>🏆 Daily Quiz Rankings</h2></div>
+    <p class="muted small" style="margin-top:-8px">දිනපතා ප්‍රශ්නාවලියේ ලකුණු මත ශ්‍රේණිගත කිරීම. සාමාන්‍ය ලකුණු ප්‍රතිශතය අනුව අනුපිළිවෙල.</p>
+
+    ${myPos >= 0 ? `
+      <div class="notice ok" style="margin-top:14px">
+        <span>📍</span>
+        <div>ඔබගේ ස්ථානය: <strong>#${myPos+1}</strong> / ${rankings.length} · ${esc(session.name)}</div>
+      </div>` : rankings.length > 0 ? `<div class="notice info" style="margin-top:14px"><span>💡</span><div>දිනපතා ප්‍රශ්නාවලිය සම්පූර්ණ කළ පසු ඔබගේ නම මෙහි දිස්වේ. <a href="#/daily" style="font-weight:700;text-decoration:underline">Join →</a></div></div>` : ''}
+
+    <div class="card" style="margin-top:16px">
+      ${rankings.length === 0 ? `
+        <div class="rank-empty">
+          <div style="font-size:2rem;margin-bottom:10px">🏆</div>
+          <p>තවම කිසිදු සිසුවෙක් දිනපතා ප්‍රශ්නාවලිය සම්පූර්ණ කර නැත.</p>
+          <a href="#/daily" class="btn btn-primary">🗓️ අද දින ප්‍රශ්නාවලිය අරඹන්න</a>
+        </div>
+      ` : `
+        <div class="rank-table">
+          <div class="rank-row head">
+            <span>#</span>
+            <span>Student</span>
+            <span style="text-align:center">Quizzes</span>
+            <span style="text-align:center">Average</span>
+            <span class="rank-total" style="text-align:right">Total</span>
+          </div>
+          ${rankings.map(function(r, i){
+            const isMe = session && r.username === session.username;
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+            const topClass = i < 3 ? ' top'+(i+1) : '';
+            return `<div class="rank-row${topClass}" ${isMe ? 'style="border-left:3px solid var(--gold)"' : ''}>
+              <span class="rank-pos ${medal?'medal':''}">${medal || (i+1)}</span>
+              <span class="rank-name">${esc(r.name)} ${isMe ? '<span class="pill gold" style="font-size:.62rem;padding:1px 7px">You</span>' : ''}
+                <small>${esc(r.class || '-')} ${r.studentId && r.studentId !== '-' ? '· '+esc(r.studentId) : ''}</small>
+              </span>
+              <span class="rank-quiz">${r.quizzes}</span>
+              <span class="rank-avg">${r.avg}%</span>
+              <span class="rank-total">${r.total} / ${r.totalPossible}</span>
+            </div>`;
+          }).join('')}
+        </div>
+      `}
+    </div>
+  `;
+}
+
+/* ============================================================
+   16. RESOURCES
+   ============================================================ */
+function renderResources(){
+  app.innerHTML = `
+    <div class="section-head"><h2>අධ්‍යයන සම්පත්</h2></div>
+    <div class="tabs" id="resTabs">
+      <button class="tab active" data-g="all">සියල්ල</button>
+      <button class="tab" data-g="12">Grade 12</button>
+      <button class="tab" data-g="13">Grade 13</button>
+    </div>
+    <div class="grid grid-2" id="resList"></div>
+  `;
+  document.getElementById('resTabs').addEventListener('click', function(e){
+    const b = e.target.closest('.tab'); if(!b) return;
+    document.querySelectorAll('#resTabs .tab').forEach(t => t.classList.toggle('active', t===b));
+    paintResources(b.dataset.g);
+  });
+  paintResources('all');
+}
+
+function paintResources(filter){
+  const list = document.getElementById('resList');
+  const items = RESOURCES.filter(r => filter==='all' || String(r.grade)===filter);
+  if(!items.length){ list.innerHTML = '<div class="card center" style="grid-column:1/-1"><p class="muted" style="margin:0">සම්පත් හමු නොවිණි.</p></div>'; return; }
+  list.innerHTML = items.map(function(r){
+    const l = findLesson(r.lessonId);
+    const available = !!(r.url || r.pdfKey);
+    return `<div class="card">
+      <div class="kv" style="margin-bottom:8px">
+        <span class="pill navy">Grade ${r.grade}</span>
+        <span class="pill gold">${esc(r.type)}</span>
+      </div>
+      <h3 style="font-size:.93rem">${esc(r.title)}</h3>
+      <p class="muted small">${esc(r.titleEn)}</p>
+      <p class="muted small" style="margin-top:6px">📚 ${l?esc(l.title):'—'}</p>
+      ${available ? `<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn btn-sm btn-navy" data-rv="${esc(r.id)}">👁 View</button></div>` : `<p class="pill soon" style="margin-top:10px">Coming Soon</p>`}
+    </div>`;
+  }).join('');
+  list.querySelectorAll('[data-rv]').forEach(b => b.addEventListener('click', () => handleResourceView(b.dataset.rv)));
+}
+
+/* ============================================================
+   17. PROGRESS
+   ============================================================ */
+function renderProgress(){
+  const session = getSession();
+  const totalLessons = allLessons().length;
+  const done = Object.keys(state.lessonsDone).length;
+  const lessonPct = totalLessons ? Math.round(done / totalLessons * 100) : 0;
+  const recent = (state.recentGames || []).map(id => GAMES.find(g => g.id===id)).filter(Boolean);
+  const myScores = session ? getStudentDailyAvg(session.username) : { quizzes:0, avg:0, total:0, totalPossible:0 };
+
+  app.innerHTML = `
+    <div class="section-head"><h2>මගේ ප්‍රගතිය</h2></div>
+    <p class="muted small" style="margin-top:-8px">ඔබේ දත්ත ඔබේ බ්‍රව්සරයේ (LocalStorage) පමණක් සුරැකේ.</p>
+
+    <div class="grid grid-4" style="margin-top:16px">
+      <div class="stat"><strong>${done}</strong><span>සම්පූර්ණ කළ පාඩම්</span></div>
+      <div class="stat"><strong>${state.gamesPlayed || 0}</strong><span>ක්‍රීඩා කළ ගණන</span></div>
+      <div class="stat"><strong>${myScores.quizzes}</strong><span>Daily Quizzes</span></div>
+      <div class="stat"><strong>${myScores.avg}%</strong><span>Daily Avg</span></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong style="font-size:.9rem">පාඩම් ප්‍රගතිය</strong>
+        <span class="pill gold">${done} / ${totalLessons}</span>
+      </div>
+      <div class="bar"><i style="width:${lessonPct}%"></i></div>
+    </div>
+
+    <div class="section-head"><h2>මෑතකදී ක්‍රීඩා කළ</h2></div>
+    ${recent.length ? `
+      <div class="grid grid-2">
+        ${recent.map(function(g){
+          return `<a class="card" href="#/game/${g.id}">
+            <span class="pill gold">${gameTypeLabel(g.type)}</span>
+            <h3 style="font-size:.88rem;margin-top:6px">${esc(g.title)}</h3>
+            <p class="muted small">හොඳම ලකුණු: ${state.bestScores[g.id] || 0}%</p>
+          </a>`;
+        }).join('')}
+      </div>` : `<div class="card center"><p class="muted" style="margin:0">තවම ක්‍රීඩා කර නැත. <a href="#/games" style="color:var(--navy);font-weight:600">ක්‍රීඩා කරන්න →</a></p></div>`}
+
+    <div class="section-head"><h2>දත්ත කළමනාකරණය</h2></div>
+    <div class="card">
+      <p class="muted small">ප්‍රගතිය මුල් සිට ආරම්භ කිරීමට පහත බොත්තම භාවිතා කරන්න.</p>
+      <button class="btn btn-danger btn-sm" id="resetBtn">🗑 ප්‍රගතිය මකන්න</button>
+    </div>
+  `;
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    if(confirm('ඔබේ සියලු ප්‍රගතිය මකා දැමීමට අවශ්‍යද?')){
+      state = defaultState(); saveState();
+      toast('ප්‍රගතිය මකා දමන ලදි'); renderProgress();
+    }
+  });
+}
+
+function renderAbout(){
+  app.innerHTML = `
+    <div class="section-head"><h2>අප ගැන</h2></div>
+    <div class="card" style="padding:22px">
+      <h3 style="font-size:1.05rem;margin-top:0">MAHINDA COLLEGE – BUSINESS STUDIES</h3>
+      <p class="muted">මහින්ද විද්‍යාලය, ගාල්ල, ශ්‍රී ලංකාව.</p>
+      <p>A/L Business Studies සිසුන් සඳහා විශේෂයෙන් නිර්මාණය කළ ඩිජිටල් ඉගෙනුම් වේදිකාවකි.</p>
+      <h3 style="font-size:1rem;margin-top:20px">විෂය මාලා පිළිගැනීම</h3>
+      <p class="muted small">ශ්‍රී ලංකා ජාතික අධ්‍යාපන ආයතනය (NIE) විසින් නිකුත් කරන ලද Business Studies ගුරු මාර්ගෝපදේශ හා විෂය නිර්දේශ අනුගමනය කෙරේ.</p>
+      <h3 style="font-size:1rem;margin-top:20px">තාක්ෂණික තොරතුරු</h3>
+      <p class="muted small">HTML5, CSS3 හා Vanilla JavaScript. ප්‍රගතිය LocalStorage; PDF ගොනු IndexedDB හි සුරැකේ.</p>
+    </div>
+  `;
+}
+
+function renderNotFound(){
+  app.innerHTML = `<div class="card center" style="padding:40px 20px"><h2 style="font-size:1.2rem">පිටුව හමු නොවිණි</h2><p class="muted">ඔබ සොයන පිටුව නොපවතී.</p><a class="btn btn-primary" href="#/home">මුල් පිටුවට</a></div>`;
+}
+
+/* ============================================================
+   18. ADMIN PANEL
+   ============================================================ */
+function renderAdmin(tab){
+  if(!isAdmin()){ renderAdminLogin(); return; }
+  tab = tab || 'dashboard';
+
+  let inner = '';
+  if(tab === 'dashboard') inner = renderAdminDashboard();
+  else if(tab === 'students') inner = renderAdminStudents();
+  else if(tab === 'papers') inner = renderAdminPapers();
+  else if(tab === 'lessons') inner = renderAdminLessons();
+  else if(tab === 'resources') inner = renderAdminResources();
+  else if(tab === 'mcq') inner = renderAdminMCQ();
+  else if(tab === 'games') inner = renderAdminGames();
+  else if(tab === 'daily') inner = renderAdminDaily();
+  else if(tab === 'settings') inner = renderAdminSettings();
+  else inner = renderAdminDashboard();
+
+  app.innerHTML = adminLayout(tab, inner);
+  attachAdminCommon();
+
+  if(tab === 'students') attachAdminStudentsEvents();
+  else if(tab === 'papers') attachAdminPapersEvents();
+  else if(tab === 'lessons') attachAdminLessonsEvents();
+  else if(tab === 'resources') attachAdminResourcesEvents();
+  else if(tab === 'mcq') attachAdminMCQEvents();
+  else if(tab === 'games') attachAdminGamesEvents();
+  else if(tab === 'daily') attachAdminDailyEvents();
+  else if(tab === 'settings') attachAdminSettingsEvents();
+}
+
+function renderAdminLogin(){
+  app.innerHTML = `
+    <div class="login-box">
+      <div class="logo-badge"><span class="monogram">MC</span></div>
+      <h2>⚙️ Admin Panel</h2>
+      <p>Content Management · Mahinda College Business Studies</p>
+      <div class="field" style="text-align:left">
+        <label>මුරපදය (Password)</label>
+        <input type="password" id="adminPw" placeholder="Enter admin password" autocomplete="off">
+      </div>
+      <button class="btn btn-primary" id="adminLoginBtn" style="width:100%;margin-top:6px">🔓 Login</button>
+      <p class="muted small" style="margin-top:16px;font-size:.72rem">මුරපදය: <code>mahinda2024</code><br>(Settings තුළින් වෙනස් කළ හැක)</p>
+      <p style="margin-top:12px;font-size:.76rem"><a href="#/login" style="color:var(--navy);font-weight:600;border-bottom:1px solid var(--gold)">← Back to student login</a></p>
+    </div>
+  `;
+  const btn = document.getElementById('adminLoginBtn');
+  const pw = document.getElementById('adminPw');
+  const submit = () => {
+    if(pw.value === content.config.adminPassword){ setAdmin(true); toast('ලොග් විය ✓'); renderAdmin('dashboard'); }
+    else toast('මුරපදය වැරදිය');
+  };
+  btn.addEventListener('click', submit);
+  pw.addEventListener('keydown', e => { if(e.key === 'Enter') submit(); });
+}
+
+function adminLayout(activeTab, inner){
+  const tabs = [
+    ['dashboard','📊 Dashboard'],
+    ['students','👥 Students'],
+    ['papers','📄 Papers'],
+    ['lessons','📚 Lessons'],
+    ['resources','📘 Resources'],
+    ['mcq','❓ MCQ Bank'],
+    ['games','🎮 Games'],
+    ['daily','🗓️ Daily Quiz'],
+    ['settings','🔧 Settings']
+  ];
+  return `
+    <div class="admin-banner">
+      <div><h2>⚙️ Admin Panel</h2><p>Content Management · Mahinda College Business Studies</p></div>
+      <button class="btn btn-sm btn-ghost" id="adminLogout">🚪 Logout</button>
+    </div>
+    <div class="admin-tabs">
+      ${tabs.map(t => `<button data-tab="${t[0]}" class="${activeTab===t[0]?'active':''}">${t[1]}</button>`).join('')}
+    </div>
+    <div id="adminContent">${inner}</div>
+  `;
+}
+
+function attachAdminCommon(){
+  document.getElementById('adminLogout').addEventListener('click', function(){
+    setAdmin(false); location.hash = '#/home'; toast('ලොග් අවුට් විය');
+  });
+  document.querySelectorAll('.admin-tabs button').forEach(function(btn){
+    btn.addEventListener('click', () => { location.hash = '#/admin/' + btn.dataset.tab; });
+  });
+}
+
+function renderAdminDashboard(){
+  const uploaded = PAPERS.filter(p => !!(p.pdfKey || p.url)).length;
+  const totalLessons = allLessons().length;
+  const totalStudents = (content.students || []).length;
+  const withScores = (content.students || []).filter(s => getStudentDailyAvg(s.username).quizzes > 0).length;
+  return `
+    <div class="grid grid-3" style="margin-bottom:16px">
+      <div class="stat"><strong>${totalStudents}</strong><span>සිසුන් ලියාපදිංචි</span></div>
+      <div class="stat"><strong>${withScores}</strong><span>ක්‍රියාකාරී සිසුන්</span></div>
+      <div class="stat"><strong>${MCQ_BANK.length}</strong><span>MCQ ප්‍රශ්න</span></div>
+      <div class="stat"><strong>${uploaded}/${PAPERS.length}</strong><span>ප්‍රශ්න පත්‍ර PDF</span></div>
+      <div class="stat"><strong>${totalLessons}</strong><span>පාඩම්</span></div>
+      <div class="stat"><strong>${GAMES.length}</strong><span>ක්‍රීඩා</span></div>
+    </div>
+    <div class="notice info">
+      <span>👥</span>
+      <div><strong>Students tab එකට ගොස්</strong> නව සිසුන් ලියාපදිංචි කර, ඔවුන්ගේ username/password සහ login link ලබා දෙන්න. <strong>PDF Download</strong> බොත්තමෙන් සියලු සිසුන්ගේ තොරතුරු PDF ලෙස ලබාගත හැක.</div>
+    </div>
+    <div class="notice">
+      <span>🔒</span>
+      <div><strong>ආරක්ෂණ සටහන:</strong> මෙය client-side panel එකකි — server authentication නොමැත. සැබෑ production සඳහා backend එකක් අවශ්‍යයි.</div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:.95rem">📖 ඉක්මන් මාර්ගෝපදේශය</h3>
+      <ol style="font-size:.85rem;color:var(--muted);padding-left:20px;line-height:1.9">
+        <li><strong>Students</strong> — සිසුන් ලියාපදිංචි කර login links + PDF download</li>
+        <li><strong>Papers</strong> — PDF upload / replace / delete</li>
+        <li><strong>Lessons</strong> — පාඩම් නාම, යෙදුම් සංස්කරණය</li>
+        <li><strong>Resources</strong> — සම්පත් CRUD + PDF</li>
+        <li><strong>MCQ Bank</strong> — බහුවරණ ප්‍රශ්න (පාඩම් අනුව)</li>
+        <li><strong>Games</strong> — ප්‍රශ්න ගණන (1–100)</li>
+        <li><strong>Daily Quiz</strong> — වේලාව සහ ප්‍රශ්න ගණන</li>
+        <li><strong>Settings</strong> — මුරපදය, export/import, reset</li>
+      </ol>
+    </div>
+  `;
+}
+
+/* ---------- STUDENTS ADMIN ---------- */
+function renderAdminStudents(){
+  const students = content.students || [];
+  const common = content.commonAccount;
+
+  let commonHtml = '';
+  if(common){
+    commonHtml = `
+      <div class="common-card">
+        <h3>🌐 Common Account</h3>
+        <p>මෙය සියලු දෙනාට භාවිත කළ හැකි පොදු ගිණුමයි.</p>
+        <div class="cred-grid">
+          <div class="cred"><div class="cred-label">Username</div><div class="cred-val">${esc(common.username)}</div></div>
+          <div class="cred"><div class="cred-label">Password</div><div class="cred-val" style="font-family:monospace">${esc(common.password)}</div></div>
+        </div>
+        <div class="link-box"><code>${esc(getLoginLink(common.username))}</code><button data-copy-link="${esc(common.username)}">📋 Copy</button></div>
+        <div class="stu-actions"><button class="navy" id="editCommonBtn">✏️ Edit Common</button></div>
+      </div>
+    `;
+  }
+
+  let studentsHtml = '';
+  if(students.length === 0){
+    studentsHtml = `<div class="card center" style="padding:30px 20px"><p class="muted">තවම සිසුන් ලියාපදිංචි කර නැත. පහත බොත්තම භාවිතා කර පළමු සිසුවා එකතු කරන්න.</p></div>`;
+  } else {
+    studentsHtml = `
+      <div class="card" style="padding:0;overflow:hidden;overflow-x:auto">
+        <div style="display:grid;grid-template-columns:44px 1.5fr .7fr .8fr 1fr 1.1fr 120px;gap:8px;padding:10px 14px;background:#f3f5f9;font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line);min-width:660px">
+          <span>#</span><span>Name</span><span>Class</span><span>ID</span><span>Username</span><span>Password</span><span style="text-align:right">Actions</span>
+        </div>
+        ${students.map((s, i) => `
+          <div style="display:grid;grid-template-columns:44px 1.5fr .7fr .8fr 1fr 1.1fr 120px;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:center;font-size:.82rem;min-width:660px">
+            <span style="color:var(--muted);font-weight:600">${i+1}</span>
+            <span style="font-weight:600;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(s.name)}">${esc(s.name)}</span>
+            <span>${esc(s.class||'-')}</span>
+            <span class="muted">${esc(s.studentId||'-')}</span>
+            <span style="font-family:monospace;font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(s.username)}">${esc(s.username)}</span>
+            <span style="font-family:monospace;font-size:.76rem;color:var(--muted)">${esc(s.password)}</span>
+            <span style="text-align:right;display:flex;gap:4px;justify-content:flex-end">
+              <button data-copy-link="${esc(s.username)}" style="font-size:.7rem;padding:4px 7px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:600;cursor:pointer" title="Copy login link">🔗</button>
+              <button data-stu-edit="${esc(s.id)}" style="font-size:.7rem;padding:4px 7px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:600;cursor:pointer" title="Edit">✏️</button>
+              <button data-stu-delete="${esc(s.id)}" style="font-size:.7rem;padding:4px 7px;border-radius:6px;border:1px solid rgba(214,69,69,.3);background:#fff;color:var(--no);font-weight:600;cursor:pointer" title="Delete">🗑</button>
+            </span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  return `
+    ${commonHtml}
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <h3 style="margin:0;font-size:1rem">👥 Registered Students (${students.length})</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" id="downloadPdfBtn" ${students.length===0?'disabled':''}>📄 Download PDF</button>
+        <button class="btn btn-primary btn-sm" id="addStudentBtn">+ Add Student</button>
+      </div>
+    </div>
+    <div id="studentForm" style="display:none;margin-bottom:14px"></div>
+    ${studentsHtml}
+  `;
+}
+
+function downloadStudentsPDF(){
+  const students = content.students || [];
+  if(!students.length){ toast('No students to export'); return; }
+  const dateStr = new Date().toLocaleString('en-GB');
+  const common = content.commonAccount;
+
+  const rows = students.map((s, i) => `
+    <tr>
+      <td style="text-align:center">${i+1}</td>
+      <td>${esc(s.name)}</td>
+      <td>${esc(s.studentId||'-')}</td>
+      <td>${esc(s.class||'-')}</td>
+      <td style="font-family:monospace">${esc(s.username)}</td>
+      <td style="font-family:monospace">${esc(s.password)}</td>
+      <td style="font-family:monospace;font-size:8pt;word-break:break-all">${esc(getLoginLink(s.username))}</td>
+    </tr>`).join('');
+
+  const commonRow = common ? `
+    <tr style="background:#fff8e5">
+      <td style="text-align:center;font-weight:700">C</td>
+      <td><strong>${esc(common.name)}</strong></td>
+      <td>-</td>
+      <td>${esc(common.class||'-')}</td>
+      <td style="font-family:monospace">${esc(common.username)}</td>
+      <td style="font-family:monospace">${esc(common.password)}</td>
+      <td style="font-family:monospace;font-size:8pt;word-break:break-all">${esc(getLoginLink(common.username))}</td>
+    </tr>` : '';
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Student Accounts - Mahinda College</title>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,'Segoe UI',Arial,sans-serif;padding:22px;color:#152338;margin:0}
+  h1{color:#0a1f3c;border-bottom:3px solid #c9a227;padding-bottom:10px;margin:0 0 6px;font-size:20pt}
+  .sub{color:#666;font-size:10pt;margin:0 0 18px}
+  .meta{background:#f3f5f9;padding:10px 14px;border-radius:6px;font-size:9pt;color:#444;margin-bottom:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .meta strong{color:#0a1f3c}
+  table{width:100%;border-collapse:collapse;font-size:9pt}
+  th,td{border:1px solid #d0d5dd;padding:6px 8px;text-align:left;vertical-align:middle}
+  th{background:#0a1f3c;color:#fff;font-weight:700;font-size:8.5pt;text-transform:uppercase;letter-spacing:.3px}
+  tr:nth-child(even) td{background:#f9fafc}
+  .footer{margin-top:20px;font-size:8pt;color:#888;text-align:center;border-top:1px solid #ddd;padding-top:10px}
+  @media print {
+    body{padding:10mm}
+    .no-print{display:none !important}
+    tr{page-break-inside:avoid}
+  }
+  .toolbar{position:fixed;top:10px;right:10px;z-index:99;background:#0a1f3c;color:#fff;padding:10px 16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.2);font-size:10pt;display:flex;align-items:center;gap:10px}
+  .toolbar button{background:#c9a227;color:#0a1f3c;border:0;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;font-family:inherit;font-size:10pt}
+</style></head>
+<body>
+  <div class="toolbar no-print">💡 Print dialog එකේ "Save as PDF" තෝරන්න <button onclick="window.print()">🖨 Print / Save PDF</button></div>
+  <h1>Mahinda College · Business Studies</h1>
+  <p class="sub">Student Accounts List — Daily Quiz Login Credentials</p>
+  <div class="meta">
+    <span><strong>Total Students:</strong> ${students.length}</span>
+    <span><strong>Generated:</strong> ${esc(dateStr)}</span>
+    <span><strong>⚠️ Admin Use Only</strong></span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:30px;text-align:center">#</th>
+        <th style="width:18%">Student Name</th>
+        <th style="width:10%">Student ID</th>
+        <th style="width:8%">Class</th>
+        <th style="width:13%">Username</th>
+        <th style="width:10%">Password</th>
+        <th>Login Link</th>
+      </tr>
+    </thead>
+    <tbody>${rows}${commonRow}</tbody>
+  </table>
+  <div class="footer">Mahinda College · Business Studies · This document is confidential and for admin use only.<br>© ${new Date().getFullYear()} Mahinda College. Educational use only.</div>
+  <script>window.onload=function(){setTimeout(function(){try{window.print();}catch(e){}},500);};<\/script>
+</body></html>`;
+
+  const w = window.open('', '_blank', 'width=1000,height=800');
+  if(!w){ toast('Popup blocked — please allow popups for this site'); return; }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
+
+function attachAdminStudentsEvents(){
+  document.querySelectorAll('[data-copy-link]').forEach(b => {
+    b.addEventListener('click', () => copyToClipboard(getLoginLink(b.dataset.copyLink)));
+  });
+
+  const addBtn = document.getElementById('addStudentBtn');
+  if(addBtn) addBtn.addEventListener('click', () => showStudentForm(null));
+
+  const editCommonBtn = document.getElementById('editCommonBtn');
+  if(editCommonBtn) editCommonBtn.addEventListener('click', () => showCommonForm());
+
+  const pdfBtn = document.getElementById('downloadPdfBtn');
+  if(pdfBtn) pdfBtn.addEventListener('click', downloadStudentsPDF);
+
+  document.querySelectorAll('[data-stu-edit]').forEach(b => {
+    b.addEventListener('click', () => showStudentForm(b.dataset.stuEdit));
+  });
+
+  document.querySelectorAll('[data-stu-delete]').forEach(b => {
+    b.addEventListener('click', () => {
+      if(!confirm('මෙම සිසුවා සම්පූර්ණයෙන්ම මකන්නද? (ඔහුගේ/ඇයගේ ලකුණු ද ඉවත් වේ)')) return;
+      const id = b.dataset.stuDelete;
+      const stu = content.students.find(x => x.id === id);
+      if(stu){
+        const scores = loadScores();
+        delete scores[stu.username];
+        saveScores(scores);
+      }
+      content.students = content.students.filter(x => x.id !== id);
+      commitContent(); toast('මකා දමන ලදි'); renderAdmin('students');
+    });
+  });
+}
+
+function showStudentForm(editId){
+  const form = document.getElementById('studentForm');
+  form.style.display = 'block';
+  const stu = editId ? content.students.find(x => x.id === editId) : null;
+
+  let username, password, name, studentId, klass;
+  if(stu){ username = stu.username; password = stu.password; name = stu.name; studentId = stu.studentId; klass = stu.class; }
+  else { username = ''; password = genPassword(6); name = ''; studentId = ''; klass = '12c1'; }
+
+  form.innerHTML = `
+    <div class="card">
+      <h3 style="font-size:.95rem">${stu?'සිසුවා සංස්කරණය':'නව සිසුවා ලියාපදිංචි කිරීම'}</h3>
+      <div class="field-row">
+        <div class="field"><label>Name</label><input type="text" id="sfName" value="${esc(name)}" placeholder="Full name"></div>
+        <div class="field"><label>Student ID</label><input type="text" id="sfSid" value="${esc(studentId)}" placeholder="e.g. 12345"></div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Class</label>
+          <select id="sfClass">
+            <option value="12c1" ${klass==='12c1'?'selected':''}>12c1</option>
+            <option value="12c2" ${klass==='12c2'?'selected':''}>12c2</option>
+            <option value="12c3" ${klass==='12c3'?'selected':''}>12c3</option>
+            <option value="13c1" ${klass==='13c1'?'selected':''}>13c1</option>
+            <option value="13c2" ${klass==='13c2'?'selected':''}>13c2</option>
+            <option value="13c3" ${klass==='13c3'?'selected':''}>13c3</option>
+          </select>
+        </div>
+        <div class="field"><label>Username</label><input type="text" id="sfUser" value="${esc(username)}" placeholder="unique username" autocapitalize="off"></div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="sfPass" value="${esc(password)}" style="flex:1;font-family:monospace">
+          <button class="btn btn-outline btn-sm" id="sfRegen" type="button">🔄 Regen</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" id="sfSave">💾 Save</button>
+        <button class="btn btn-outline btn-sm" id="sfCancel">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('sfRegen').addEventListener('click', () => {
+    document.getElementById('sfPass').value = genPassword(6);
+  });
+  document.getElementById('sfCancel').addEventListener('click', () => {
+    form.style.display = 'none'; form.innerHTML = '';
+  });
+  document.getElementById('sfSave').addEventListener('click', () => {
+    const nm = document.getElementById('sfName').value.trim();
+    const sid = document.getElementById('sfSid').value.trim();
+    const klass = document.getElementById('sfClass').value;
+    const user = document.getElementById('sfUser').value.trim();
+    const pass = document.getElementById('sfPass').value.trim();
+    if(!nm){ toast('Name අවශ්‍යයි'); return; }
+    if(!user){ toast('Username අවශ්‍යයි'); return; }
+    if(!pass || pass.length < 3){ toast('Password අවශ්‍යයි (අවම 3)'); return; }
+    const all = content.students.filter(x => x.id !== (stu && stu.id));
+    if(all.some(x => x.username.toLowerCase() === user.toLowerCase())){ toast('මෙම username දැනටමත් භාවිතයේ ඇත'); return; }
+    if(content.commonAccount && content.commonAccount.username.toLowerCase() === user.toLowerCase()){ toast('Common account username භාවිත කර ඇත'); return; }
+
+    if(stu){
+      const oldUsername = stu.username;
+      stu.name = nm; stu.studentId = sid; stu.class = klass; stu.username = user; stu.password = pass;
+      if(oldUsername !== user){
+        const scores = loadScores();
+        if(scores[oldUsername]){ scores[user] = scores[oldUsername]; delete scores[oldUsername]; saveScores(scores); }
+      }
+    } else {
+      content.students.push({
+        id: 'stu_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+        name: nm, studentId: sid, class: klass, username: user, password: pass,
+        createdAt: Date.now()
+      });
+    }
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('students');
+  });
+}
+
+function showCommonForm(){
+  const form = document.getElementById('studentForm');
+  form.style.display = 'block';
+  const c = content.commonAccount;
+
+  form.innerHTML = `
+    <div class="card">
+      <h3 style="font-size:.95rem">Common Account සංස්කරණය</h3>
+      <div class="field-row">
+        <div class="field"><label>Display Name</label><input type="text" id="cfName" value="${esc(c.name)}"></div>
+        <div class="field"><label>Class</label><input type="text" id="cfClass" value="${esc(c.class || '-')}"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Username</label><input type="text" id="cfUser" value="${esc(c.username)}" autocapitalize="off"></div>
+        <div class="field"><label>Password</label><input type="text" id="cfPass" value="${esc(c.password)}" style="font-family:monospace"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" id="cfSave">💾 Save</button>
+        <button class="btn btn-outline btn-sm" id="cfCancel">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('cfCancel').addEventListener('click', () => { form.style.display='none'; form.innerHTML=''; });
+  document.getElementById('cfSave').addEventListener('click', () => {
+    const nm = document.getElementById('cfName').value.trim();
+    const klass = document.getElementById('cfClass').value.trim();
+    const user = document.getElementById('cfUser').value.trim();
+    const pass = document.getElementById('cfPass').value.trim();
+    if(!nm || !user || !pass){ toast('All fields required'); return; }
+    if((content.students || []).some(x => x.username.toLowerCase() === user.toLowerCase())){ toast('Username in use'); return; }
+    const oldUser = content.commonAccount.username;
+    content.commonAccount = { username: user, password: pass, name: nm, class: klass, studentId: '-' };
+    if(oldUser !== user){
+      const scores = loadScores();
+      if(scores[oldUser]){ scores[user] = scores[oldUser]; delete scores[oldUser]; saveScores(scores); }
+    }
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('students');
+  });
+}
+
+/* ---------- PAPERS ADMIN ---------- */
+function renderAdminPapers(){
+  const years = [...new Set(PAPERS.map(p => p.year))].sort((a,b) => b-a);
+  let html = `<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" id="addPaperBtn">+ නව ප්‍රශ්න පත්‍රයක්</button></div><div id="paperForm" style="display:none;margin-bottom:14px"></div>`;
+  if(!years.length){ html += '<div class="card center"><p class="muted">ප්‍රශ්න පත්‍ර නොමැත.</p></div>'; }
+  else {
+    years.forEach(function(year){
+      const items = PAPERS.filter(p => p.year === year);
+      html += `<div class="paper-year-group"><h3>${year} A/L <span class="pill" style="margin-left:6px">${items.length}</span></h3>
+        ${items.map(function(p){
+          const hasFile = !!(p.pdfKey || p.url);
+          return `<div class="admin-item">
+            <div style="flex:1;min-width:180px">
+              <strong>${esc(p.type)} · ${esc(p.medium)}</strong>
+              <small>${hasFile ? '<span class="file-badge">📎 '+esc(p.pdfName||'PDF')+(p.pdfSize?' · '+fmtBytes(p.pdfSize):'')+'</span>' : '📄 No PDF'}</small>
+            </div>
+            <div class="actions">
+              <button data-action="upload" data-id="${esc(p.id)}">${hasFile?'🔄 Replace':'⬆ Upload'}</button>
+              ${hasFile?'<button data-action="removeFile" data-id="'+esc(p.id)+'" class="danger">🗑 File</button>':''}
+              <button data-action="edit" data-id="${esc(p.id)}">✏️</button>
+              <button data-action="delete" data-id="${esc(p.id)}" class="danger">🗑</button>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    });
+  }
+  return html;
+}
+
+function attachAdminPapersEvents(){
+  document.getElementById('addPaperBtn').addEventListener('click', () => showPaperForm(null));
+  document.querySelectorAll('[data-action]').forEach(function(btn){
+    btn.addEventListener('click', async function(){
+      const a = btn.dataset.action, id = btn.dataset.id;
+      if(a === 'upload') await uploadPaperPDF(id);
+      else if(a === 'removeFile') await removePaperFile(id);
+      else if(a === 'edit') showPaperForm(id);
+      else if(a === 'delete') await deletePaper(id);
+    });
+  });
+}
+
+function showPaperForm(paperId){
+  const form = document.getElementById('paperForm');
+  form.style.display = 'block';
+  const paper = paperId ? PAPERS.find(p => p.id === paperId) : null;
+  form.innerHTML = `<div class="card">
+    <h3 style="font-size:.95rem">${paper?'ප්‍රශ්න පත්‍රය සංස්කරණය':'නව ප්‍රශ්න පත්‍රයක්'}</h3>
+    <div class="field-row">
+      <div class="field"><label>වර්ෂය</label><input type="number" id="pfYear" value="${paper?paper.year:new Date().getFullYear()}" min="2000" max="2100"></div>
+      <div class="field"><label>මාධ්‍යය</label><select id="pfMedium"><option ${paper&&paper.medium==='Sinhala'?'selected':''}>Sinhala</option><option ${paper&&paper.medium==='English'?'selected':''}>English</option><option ${paper&&paper.medium==='Tamil'?'selected':''}>Tamil</option></select></div>
+    </div>
+    <div class="field"><label>වර්ගය</label><input type="text" id="pfType" value="${paper?esc(paper.type):''}" placeholder="Question Paper / Marking Scheme"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" id="pfSave">💾 Save</button><button class="btn btn-outline btn-sm" id="pfCancel">Cancel</button></div>
+  </div>`;
+  document.getElementById('pfCancel').addEventListener('click', () => { form.style.display='none'; form.innerHTML=''; });
+  document.getElementById('pfSave').addEventListener('click', () => {
+    const year = parseInt(document.getElementById('pfYear').value);
+    const medium = document.getElementById('pfMedium').value;
+    const type = document.getElementById('pfType').value.trim();
+    if(!year || !type){ toast('වර්ෂය සහ වර්ගය අවශ්‍යයි'); return; }
+    if(paper){ paper.year = year; paper.medium = medium; paper.type = type; }
+    else { content.papers.push({ id: 'p'+year+'_'+medium+'_'+type.replace(/\s+/g,'')+'_'+Date.now(), year, medium, type, url:null, pdfKey:null, pdfName:null, pdfSize:null }); }
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('papers');
+  });
+}
+
+async function uploadPaperPDF(paperId){
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'application/pdf,.pdf';
+  input.onchange = async function(){
+    const file = input.files[0]; if(!file) return;
+    if(!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf'){ toast('PDF only'); return; }
+    const paper = PAPERS.find(p => p.id === paperId); if(!paper) return;
+    const key = 'pdf_' + paperId + '_' + Date.now();
+    try {
+      toast('Uploading...'); await idbPut(key, file);
+      if(paper.pdfKey){ try { await idbDel(paper.pdfKey); } catch(e){} }
+      paper.pdfKey = key; paper.pdfName = file.name; paper.pdfSize = file.size;
+      commitContent(); toast('PDF uploaded ✓'); renderAdmin('papers');
+    } catch(e){ toast('Upload failed: ' + e.message); }
+  };
+  input.click();
+}
+
+async function removePaperFile(paperId){
+  const paper = PAPERS.find(p => p.id === paperId); if(!paper) return;
+  if(!confirm('PDF ගොනුව ඉවත් කරන්නද?')) return;
+  if(paper.pdfKey){ try { await idbDel(paper.pdfKey); } catch(e){} }
+  paper.pdfKey = null; paper.pdfName = null; paper.pdfSize = null;
+  commitContent(); toast('ගොනුව ඉවත් කරන ලදි'); renderAdmin('papers');
+}
+
+async function deletePaper(paperId){
+  const paper = PAPERS.find(p => p.id === paperId); if(!paper) return;
+  if(!confirm('මෙම ප්‍රශ්න පත්‍රය මකන්නද?')) return;
+  if(paper.pdfKey){ try { await idbDel(paper.pdfKey); } catch(e){} }
+  content.papers = content.papers.filter(p => p.id !== paperId);
+  commitContent(); toast('මකා දමන ලදි'); renderAdmin('papers');
+}
+
+/* ---------- LESSONS ADMIN ---------- */
+function renderAdminLessons(){
+  const all = LESSONS.g12.map(l => ({l, grade:12})).concat(LESSONS.g13.map(l => ({l, grade:13})));
+  let html = `<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" id="addLessonBtn">+ නව පාඩමක්</button></div><div id="lessonForm" style="display:none;margin-bottom:14px"></div>`;
+  all.forEach(function(x){
+    html += `<div class="admin-item">
+      <div style="flex:1;min-width:180px"><strong>${esc(x.l.title)}</strong><small>Grade ${x.grade} · ${esc(x.l.unit)} · ${esc(x.l.titleEn)} · ${x.l.keyTerms.length} terms</small></div>
+      <div class="actions"><button data-lesson-edit="${esc(x.l.id)}">✏️ Edit</button><button data-lesson-delete="${esc(x.l.id)}" class="danger">🗑</button></div>
+    </div>`;
+  });
+  return html;
+}
+
+function attachAdminLessonsEvents(){
+  document.getElementById('addLessonBtn').addEventListener('click', () => showLessonForm(null));
+  document.querySelectorAll('[data-lesson-edit]').forEach(b => b.addEventListener('click', () => showLessonForm(b.dataset.lessonEdit)));
+  document.querySelectorAll('[data-lesson-delete]').forEach(b => b.addEventListener('click', () => {
+    if(!confirm('මෙම පාඩම මකන්නද?')) return;
+    content.lessons.g12 = content.lessons.g12.filter(l => l.id !== b.dataset.lessonDelete);
+    content.lessons.g13 = content.lessons.g13.filter(l => l.id !== b.dataset.lessonDelete);
+    commitContent(); toast('මකා දමන ලදි'); renderAdmin('lessons');
+  }));
+}
+
+function showLessonForm(lessonId){
+  const form = document.getElementById('lessonForm');
+  form.style.display = 'block';
+  let lesson = null, grade = 12;
+  if(lessonId){
+    const inG12 = LESSONS.g12.find(l => l.id === lessonId);
+    const inG13 = LESSONS.g13.find(l => l.id === lessonId);
+    if(inG12){ lesson = inG12; grade = 12; } else if(inG13){ lesson = inG13; grade = 13; }
+  }
+  const termsStr = lesson ? lesson.keyTerms.map(t => t.si + '|' + t.en).join('\n') : '';
+  form.innerHTML = `<div class="card">
+    <h3 style="font-size:.95rem">${lesson?'පාඩම සංස්කරණය':'නව පාඩමක්'}</h3>
+    <div class="field-row">
+      <div class="field"><label>Grade</label><select id="lfGrade"><option value="12" ${grade===12?'selected':''}>Grade 12</option><option value="13" ${grade===13?'selected':''}>Grade 13</option></select></div>
+      <div class="field"><label>Unit</label><input type="text" id="lfUnit" value="${lesson?esc(lesson.unit):''}" placeholder="Unit X"></div>
+    </div>
+    <div class="field"><label>Title (Sinhala)</label><input type="text" id="lfTitle" value="${lesson?esc(lesson.title):''}"></div>
+    <div class="field"><label>Title (English)</label><input type="text" id="lfTitleEn" value="${lesson?esc(lesson.titleEn):''}"></div>
+    <div class="field"><label>Key Terms (Sinhala|English, one per line)</label><textarea id="lfTerms" placeholder="ව්‍යාපාරය|Business&#10;වත්කම්|Assets">${esc(termsStr)}</textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" id="lfSave">💾 Save</button><button class="btn btn-outline btn-sm" id="lfCancel">Cancel</button></div>
+  </div>`;
+  document.getElementById('lfCancel').addEventListener('click', () => { form.style.display='none'; form.innerHTML=''; });
+  document.getElementById('lfSave').addEventListener('click', () => {
+    const newGrade = parseInt(document.getElementById('lfGrade').value, 10);
+    const unit = document.getElementById('lfUnit').value.trim();
+    const title = document.getElementById('lfTitle').value.trim();
+    const titleEn = document.getElementById('lfTitleEn').value.trim();
+    const lines = document.getElementById('lfTerms').value.split('\n').map(l => l.trim()).filter(Boolean);
+    const keyTerms = lines.map(line => { const parts = line.split('|'); return { si: (parts[0]||'').trim(), en: (parts[1]||'').trim() }; });
+    if(!title){ toast('Title අවශ්‍යයි'); return; }
+    if(lesson){
+      content.lessons.g12 = content.lessons.g12.filter(l => l.id !== lesson.id);
+      content.lessons.g13 = content.lessons.g13.filter(l => l.id !== lesson.id);
+      const upd = { id: lesson.id, unit, title, titleEn, keyTerms };
+      if(newGrade === 12) content.lessons.g12.push(upd); else content.lessons.g13.push(upd);
+    } else {
+      const id = 'g' + newGrade + '-' + Date.now();
+      const nl = { id, unit, title, titleEn, keyTerms };
+      if(newGrade === 12) content.lessons.g12.push(nl); else content.lessons.g13.push(nl);
+    }
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('lessons');
+  });
+}
+
+/* ---------- RESOURCES ADMIN ---------- */
+function renderAdminResources(){
+  let html = `<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" id="addResBtn">+ නව සම්පතක්</button></div><div id="resForm" style="display:none;margin-bottom:14px"></div>`;
+  RESOURCES.forEach(function(r){
+    const hasFile = !!(r.pdfKey || r.url);
+    html += `<div class="admin-item">
+      <div style="flex:1;min-width:180px"><strong>${esc(r.title)}</strong><small>Grade ${r.grade} · ${esc(r.type)} · ${esc(r.titleEn)} ${hasFile?'· 📎':'· No file'}</small></div>
+      <div class="actions"><button data-res-upload="${esc(r.id)}">${hasFile?'🔄':'⬆'} PDF</button><button data-res-edit="${esc(r.id)}">✏️</button><button data-res-delete="${esc(r.id)}" class="danger">🗑</button></div>
+    </div>`;
+  });
+  return html;
+}
+
+function attachAdminResourcesEvents(){
+  document.getElementById('addResBtn').addEventListener('click', () => showResourceForm(null));
+  document.querySelectorAll('[data-res-upload]').forEach(b => b.addEventListener('click', () => uploadResourcePDF(b.dataset.resUpload)));
+  document.querySelectorAll('[data-res-edit]').forEach(b => b.addEventListener('click', () => showResourceForm(b.dataset.resEdit)));
+  document.querySelectorAll('[data-res-delete]').forEach(b => b.addEventListener('click', () => {
+    if(!confirm('මෙම සම්පත මකන්නද?')) return;
+    const r = RESOURCES.find(x => x.id === b.dataset.resDelete);
+    if(r && r.pdfKey) idbDel(r.pdfKey).catch(()=>{});
+    content.resources = content.resources.filter(x => x.id !== b.dataset.resDelete);
+    commitContent(); toast('මකා දමන ලදි'); renderAdmin('resources');
+  }));
+}
+
+function showResourceForm(resId){
+  const form = document.getElementById('resForm');
+  form.style.display = 'block';
+  const res = resId ? RESOURCES.find(r => r.id === resId) : null;
+  const lessonOpts = allLessons().map(l => `<option value="${esc(l.id)}" ${res&&res.lessonId===l.id?'selected':''}>${esc(l.title)} (G${lessonGrade(l.id)})</option>`).join('');
+  form.innerHTML = `<div class="card">
+    <h3 style="font-size:.95rem">${res?'සම්පත සංස්කරණය':'නව සම්පතක්'}</h3>
+    <div class="field-row">
+      <div class="field"><label>Grade</label><select id="rfGrade"><option value="12" ${res&&res.grade===12?'selected':''}>Grade 12</option><option value="13" ${res&&res.grade===13?'selected':''}>Grade 13</option></select></div>
+      <div class="field"><label>Type</label><input type="text" id="rfType" value="${res?esc(res.type):''}"></div>
+    </div>
+    <div class="field"><label>Title (Sinhala)</label><input type="text" id="rfTitle" value="${res?esc(res.title):''}"></div>
+    <div class="field"><label>Title (English)</label><input type="text" id="rfTitleEn" value="${res?esc(res.titleEn):''}"></div>
+    <div class="field"><label>Lesson</label><select id="rfLesson">${lessonOpts}</select></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" id="rfSave">💾 Save</button><button class="btn btn-outline btn-sm" id="rfCancel">Cancel</button></div>
+  </div>`;
+  document.getElementById('rfCancel').addEventListener('click', () => { form.style.display='none'; form.innerHTML=''; });
+  document.getElementById('rfSave').addEventListener('click', () => {
+    const grade = parseInt(document.getElementById('rfGrade').value, 10);
+    const type = document.getElementById('rfType').value.trim();
+    const title = document.getElementById('rfTitle').value.trim();
+    const titleEn = document.getElementById('rfTitleEn').value.trim();
+    const lessonId = document.getElementById('rfLesson').value;
+    if(!title || !type){ toast('Title & Type required'); return; }
+    if(res){ res.grade = grade; res.type = type; res.title = title; res.titleEn = titleEn; res.lessonId = lessonId; }
+    else { content.resources.push({ id: 'r_'+Date.now(), grade, lessonId, title, titleEn, type, url:null, pdfKey:null }); }
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('resources');
+  });
+}
+
+async function uploadResourcePDF(resId){
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'application/pdf,.pdf';
+  input.onchange = async function(){
+    const file = input.files[0]; if(!file) return;
+    if(!file.name.toLowerCase().endsWith('.pdf')){ toast('PDF only'); return; }
+    const res = RESOURCES.find(r => r.id === resId); if(!res) return;
+    const key = 'pdf_res_' + resId + '_' + Date.now();
+    try {
+      await idbPut(key, file);
+      if(res.pdfKey){ try { await idbDel(res.pdfKey); } catch(e){} }
+      res.pdfKey = key;
+      commitContent(); toast('PDF uploaded ✓'); renderAdmin('resources');
+    } catch(e){ toast('Upload failed'); }
+  };
+  input.click();
+}
+
+/* ---------- MCQ ADMIN ---------- */
+function renderAdminMCQ(){
+  const lessons = allLessons();
+  return `
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-primary btn-sm" id="addMcqBtn">+ නව MCQ ප්‍රශ්නයක්</button>
+      <select class="search" id="mcqLessonFilter" style="margin:0;max-width:280px">
+        <option value="all">සියලු පාඩම් (${MCQ_BANK.length})</option>
+        ${lessons.map(l => { const n = MCQ_BANK.filter(q => q.lesson===l.id).length; return `<option value="${esc(l.id)}">${esc(l.title)} (${n})</option>`; }).join('')}
+      </select>
+    </div>
+    <div class="notice info" style="margin-bottom:14px"><span>💡</span><div>එක් පාඩමකට <strong>100ක් දක්වා</strong> ප්‍රශ්න. පාඩම් ප්‍රශ්න ක්‍රීඩා සහ පුහුණුවලට භාවිතා වේ.</div></div>
+    <div id="mcqForm" style="display:none;margin-bottom:14px"></div>
+    <div id="mcqList"></div>
+  `;
+}
+
+function paintAdminMCQList(filterLesson){
+  const box = document.getElementById('mcqList'); if(!box) return;
+  let list = MCQ_BANK.map((q, idx) => ({q, idx}));
+  if(filterLesson && filterLesson !== 'all') list = list.filter(x => x.q.lesson === filterLesson);
+  if(!list.length){ box.innerHTML = '<div class="card center"><p class="muted">ප්‍රශ්න නොමැත.</p></div>'; return; }
+  box.innerHTML = list.map(x => `<div class="admin-item">
+    <div style="flex:1;min-width:180px"><strong>${esc(x.q.q.substring(0,90))}${x.q.q.length>90?'…':''}</strong><small>${esc(x.q.difficulty)} · Lesson: ${esc(x.q.lesson)} · Answer: ${esc(x.q.options[x.q.answer])}</small></div>
+    <div class="actions"><button data-mcq-edit="${x.idx}">✏️</button><button data-mcq-delete="${x.idx}" class="danger">🗑</button></div>
+  </div>`).join('');
+  box.querySelectorAll('[data-mcq-edit]').forEach(b => b.addEventListener('click', () => showMcqForm(parseInt(b.dataset.mcqEdit, 10))));
+  box.querySelectorAll('[data-mcq-delete]').forEach(b => b.addEventListener('click', () => {
+    if(!confirm('මෙම ප්‍රශ්නය මකන්නද?')) return;
+    content.mcqBank.splice(parseInt(b.dataset.mcqDelete, 10), 1);
+    commitContent(); toast('මකා දමන ලදි'); renderAdmin('mcq');
+  }));
+}
+
+function attachAdminMCQEvents(){
+  document.getElementById('addMcqBtn').addEventListener('click', () => showMcqForm(-1));
+  const f = document.getElementById('mcqLessonFilter');
+  if(f) f.addEventListener('change', () => paintAdminMCQList(f.value));
+  paintAdminMCQList('all');
+}
+
+function showMcqForm(idx){
+  const form = document.getElementById('mcqForm');
+  form.style.display = 'block';
+  const q = idx >= 0 ? MCQ_BANK[idx] : null;
+  form.innerHTML = `<div class="card">
+    <h3 style="font-size:.95rem">${q?'MCQ සංස්කරණය':'නව MCQ'}</h3>
+    <div class="field"><label>ප්‍රශ්නය</label><textarea id="mfQ">${q?esc(q.q):''}</textarea></div>
+    <div class="field-row">
+      <div class="field"><label>Option A</label><input type="text" id="mfO0" value="${q?esc(q.options[0]):''}"></div>
+      <div class="field"><label>Option B</label><input type="text" id="mfO1" value="${q?esc(q.options[1]):''}"></div>
+      <div class="field"><label>Option C</label><input type="text" id="mfO2" value="${q?esc(q.options[2]):''}"></div>
+      <div class="field"><label>Option D</label><input type="text" id="mfO3" value="${q?esc(q.options[3]):''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>නිවැරදි පිළිතුර</label><select id="mfAnswer"><option value="0" ${q&&q.answer===0?'selected':''}>A</option><option value="1" ${q&&q.answer===1?'selected':''}>B</option><option value="2" ${q&&q.answer===2?'selected':''}>C</option><option value="3" ${q&&q.answer===3?'selected':''}>D</option></select></div>
+      <div class="field"><label>දුෂ්කරතාව</label><select id="mfDiff"><option ${q&&q.difficulty==='Easy'?'selected':''}>Easy</option><option ${q&&q.difficulty==='Medium'?'selected':''}>Medium</option><option ${q&&q.difficulty==='Hard'?'selected':''}>Hard</option></select></div>
+    </div>
+    <div class="field"><label>Lesson ID</label><input type="text" id="mfLesson" value="${q?esc(q.lesson):'g12-1'}"></div>
+    <div class="field"><label>පැහැදිලි කිරීම</label><textarea id="mfExplain">${q?esc(q.explain):''}</textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" id="mfSave">💾 Save</button><button class="btn btn-outline btn-sm" id="mfCancel">Cancel</button></div>
+  </div>`;
+  document.getElementById('mfCancel').addEventListener('click', () => { form.style.display='none'; form.innerHTML=''; });
+  document.getElementById('mfSave').addEventListener('click', () => {
+    const nq = {
+      q: document.getElementById('mfQ').value.trim(),
+      options: [0,1,2,3].map(i => document.getElementById('mfO'+i).value.trim()),
+      answer: parseInt(document.getElementById('mfAnswer').value, 10),
+      difficulty: document.getElementById('mfDiff').value,
+      lesson: document.getElementById('mfLesson').value.trim() || 'g12-1',
+      explain: document.getElementById('mfExplain').value.trim()
+    };
+    if(!nq.q || nq.options.some(o => !o)){ toast('Fill all fields'); return; }
+    if(q) content.mcqBank[idx] = nq; else content.mcqBank.push(nq);
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('mcq');
+  });
+}
+
+/* ---------- GAMES ADMIN ---------- */
+function renderAdminGames(){
+  return `<div class="notice info" style="margin-bottom:14px"><span>💡</span><div>සෑම ක්‍රීඩාවකටම ප්‍රශ්න ගණන සහ (timed සඳහා) කාලය වෙනස් කළ හැක. උපරිම 100.</div></div>
+    ${GAMES.map(function(g){
+      const cfg = (GAME_CONFIG && GAME_CONFIG[g.id]) || { questionCount: 10, timeLimit: 0 };
+      return `<div class="card" style="margin-bottom:12px">
+        <div class="kv" style="margin-bottom:8px"><span class="pill gold">${gameTypeLabel(g.type)}</span><span class="pill">Grade ${g.grade}</span></div>
+        <h3 style="font-size:.95rem;margin-bottom:6px">${esc(g.title)}</h3>
+        <div class="field-row">
+          <div class="field"><label>ප්‍රශ්න ගණන (1–100)</label><input type="number" min="1" max="100" data-game-count="${esc(g.id)}" value="${cfg.questionCount || 10}"></div>
+          ${g.type==='timed' ? `<div class="field"><label>කාලය (තත්පර)</label><input type="number" min="10" max="600" data-game-time="${esc(g.id)}" value="${cfg.timeLimit || 60}"></div>` : '<div></div>'}
+        </div>
+      </div>`;
+    }).join('')}
+    <button class="btn btn-primary" id="gamesSave">💾 සියල්ල සුරකින්න</button>`;
+}
+
+function attachAdminGamesEvents(){
+  document.getElementById('gamesSave').addEventListener('click', () => {
+    const newCfg = {}; let bad = false;
+    GAMES.forEach(g => {
+      const c = document.querySelector('[data-game-count="'+g.id+'"]');
+      const t = document.querySelector('[data-game-time="'+g.id+'"]');
+      const cnt = c ? parseInt(c.value, 10) : 10;
+      if(isNaN(cnt) || cnt<1 || cnt>100){ toast(g.title + ': 1–100'); bad = true; return; }
+      newCfg[g.id] = { questionCount: cnt, timeLimit: t ? parseInt(t.value, 10) : 0 };
+    });
+    if(bad) return;
+    content.gameConfig = Object.assign({}, GAME_CONFIG, newCfg);
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('games');
+  });
+}
+
+/* ---------- DAILY ADMIN ---------- */
+function renderAdminDaily(){
+  const cfg = DAILY_CONFIG || {};
+  return `<div class="card" style="margin-bottom:14px">
+    <h3 style="font-size:.95rem">🗓️ දිනපතා ප්‍රශ්නාවලිය වින්‍යාසය</h3>
+    <div class="notice info" style="margin-top:10px"><span>💡</span><div>දිනපතා ප්‍රශ්නාවලිය MCQ Bank එකෙන් ප්‍රශ්න ලබා ගනී. දැන් ප්‍රශ්න <strong>${MCQ_BANK.length}</strong>ක් ඇත.</div></div>
+    <div class="field-row">
+      <div class="field"><label>විවෘත වන පැය (0–23)</label><input type="number" id="dcHour" min="0" max="23" value="${cfg.openHour != null ? cfg.openHour : 20}"></div>
+      <div class="field"><label>විවෘත වන මිනිත්තුව (0–59)</label><input type="number" id="dcMin" min="0" max="59" value="${cfg.openMinute || 0}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>ප්‍රශ්න ගණන (1–100)</label><input type="number" id="dcCount" min="1" max="100" value="${cfg.questionCount || 10}"></div>
+      <div class="field"><label>සමත් ලකුණු %</label><input type="number" id="dcPass" min="0" max="100" value="${cfg.passMark || 50}"></div>
+    </div>
+    <div class="field"><label><input type="checkbox" id="dcEnabled" ${cfg.enabled !== false ? 'checked' : ''}> සක්‍රීය කරන්න</label></div>
+    <button class="btn btn-primary btn-sm" id="dcSave">💾 සුරකින්න</button>
+  </div>`;
+}
+
+function attachAdminDailyEvents(){
+  document.getElementById('dcSave').addEventListener('click', () => {
+    const h = parseInt(document.getElementById('dcHour').value, 10);
+    const m = parseInt(document.getElementById('dcMin').value, 10);
+    const c = parseInt(document.getElementById('dcCount').value, 10);
+    const p = parseInt(document.getElementById('dcPass').value, 10);
+    if(isNaN(h) || h<0 || h>23){ toast('Hour 0–23'); return; }
+    if(isNaN(m) || m<0 || m>59){ toast('Minute 0–59'); return; }
+    if(isNaN(c) || c<1 || c>100){ toast('Count 1–100'); return; }
+    content.dailyConfig = { openHour: h, openMinute: m, questionCount: c, passMark: isNaN(p)?50:p, enabled: document.getElementById('dcEnabled').checked };
+    commitContent(); toast('සුරැකිණි ✓'); renderAdmin('daily');
+  });
+}
+
+/* ---------- SETTINGS ---------- */
+function renderAdminSettings(){
+  return `<div class="card" style="margin-bottom:14px">
+    <h3 style="font-size:.95rem">🔐 මුරපදය වෙනස් කරන්න</h3>
+    <div class="field"><label>වත්මන් මුරපදය</label><input type="password" id="currPw"></div>
+    <div class="field"><label>නව මුරපදය</label><input type="password" id="newPw"></div>
+    <button class="btn btn-primary btn-sm" id="changePwBtn">වෙනස් කරන්න</button>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <h3 style="font-size:.95rem">💾 Export / Import</h3>
+    <p class="muted small">Content (students, lessons, MCQ) export/import.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-primary btn-sm" id="exportBtn">⬇ Export JSON</button>
+      <label class="btn btn-outline btn-sm" style="cursor:pointer">⬆ Import <input type="file" id="importFile" accept="application/json" style="display:none"></label>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <h3 style="font-size:.95rem">📦 PDFs / Scores</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn btn-danger btn-sm" id="clearPdfsBtn">🗑 Clear PDFs</button>
+      <button class="btn btn-danger btn-sm" id="clearScoresBtn">🗑 Clear All Rankings</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:.95rem">⚠️ Reset Content</h3>
+    <p class="muted small">Reset to defaults. All custom content, students, scores will be removed.</p>
+    <button class="btn btn-danger btn-sm" id="resetContentBtn" style="margin-top:8px">🔄 Reset to Defaults</button>
+  </div>`;
+}
+
+function attachAdminSettingsEvents(){
+  document.getElementById('changePwBtn').addEventListener('click', () => {
+    const curr = document.getElementById('currPw').value;
+    const nw = document.getElementById('newPw').value;
+    if(curr !== content.config.adminPassword){ toast('Wrong password'); return; }
+    if(nw.length < 4){ toast('Min 4 chars'); return; }
+    content.config.adminPassword = nw;
+    commitContent(); toast('මුරපදය වෙනස් විය ✓'); renderAdmin('settings');
+  });
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const data = JSON.stringify(content, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'mcbs_content_'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 10000); toast('Exported ✓');
+  });
+  document.getElementById('importFile').addEventListener('change', function(e){
+    const file = e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if(!parsed.lessons || !parsed.papers){ toast('Invalid file'); return; }
+        if(!confirm('Replace current content?')) return;
+        content = Object.assign(defaultContent(), parsed);
+        commitContent(); toast('Imported ✓'); renderAdmin('settings');
+      } catch(err){ toast('JSON error: ' + err.message); }
+    };
+    reader.readAsText(file);
+  });
+  document.getElementById('clearPdfsBtn').addEventListener('click', async () => {
+    if(!confirm('Remove all PDFs from IndexedDB?')) return;
+    try { await idbClearAll();
+      content.papers.forEach(p => p.pdfKey = null);
+      content.resources.forEach(r => r.pdfKey = null);
+      commitContent(); toast('Cleared'); renderAdmin('settings');
+    } catch(e){ toast('Error: ' + e.message); }
+  });
+  document.getElementById('clearScoresBtn').addEventListener('click', () => {
+    if(!confirm('Delete ALL rankings data? This cannot be undone.')) return;
+    localStorage.removeItem(SCORES_KEY);
+    toast('All rankings cleared'); renderAdmin('settings');
+  });
+  document.getElementById('resetContentBtn').addEventListener('click', () => {
+    if(!confirm('Reset all content? Cannot undo.')) return;
+    content = defaultContent(); commitContent();
+    toast('Reset ✓'); renderAdmin('settings');
+  });
+}
+
+/* ============================================================
+   19. BOOT
+   ============================================================ */
+document.getElementById('year').textContent = new Date().getFullYear();
+window.addEventListener('hashchange', router);
+if(!location.hash) location.hash = '#/home';
+router();
+
+/* ============================================================
+   20. CHATBOT
+   ============================================================ */
+(function initChatbot(){
+  const fab = document.getElementById('chatFab');
+  const panel = document.getElementById('chatPanel');
+  const closeBtn = document.getElementById('chatClose');
+  const body = document.getElementById('chatBody');
+  const input = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('chatSend');
+  const quick = document.getElementById('chatQuick');
+  const dot = document.getElementById('chatDot');
+  if(!fab || !panel) return;
+  const cfg = (content && content.chatbot) || {};
+  if(cfg.enabled === false){ fab.style.display = 'none'; return; }
+  if(cfg.name) document.getElementById('chatBotName').textContent = cfg.name;
+
+  function openPanel(){ panel.classList.add('open'); panel.setAttribute('aria-hidden','false'); if(dot) dot.classList.remove('show'); if(body.children.length === 0) bootChat(); setTimeout(()=>input.focus(), 250); }
+  function closePanel(){ panel.classList.remove('open'); panel.setAttribute('aria-hidden','true'); }
+  fab.addEventListener('click', () => { if(panel.classList.contains('open')) closePanel(); else openPanel(); });
+  closeBtn.addEventListener('click', closePanel);
+
+  function addMsg(text, who){ const div = document.createElement('div'); div.className = 'chat-msg ' + who; div.innerHTML = text; body.appendChild(div); body.scrollTop = body.scrollHeight; return div; }
+  function typing(){ const t = document.createElement('div'); t.className = 'chat-typing'; t.innerHTML = '<span></span><span></span><span></span>'; body.appendChild(t); body.scrollTop = body.scrollHeight; return t; }
+  function botReply(text){ const t = typing(); setTimeout(() => { if(t.parentNode) t.parentNode.removeChild(t); addMsg(text, 'bot'); }, 500 + Math.random()*400); }
+
+  const rules = [
+    { match: /^(hi|hello|hey|ayubowan|ආයුබෝවන්|හෙලෝ|හායි)\b/i, reply: () => 'ආයුබෝවන්! 👋 මම <strong>MC Assistant</strong>. පාඩම්, ප්‍රශ්න පත්‍ර, ක්‍රීඩා, rankings ගැන අහන්න.' },
+    { match: /(lesson|පාඩම|padam|study|ඉගෙන)/i, reply: () => 'අපට පාඩම් <strong>' + allLessons().length + '</strong>ක් ඇත.<br><a href="#/lessons">→ පාඩම්</a>' },
+    { match: /(rank|leaderboard|ස්ථාන|ginuma)/i, reply: () => 'Daily Quiz rankings බලන්න:<br><a href="#/rankings">→ Rankings</a>' },
+    { match: /(past paper|paper|ප්‍රශ්න පත්‍ර|prashna)/i, reply: () => 'A/L ප්‍රශ්න පත්‍ර:<br><a href="#/papers">→ Past Papers</a>' },
+    { match: /(game|ක්‍රීඩා|krida|play)/i, reply: () => 'ක්‍රීඩා <strong>' + GAMES.length + '</strong>ක්.<br><a href="#/games">→ Games</a>' },
+    { match: /(daily|දිනපතා|dinapatha)/i, reply: () => { const h = (DAILY_CONFIG && DAILY_CONFIG.openHour) || 20; const m = (DAILY_CONFIG && DAILY_CONFIG.openMinute) || 0; return 'දිනපතා ප්‍රශ්නාවලිය <strong>' + pad(h) + ':' + pad(m) + '</strong> ට.<br><a href="#/daily">→ Daily Quiz</a>'; } },
+    { match: /(progress|ප්‍රගති|pragathi|score)/i, reply: () => 'ඔබේ ප්‍රගතිය:<br><a href="#/progress">→ My Progress</a>' },
+    { match: /(about|මහින්ද|mahinda|college)/i, reply: () => 'මහින්ද විද්‍යාලය, ගාල්ල.<br><a href="#/about">→ About Us</a>' },
+    { match: /(logout|sign out|ඉවත්)/i, reply: () => 'Logout වීමට top-right user chip එක හෝ drawer එකේ Logout භාවිතා කරන්න.' },
+    { match: /(help|උදව්|support)/i, reply: () => 'මට උදව්: Lessons, Papers, Games, Rankings, Daily Quiz, Progress.<br>Business Studies යෙදුමකුත් අහන්න!' },
+    { match: /(thank|thanks|ස්තුති|stuti)/i, reply: () => 'ස්තූතියි! 😊' }
+  ];
+
+  function findTermAnswer(text){
+    const q = text.toLowerCase().trim(); if(q.length < 2) return null;
+    for(let i=0; i<allLessons().length; i++){
+      const l = allLessons()[i];
+      for(let j=0; j<l.keyTerms.length; j++){
+        const t = l.keyTerms[j];
+        if(t.si.toLowerCase().indexOf(q) > -1 || t.en.toLowerCase().indexOf(q) > -1 || q.indexOf(t.en.toLowerCase()) > -1){
+          return '<strong>' + esc(t.si) + '</strong> = ' + esc(t.en) + '<br><small style="color:var(--muted)">පාඩම: ' + esc(l.title) + '</small><br><a href="#/lesson/' + l.id + '">→ පාඩම</a>';
+        }
+      }
+    }
+    return null;
+  }
+
+  function respond(text){
+    const trimmed = (text||'').trim(); if(!trimmed) return;
+    for(let i=0; i<rules.length; i++){ if(rules[i].match.test(trimmed)){ botReply(rules[i].reply()); return; } }
+    const term = findTermAnswer(trimmed);
+    if(term){ botReply(term); return; }
+    botReply('මට ඒක තේරුණේ නැහැ 🤔. උත්සාහ: "lessons", "rankings", "games", "daily quiz", හෝ Business Studies යෙදුමක්.');
+  }
+
+  function quickChips(){
+    const chips = ['📚 Lessons','🏆 Rankings','🎮 Games','🗓️ Daily Quiz','📊 My Progress'];
+    quick.innerHTML = chips.map(c => '<button>' + c + '</button>').join('');
+    quick.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { addMsg(b.textContent, 'user'); respond(b.textContent.replace(/^[^\s]+\s/, '')); }));
+  }
+
+  function bootChat(){
+    const welcome = cfg.welcome || 'ආයුබෝවන්! 👋 මම MC Assistant.';
+    addMsg(welcome, 'bot'); quickChips();
+  }
+
+  function handleSend(){
+    const v = input.value.trim(); if(!v) return;
+    addMsg(esc(v), 'user'); input.value = ''; respond(v);
+  }
+  sendBtn.addEventListener('click', handleSend);
+  input.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); handleSend(); } });
+})();
+</script>
+</body>
+</html>
