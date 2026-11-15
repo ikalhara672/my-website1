@@ -527,109 +527,6 @@ function rnd(a,b){return a+Math.random()*(b-a)}
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
 function fileToDataUrl(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
 
-/* ===== GEMINI AI MODULE ===== */
-const GEMINI_MODEL = 'gemini-3.8-flash';
-const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/';
-
-function getGeminiKey(){ return DB.get('mccs_gemini_key','') || ''; }
-function setGeminiKey(k){ DB.set('mccs_gemini_key', k); }
-
-async function callGemini(prompt, opts={}){
-  const key = getGeminiKey();
-  if(!key) throw new Error('Gemini API Key set කර නැත. Admin Panel → AI Generator එකට යන්න.');
-  let model = GEMINI_MODEL;
-  const buildBody = () => ({
-    contents: [{ role:'user', parts:[{text: prompt}] }],
-    generationConfig: {
-      temperature: opts.temperature ?? 0.85,
-      maxOutputTokens: opts.maxTokens ?? 8192,
-      responseMimeType: opts.json ? 'application/json' : 'text/plain'
-    }
-  });
-  const doFetch = (m) => fetch(`${GEMINI_ENDPOINT}${m}:generateContent?key=${encodeURIComponent(key)}`, {
-    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(buildBody())
-  });
-  let r = await doFetch(model);
-  if(r.status === 404){
-    try {
-      const lr = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
-      const ld = await lr.json();
-      const cand = (ld.models || [])
-        .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
-        .map(m => m.name.replace('models/', ''))
-        .filter(n => /flash/i.test(n) && !/lite|tts|live|image|transcribe|thinking/i.test(n));
-      if(cand.length){ model = cand[0]; r = await doFetch(model); }
-    } catch(e){}
-  }
-  if(!r.ok){ const t = await r.text(); throw new Error('Gemini ' + r.status + ': ' + t.slice(0,180)); }
-  const data = await r.json();
-  const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if(!txt) throw new Error('Gemini හිස් පිළිතුරක් ලබා දුන්නා');
-  return txt;
-}
-
-async function generateQuestions({subject, grade, lesson, type, count, difficulty, lang}){
-  const subj = SUBJECTS[subject] || {en: subject, name: subject};
-  const typeMap = {
-    mcq:'Multiple Choice (4 options)',
-    tf:'True/False',
-    fill:'Fill in the blank (single word answer)',
-    matching:'Matching pairs'
-  };
-  const langInstr = lang === 'si'
-    ? 'සියලු ප්‍රශ්න සහ පිළිතුරු සිංහලෙන් ලියන්න.'
-    : lang === 'en'
-      ? 'Write all questions and answers in English.'
-      : 'Write question in Sinhala, and also provide "qEn" (English translation) and "optionsEn" (English options for MCQ).';
-
-  const schema = type === 'mcq'
-    ? '{"questions":[{"type":"mcq","q":"...","qEn":"...","options":["A","B","C","D"],"optionsEn":["A","B","C","D"],"answer":0,"explanation":"..."}]}'
-    : type === 'tf'
-      ? '{"questions":[{"type":"tf","q":"...","qEn":"...","answer":true,"explanation":"..."}]}'
-      : type === 'fill'
-        ? '{"questions":[{"type":"fill","q":"... (answer blank)...","qEn":"...","answer":"expected word","explanation":"..."}]}'
-        : '{"questions":[{"type":"matching","q":"Match the following","pairs":[{"left":"...","right":"..."},{"left":"...","right":"..."}]}]}';
-
-  const prompt = `You are an expert Sri Lankan A/L Commerce teacher. Generate ${count} ${typeMap[type]} questions for:
-Subject: ${subj.en} (${subj.name})
-Grade: ${grade}
-Lesson: "${lesson}"
-Difficulty: ${difficulty || 'medium'}
-${langInstr}
-
-Return STRICT JSON only, matching this schema exactly:
-${schema}
-
-Return ONLY valid JSON. No markdown, no code fences, no extra text.`;
-
-  const raw = await callGemini(prompt, {json:true, temperature:0.9, maxTokens:8192});
-  let parsed;
-  try { parsed = JSON.parse(raw); }
-  catch(e){
-    const m = raw.match(/\{[\s\S]*\}/);
-    if(m) parsed = JSON.parse(m[0]); else throw new Error('AI වලංගු JSON ලබා දුන්නේ නැත');
-  }
-  if(!parsed.questions || !Array.isArray(parsed.questions) || !parsed.questions.length)
-    throw new Error('ප්‍රශ්න හමු නොවිණි');
-  return parsed.questions;
-}
-
-async function generateLessonNotes({subject, grade, lesson}){
-  const subj = SUBJECTS[subject] || {en: subject, name: subject};
-  const prompt = `You are an expert Sri Lankan A/L Commerce teacher. Write comprehensive lesson notes in Sinhala for Grade ${grade} students.
-Subject: ${subj.en} (${subj.name})
-Lesson: "${lesson}"
-
-Include: Introduction, Key definitions (use <div class="def-box"><b>Term:</b> definition</div>), Main concepts (bulleted lists), Real-world examples, and a Summary. Use <span class="highlight">text</span> for important phrases.
-
-Return ONLY the inner HTML (using <h3>, <p>, <ul>, <li>, <div class="def-box">, <b>, <span class="highlight">). No <html>, <body>, no markdown.`;
-
-  return await callGemini(prompt, {temperature:0.7, maxTokens:4096});
-}
-
-let _aiPendingQuestions = null;
-let _aiPendingNotes = null;
-
 /* ===== INTRO ===== */
 function playIntro(){
   const el=document.getElementById('intro-screen');
@@ -1418,402 +1315,26 @@ function viewAdmin(){
 }
 function setAdminTab(t){state.adminTab=t;render()}
 function renderAdminTab(){
-  const m={ai:()=>adminAI(false),bank:()=>adminBank(false),lessons:adminLessons,teachers:adminTeachers,students:adminStudents,quiz:adminQuiz,papers:()=>adminPapers(false)};
+  const m={ai:adminAI,bank:adminBank,lessons:adminLessons,teachers:adminTeachers,students:adminStudents,quiz:adminQuiz,papers:()=>adminPapers(false)};
   return (m[state.adminTab]||(()=>''))();
-}
-
-/* ===== AI GENERATOR UI ===== */
-function adminAI(isTeacher){
-  const u = currentUser();
-  const subjects = isTeacher ? [u.subject] : Object.keys(SUBJECTS);
-  const key = getGeminiKey();
-  return `<div class="admin-panel">
-    <h3>🤖 Gemini AI Generator</h3>
-    <p class="hint">API Key එක <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--gold)">Google AI Studio</a> එකෙන් ලබාගන්න.</p>
-
-    <div class="form-field">
-      <label>Gemini API Key ${key?`<span style="color:var(--success)">(සක්‍රීය)</span>`:''}</label>
-      <input id="gem-key" type="password" value="${esc(key)}" placeholder="AIza...">
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-      <button class="btn btn-primary" style="width:auto" onclick="saveGeminiKey()">💾 Save Key</button>
-      <button class="btn btn-outline" onclick="testGemini()">🔌 Test</button>
-    </div>
-    <div id="gem-status"></div>
-
-    <hr style="margin:20px 0;border:none;border-top:1px solid var(--border)">
-
-    <div class="form-row">
-      <div class="form-field"><label>Subject</label>
-        <select id="ai-subject" onchange="aiUpdateLessons()">${subjects.map(s=>`<option value="${s}">${SUBJECTS[s].en}</option>`).join('')}</select></div>
-      <div class="form-field"><label>Grade</label>
-        <select id="ai-grade" onchange="aiUpdateLessons()"><option>12</option><option>13</option></select></div>
-    </div>
-    <div class="form-field"><label>Lesson</label><select id="ai-lesson"></select></div>
-    <div class="form-row">
-      <div class="form-field"><label>Type</label>
-        <select id="ai-type"><option value="mcq">MCQ</option><option value="tf">True/False</option><option value="fill">Fill Blanks</option><option value="matching">Matching</option></select></div>
-      <div class="form-field"><label>Count</label><input id="ai-count" type="number" value="8" min="1" max="20"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-field"><label>Difficulty</label>
-        <select id="ai-difficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select></div>
-      <div class="form-field"><label>Language</label>
-        <select id="ai-lang"><option value="si">සිංහල</option><option value="en">English</option><option value="both">Both</option></select></div>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-primary" style="width:auto" id="ai-qbtn" onclick="aiGenerateQuestions()">✨ ප්‍රශ්න සාදන්න</button>
-      <button class="btn btn-outline" id="ai-nbtn" onclick="aiGenerateNotes()">📝 සටහන් සාදන්න</button>
-    </div>
-    <div id="ai-output" style="margin-top:20px"></div>
-  </div>`;
-}
-
-function aiUpdateLessons(){
-  const subjEl = qs('#ai-subject'); if(!subjEl) return;
-  const subj = subjEl.value;
-  const grade = parseInt(qs('#ai-grade').value);
-  const lessons = DB.get('mccs_lessons',[]).filter(l=>l.subject===subj && l.grade===grade);
-  qs('#ai-lesson').innerHTML = lessons.length
-    ? lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('')
-    : '<option value="">(පාඩම් නැත — Lessons tab එකෙන් එකක් සාදන්න)</option>';
-}
-
-async function aiGenerateQuestions(){
-  const subj = qs('#ai-subject').value;
-  const grade = parseInt(qs('#ai-grade').value);
-  const lessonId = qs('#ai-lesson').value;
-  const type = qs('#ai-type').value;
-  const count = parseInt(qs('#ai-count').value);
-  const difficulty = qs('#ai-difficulty').value;
-  const lang = qs('#ai-lang').value;
-  if(!lessonId) return toast('පළමුව lesson එකක් තෝරන්න','error');
-  if(!getGeminiKey()) return toast('API Key set කර නැත','error');
-
-  const lesson = DB.get('mccs_lessons',[]).find(l=>l.id===lessonId);
-  const btn = qs('#ai-qbtn');
-  btn.disabled = true; btn.textContent = '⏳ සාදමින්...';
-  qs('#ai-output').innerHTML = '<div class="loading"><div class="spinner"></div>Gemini AI ප්‍රශ්න සාදමින් සිටී...</div>';
-
-  try {
-    const questions = await generateQuestions({subject:subj, grade, lesson:lesson.title, type, count, difficulty, lang});
-    _aiPendingQuestions = {questions, subject:subj, grade, lessonId};
-    qs('#ai-output').innerHTML =
-      `<h4 style="color:var(--gold);margin:0 0 10px">📋 Preview — ප්‍රශ්න ${questions.length}</h4>
-       ${questions.map((q,i)=>`<div class="q-preview"><span class="qtag">${type.toUpperCase()}</span><b>${esc(q.q)}</b>
-          ${q.options?`<div style="margin-top:6px;color:var(--muted);font-size:12px">${q.options.map((o,j)=>`${'ABCD'[j]}) ${esc(o)}${j===q.answer?' ✅':''}`).join(' · ')}</div>`:''}
-          ${q.pairs?`<div style="margin-top:6px;color:var(--muted);font-size:12px">${q.pairs.map(p=>`${esc(p.left)} → ${esc(p.right)}`).join(' · ')}</div>`:''}
-          ${typeof q.answer==='boolean'?`<div style="margin-top:6px;color:var(--muted);font-size:12px">✅ ${q.answer?'සත්‍ය':'අසත්‍ය'}</div>`:''}
-          ${q.answer && typeof q.answer==='string'?`<div style="margin-top:6px;color:var(--muted);font-size:12px">✅ ${esc(q.answer)}</div>`:''}
-          ${q.explanation?`<div style="margin-top:6px;font-size:11px;color:var(--info)">💡 ${esc(q.explanation)}</div>`:''}
-        </div>`).join('')}
-       <button class="btn btn-primary" style="width:auto" onclick="aiSaveQuestions()">💾 Save to Question Bank</button>`;
-  } catch(e){
-    qs('#ai-output').innerHTML = `<div class="auth-msg error">❌ ${esc(e.message)}</div>`;
-  } finally {
-    btn.disabled = false; btn.textContent = '✨ ප්‍රශ්න සාදන්න';
-  }
-}
-
-function aiSaveQuestions(){
-  if(!_aiPendingQuestions) return;
-  const {questions, subject, grade, lessonId} = _aiPendingQuestions;
-  const all = DB.get('mccs_questions',[]);
-  let nextId = 1;
-  all.forEach(q=>{ const m=/^Q(\d+)$/.exec(q.id||''); if(m) nextId = Math.max(nextId, parseInt(m[1])+1); });
-  questions.forEach(q=>{
-    all.push({...q, id:'Q'+(nextId++), subject, grade, lessonId, source:'gemini', createdAt:Date.now()});
-  });
-  DB.set('mccs_questions', all);
-  toast(`${questions.length} ප්‍රශ්න Save කළා ✓`,'success');
-  _aiPendingQuestions = null;
-  qs('#ai-output').innerHTML = '';
-  render();
-}
-
-async function aiGenerateNotes(){
-  const subj = qs('#ai-subject').value;
-  const grade = parseInt(qs('#ai-grade').value);
-  const lessonId = qs('#ai-lesson').value;
-  if(!lessonId) return toast('පළමුව lesson එකක් තෝරන්න','error');
-  if(!getGeminiKey()) return toast('API Key set කර නැත','error');
-
-  const lesson = DB.get('mccs_lessons',[]).find(l=>l.id===lessonId);
-  const btn = qs('#ai-nbtn');
-  btn.disabled = true; btn.textContent = '⏳ සාදමින්...';
-  qs('#ai-output').innerHTML = '<div class="loading"><div class="spinner"></div>Gemini AI සටහන් සාදමින් සිටී...</div>';
-  try {
-    const notes = await generateLessonNotes({subject:subj, grade, lesson:lesson.title});
-    _aiPendingNotes = {notesHtml: notes, lessonId};
-    qs('#ai-output').innerHTML =
-      `<div style="border:1px solid var(--border);border-radius:12px;padding:16px;background:var(--surface-2);margin-top:16px">
-        <h4 style="color:var(--gold);margin-bottom:10px">📝 සටහන් Preview</h4>
-        <div class="notes">${notes}</div>
-        <button class="btn btn-primary" style="width:auto;margin-top:14px" onclick="aiSaveNotes()">💾 Save to Lesson</button>
-      </div>`;
-  } catch(e){
-    qs('#ai-output').innerHTML = `<div class="auth-msg error">❌ ${esc(e.message)}</div>`;
-  } finally {
-    btn.disabled = false; btn.textContent = '📝 සටහන් සාදන්න';
-  }
-}
-
-function aiSaveNotes(){
-  if(!_aiPendingNotes) return;
-  const lessons = DB.get('mccs_lessons',[]);
-  const l = lessons.find(x=>x.id === _aiPendingNotes.lessonId);
-  if(l){ l.notes = _aiPendingNotes.notesHtml; DB.set('mccs_lessons', lessons); toast('සටහන් Save කළා ✓','success'); }
-  _aiPendingNotes = null;
-  qs('#ai-output').innerHTML = '';
-  render();
-}
-
-function saveGeminiKey(){
-  const k = qs('#gem-key').value.trim();
-  if(!k) return toast('Key එකක් ඇතුළත් කරන්න','error');
-  if(!k.startsWith('AIza')) return toast('වලංගු Gemini key එකක් නොවේ (AIza... වලින් පටන් ගත යුතුයි)','error');
-  setGeminiKey(k); toast('API Key Save කළා ✓','success'); render();
-}
-async function testGemini(){
-  const st = qs('#gem-status');
-  if(!st) return;
-  st.innerHTML = '<div class="loading"><div class="spinner"></div>Test කරමින්...</div>';
-  try {
-    const r = await callGemini('Reply with exactly: OK', {maxTokens:10, temperature:0});
-    st.innerHTML = `<div class="auth-msg ok">✅ සාර්ථක! Gemini: ${esc(r.trim().slice(0,40))}</div>`;
-  } catch(e){
-    st.innerHTML = `<div class="auth-msg error">❌ ${esc(e.message)}</div>`;
-  }
-}
-
-/* ===== ADMIN: Question Bank ===== */
-function adminBank(isTeacher){
-  const u = currentUser();
-  const all = DB.get('mccs_questions',[]).filter(q=>!isTeacher || q.subject===u.subject);
-  const lessons = DB.get('mccs_lessons',[]);
-  if(!all.length) return '<div class="empty-state"><div class="icon">📚</div><h3>ප්‍රශ්න නැත</h3><p>AI Generator එකෙන් ප්‍රශ්න සාදන්න</p></div>';
-  return `<div class="admin-panel">
-    <h3>📚 Question Bank (${all.length})</h3>
-    <p class="hint">AI මගින් සාදන ලද සියලු ප්‍රශ්න</p>
-    <div style="max-height:500px;overflow:auto">
-      ${all.map(q=>{
-        const s = SUBJECTS[q.subject] || {en:q.subject};
-        const l = lessons.find(x=>x.id===q.lessonId);
-        return `<div class="q-preview">
-          <span class="qtag">${esc(s.en)}</span>
-          <span style="font-size:10px;color:var(--muted)">G${q.grade} · ${esc(l?l.title:'-')} · ${(q.type||'').toUpperCase()}${q.source==='gemini'?' · 🤖':''}</span>
-          <div style="margin-top:6px;font-weight:600">${esc(q.q)}</div>
-          <button class="btn btn-danger btn-sm" style="margin-top:8px" onclick="delQuestion('${q.id}')">🗑 Delete</button>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>`;
-}
-function delQuestion(id){
-  if(!confirm('මෙම ප්‍රශ්නය delete කරන්නද?')) return;
-  DB.set('mccs_questions', DB.get('mccs_questions',[]).filter(q=>q.id!==id));
-  toast('Delete කළා','success'); render();
-}
-
-/* ===== ADMIN: Lessons ===== */
-function adminLessons(){
-  const lessons = DB.get('mccs_lessons',[]);
-  return `<div class="admin-panel">
-    <h3>📖 Lessons</h3>
-    <p class="hint">අලුත් පාඩම් එකතු කරන්න. සියලු default පාඩම් මෙහි දිස්වේ.</p>
-    <div class="form-row">
-      <div class="form-field"><label>Subject</label>
-        <select id="ls-subj">${Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
-      <div class="form-field"><label>Grade</label>
-        <select id="ls-grade"><option>12</option><option>13</option></select></div>
-    </div>
-    <div class="form-field"><label>Lesson Title</label><input id="ls-title" placeholder="e.g., අලෙවිකරණය"></div>
-    <button class="btn btn-primary" style="width:auto;margin-bottom:16px" onclick="addLesson()">＋ Add Lesson</button>
-    <div style="max-height:400px;overflow:auto">
-      ${lessons.map(l=>`<div class="q-preview">
-        <span class="qtag">${SUBJECTS[l.subject]?SUBJECTS[l.subject].en:l.subject}</span>
-        <span style="font-size:10px;color:var(--muted)">G${l.grade} · #${l.order}</span>
-        <div style="margin-top:4px;font-weight:600">${esc(l.title)}</div>
-      </div>`).join('')}
-    </div>
-  </div>`;
-}
-function addLesson(){
-  const subj = qs('#ls-subj').value;
-  const grade = parseInt(qs('#ls-grade').value);
-  const title = qs('#ls-title').value.trim();
-  if(!title) return toast('Title ඇතුළත් කරන්න','error');
-  const lessons = DB.get('mccs_lessons',[]);
-  const order = lessons.filter(l=>l.subject===subj && l.grade===grade).length + 1;
-  lessons.push({id:'L'+Date.now(), subject:subj, grade, title, order, notes:'', context:''});
-  DB.set('mccs_lessons', lessons); toast('Lesson එකතු කළා ✓','success'); render();
-}
-
-/* ===== ADMIN: Past Papers ===== */
-function adminPapers(isTeacher){
-  const u = currentUser();
-  const papers = DB.get('mccs_past_papers',[]).filter(p=>!isTeacher || p.subject===u.subject);
-  const lessons = DB.get('mccs_lessons',[]);
-  const subjects = isTeacher ? [u.subject] : Object.keys(SUBJECTS);
-  return `<div class="admin-panel">
-    <h3>📄 Past Papers (${papers.length})</h3>
-    <p class="hint">URL එකක් දෙන්න (Google Drive / PDF link). Lesson එකකට attach කරන්න.</p>
-    <div class="form-row">
-      <div class="form-field"><label>Subject</label>
-        <select id="pp-subj">${subjects.map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
-      <div class="form-field"><label>Grade</label>
-        <select id="pp-grade"><option>12</option><option>13</option></select></div>
-    </div>
-    <div class="form-row">
-      <div class="form-field"><label>Year</label><input id="pp-year" type="number" value="2024"></div>
-      <div class="form-field"><label>Paper Type</label>
-        <select id="pp-type"><option>MCQ</option><option>Essay</option><option>Structured</option><option>Model</option></select></div>
-    </div>
-    <div class="form-field"><label>Title</label><input id="pp-title" placeholder="2024 MCQ Paper"></div>
-    <div class="form-field"><label>PDF URL</label><input id="pp-url" placeholder="https://..."></div>
-    <div class="form-field"><label>Lesson (optional)</label>
-      <select id="pp-lesson"><option value="">(General)</option>
-        ${lessons.map(l=>`<option value="${l.id}">${SUBJECTS[l.subject]?SUBJECTS[l.subject].en:''} G${l.grade} - ${esc(l.title)}</option>`).join('')}
-      </select></div>
-    <button class="btn btn-primary" style="width:auto;margin-bottom:16px" onclick="addPaper()">＋ Add Paper</button>
-    <div style="max-height:300px;overflow:auto">
-      ${papers.map(p=>`<div class="q-preview">
-        <span class="qtag">${p.year}</span> <b>${esc(p.title)}</b>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">${p.paperType} · G${p.grade} · <a href="${esc(p.url)}" target="_blank" style="color:var(--gold)">Open ↗</a></div>
-        <button class="btn btn-danger btn-sm" style="margin-top:6px" onclick="delPaper('${p.id}')">🗑</button>
-      </div>`).join('')}
-    </div>
-  </div>`;
-}
-function addPaper(){
-  const p = {
-    id:'P'+Date.now(),
-    subject: qs('#pp-subj').value, grade: parseInt(qs('#pp-grade').value),
-    year: parseInt(qs('#pp-year').value), paperType: qs('#pp-type').value,
-    title: qs('#pp-title').value.trim(), url: qs('#pp-url').value.trim(),
-    lessonId: qs('#pp-lesson').value || null
-  };
-  if(!p.title || !p.url) return toast('Title සහ URL ඇතුළත් කරන්න','error');
-  const all = DB.get('mccs_past_papers',[]); all.push(p); DB.set('mccs_past_papers', all);
-  toast('Paper එකතු කළා ✓','success'); render();
-}
-function delPaper(id){
-  if(!confirm('Delete කරන්නද?')) return;
-  DB.set('mccs_past_papers', DB.get('mccs_past_papers',[]).filter(p=>p.id!==id));
-  toast('Delete කළා','success'); render();
-}
-
-/* ===== ADMIN: Teachers ===== */
-function adminTeachers(){
-  const teachers = DB.get('mccs_users',[]).filter(u=>u.role==='teacher');
-  return `<div class="admin-panel">
-    <h3>👨‍🏫 Teachers (${teachers.length})</h3>
-    <p class="hint">Default teacher ගිණුම්. Password: teach123</p>
-    <div class="form-row">
-      <div class="form-field"><label>Username</label><input id="tt-user" placeholder="e.g., bs_teacher4"></div>
-      <div class="form-field"><label>Subject</label>
-        <select id="tt-subj">${Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
-    </div>
-    <button class="btn btn-primary" style="width:auto;margin-bottom:16px" onclick="addTeacher()">＋ Add Teacher</button>
-    <table class="students-table">
-      <thead><tr><th>Username</th><th>Subject</th><th>Actions</th></tr></thead>
-      <tbody>${teachers.map(t=>`<tr>
-        <td>${esc(t.username)}</td>
-        <td>${SUBJECTS[t.subject]?SUBJECTS[t.subject].en:t.subject}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="delUser('${t.username}')">🗑</button></td>
-      </tr>`).join('')}</tbody>
-    </table>
-  </div>`;
-}
-function addTeacher(){
-  const un = qs('#tt-user').value.trim();
-  const subj = qs('#tt-subj').value;
-  if(!un) return toast('Username ඇතුළත් කරන්න','error');
-  const users = DB.get('mccs_users',[]);
-  if(users.find(x=>x.username===un)) return toast('Username දැනටමත් ඇත','error');
-  users.push({username:un, password:'teach123', role:'teacher', subject:subj, created:Date.now()});
-  DB.set('mccs_users', users); toast('Teacher එකතු කළා ✓','success'); render();
-}
-function delUser(un){
-  if(!confirm('Delete '+un+'?')) return;
-  DB.set('mccs_users', DB.get('mccs_users',[]).filter(u=>u.username!==un));
-  toast('Delete කළා','success'); render();
-}
-
-/* ===== ADMIN: Students ===== */
-function adminStudents(){
-  const students = DB.get('mccs_users',[]).filter(u=>u.role==='student');
-  return `<div class="admin-panel">
-    <h3>👥 Students (${students.length})</h3>
-    <div style="overflow-x:auto">
-      <table class="students-table">
-        <thead><tr><th>Username</th><th>Grade</th><th>Class</th><th>School</th><th>Actions</th></tr></thead>
-        <tbody>${students.map(s=>`<tr>
-          <td>${esc(s.username)}</td><td>${esc(s.grade)}</td><td>${esc(s.class)}</td><td>${esc(s.school)}</td>
-          <td><button class="btn btn-danger btn-sm" onclick="delUser('${esc(s.username)}')">🗑</button></td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-/* ===== ADMIN: Quiz Config ===== */
-function adminQuiz(){
-  const cfg = DB.get('mccs_quiz_config');
-  return `<div class="admin-panel">
-    <h3>⚙️ Daily Quiz Config</h3>
-    <div class="form-row">
-      <div class="form-field"><label>Start Time</label>
-        <input id="qc-start" type="datetime-local" value="${new Date(cfg.startAt).toISOString().slice(0,16)}"></div>
-      <div class="form-field"><label>Duration (min)</label>
-        <input id="qc-dur" type="number" value="${cfg.durationMin}"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-field"><label>Question Count</label>
-        <input id="qc-count" type="number" value="${cfg.questionCount}"></div>
-      <div class="form-field"><label>Grade</label>
-        <select id="qc-grade"><option value="any" ${cfg.grade==='any'?'selected':''}>Any</option><option value="12" ${cfg.grade==='12'?'selected':''}>12</option><option value="13" ${cfg.grade==='13'?'selected':''}>13</option></select></div>
-    </div>
-    <div class="form-field"><label>Subjects</label>
-      <div class="checkbox-grid">
-        ${Object.keys(SUBJECTS).map(k=>`<label><input type="checkbox" class="qc-subj" value="${k}" ${cfg.subjects.includes(k)?'checked':''}> ${SUBJECTS[k].en}</label>`).join('')}
-      </div></div>
-    <button class="btn btn-primary" style="width:auto" onclick="saveQuizConfig()">💾 Save Config</button>
-  </div>`;
-}
-function saveQuizConfig(){
-  const subjects = [...document.querySelectorAll('.qc-subj:checked')].map(c=>c.value);
-  if(!subjects.length) return toast('එක් subject එකක්වත් තෝරන්න','error');
-  DB.set('mccs_quiz_config', {
-    startAt: new Date(qs('#qc-start').value).getTime(),
-    durationMin: parseInt(qs('#qc-dur').value),
-    questionCount: parseInt(qs('#qc-count').value),
-    grade: qs('#qc-grade').value,
-    subjects, active: true
-  });
-  toast('Config Save කළා ✓','success'); render();
 }
 
 /* ===== TEACHER ===== */
 function viewTeacher(){
-  const u = currentUser();
-  const subj = SUBJECTS[u.subject] || {en:u.subject};
   const tabs=[
     {k:'ai',l:'🤖 AI Generator'},{k:'bank',l:'📚 My Questions'},
     {k:'papers',l:'📄 Past Papers'},
     {k:'students',l:'👥 My Students'},{k:'send',l:'📢 Send Notification'}
   ];
-  return `<h3 class="section-title">Teacher Panel — ${subj.en}</h3>
+  return `<h3 class="section-title">Teacher Panel — ${SUBJECTS[currentUser().subject].en}</h3>
   <div class="admin-tabs">${tabs.map(t=>`<button class="${state.teacherTab===t.k?'active':''}" onclick="setTeacherTab('${t.k}')">${t.l}</button>`).join('')}</div>
   <div id="admin-content">${renderTeacherTab()}</div>`;
 }
 function setTeacherTab(t){state.teacherTab=t;render()}
 function renderTeacherTab(){
-  if(state.teacherTab==='send') return teacherSendUI();
-  if(state.teacherTab==='students') return teacherStudents();
-  if(state.teacherTab==='papers') return adminPapers(true);
-  if(state.teacherTab==='bank') return adminBank(true);
-  return adminAI(true);
+  if(state.teacherTab==='send')return teacherSendUI();
+  const m={ai:()=>adminAI(true),bank:()=>adminBank(true),students:teacherStudents,papers:()=>adminPapers(true)};
+  return (m[state.teacherTab]||(()=>''))();
 }
 function teacherStudents(){
   const attempts=DB.get('mccs_attempts',[]);
@@ -1823,9 +1344,9 @@ function teacherStudents(){
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
     <table class="students-table"><thead><tr><th>Username</th><th>School</th><th>Class</th><th>Attempts</th><th>Best</th></tr></thead>
     <tbody>${users.map(s=>{
-      const sA=attempts.filter(a=>a.username===s.username);
-      const best=sA.length?Math.max(...sA.map(a=>a.score)):0;
-      return `<tr><td>${esc(s.username)}</td><td>${esc(s.school||'-')}</td><td>${esc(s.class||'-')}</td><td>${sA.length}</td><td style="color:var(--gold);font-weight:700">${best}</td></tr>`;
+      const sAttempts=attempts.filter(a=>a.username===s.username);
+      const best=sAttempts.length?Math.max(...sAttempts.map(a=>a.score)):0;
+      return `<tr><td>${esc(s.username)}</td><td>${esc(s.school||'-')}</td><td>${esc(s.class||'-')}</td><td>${sAttempts.length}</td><td style="color:var(--gold);font-weight:700">${best}</td></tr>`;
     }).join('')}</tbody></table></div></div>`;
 }
 function teacherSendUI(){
@@ -1839,15 +1360,436 @@ function teacherSendUI(){
         </optgroup></select></div>
     <div class="form-field"><label>මාතෘකාව</label><input id="notif-title" placeholder="Notification title"></div>
     <div class="form-field"><label>පණිවිඩය</label><textarea id="notif-body" placeholder="ඔබේ පණිවිඩය..."></textarea></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-primary" style="width:auto" onclick="sendComposed()">📤 යවන්න</button>
-      <button class="btn btn-outline" onclick="nav('teacher')">Cancel</button></div>
+    <button class="btn btn-primary" style="width:auto" onclick="sendComposed()">📤 යවන්න</button>
   </div>`;
 }
 
-/* ===== BOOT ===== */
-setTimeout(aiUpdateLessons, 100);
-playIntro();
+/* ===== AI GENERATOR ===== */
+let generatedPreview=[];
+function adminAI(isTeacher=false){
+  const u=currentUser();
+  const apiKey=DB.get('mccs_gemini_key','');
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>!isTeacher||l.subject===u.subject);
+  const subjOptions=isTeacher?`<option value="${u.subject}">${SUBJECTS[u.subject].en}</option>`
+    :Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('');
+  return `<div class="admin-panel">
+    <h3>🤖 AI Question Generator${isTeacher?' — '+SUBJECTS[u.subject].en:''}</h3>
+    <p class="hint">පාඩමක් තෝරලා Gemini AI මගින් ප්‍රශ්න සකසන්න.</p>
+    <div class="form-row">
+      <div class="form-field"><label>Gemini API Key</label>
+        <input type="password" id="gem-key" value="${esc(apiKey)}" placeholder="AIza..."></div>
+      <div class="form-field"><label>Subject</label>
+        <select id="gem-subject" ${isTeacher?'disabled':''} onchange="updateLessonDropdown()">${subjOptions}</select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>Grade</label>
+        <select id="gem-grade" onchange="updateLessonDropdown()"><option value="12">Grade 12</option><option value="13">Grade 13</option></select></div>
+      <div class="form-field"><label>Lesson</label>
+        <select id="gem-lesson">${lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>වර්ගය</label>
+        <select id="gem-type"><option value="mcq">MCQ</option><option value="tf">True/False</option>
+          <option value="fill">Fill Blanks</option><option value="matching">Matching</option></select></div>
+      <div class="form-field"><label>ගණන</label><input type="number" id="gem-count" value="5" min="1" max="20"></div>
+    </div>
+    <div class="form-field"><label>අමතර Context (optional)</label>
+      <textarea id="gem-context" placeholder="Syllabus කරුණු"></textarea></div>
+    <button class="btn btn-primary" id="gem-btn" style="width:auto" onclick="generateAI()">✨ Generate with Gemini</button>
+    <div id="gem-output" style="margin-top:22px">${generatedPreview.length?previewHtml():''}</div>
+  </div>`;
+}
+function updateLessonDropdown(){
+  const subj=qs('#gem-subject').value,grade=qs('#gem-grade').value;
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===subj&&String(l.grade)===String(grade));
+  qs('#gem-lesson').innerHTML=lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('');
+}
+function previewHtml(){
+  return `<h4 style="margin-bottom:14px;color:var(--gold)">Preview (${generatedPreview.length})</h4>
+    ${generatedPreview.map(q=>`<div class="q-preview">
+      <span class="qtag">${q.type.toUpperCase()}</span>
+      ${q.type==='mcq'?`<b>${esc(q.q)}</b><br><small style="color:var(--muted);display:block;margin-top:6px;line-height:1.6">${q.options.map((o,j)=>`${String.fromCharCode(65+j)}. ${esc(o)}${j===q.answer?' ✓':''}`).join(' | ')}</small>`:''}
+      ${q.type==='tf'?`<b>${esc(q.q)}</b> → <b style="color:var(--gold)">${q.answer?'සත්‍ය':'අසත්‍ය'}</b>`:''}
+      ${q.type==='fill'?`<b>${esc(q.q)}</b> → <b style="color:var(--gold)">${esc(q.answer)}</b>`:''}
+      ${q.type==='matching'?`<b>Matching:</b> ${(q.pairs||[]).map(p=>`${esc(p.left)} → ${esc(p.right)}`).join(' · ')}`:''}
+      ${q.explanation?`<div style="font-size:12px;color:var(--muted);margin-top:6px">💡 ${esc(q.explanation)}</div>`:''}
+    </div>`).join('')}
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="approveGenerated()">✅ Approve All</button>
+      <button class="btn btn-outline" onclick="generatedPreview=[];render()">✕ Discard</button></div>`;
+}
+async function generateAI(){
+  const apiKey=qs('#gem-key').value.trim();
+  const subj=qs('#gem-subject').value,grade=qs('#gem-grade').value;
+  const lessonId=qs('#gem-lesson').value,type=qs('#gem-type').value;
+  const count=parseInt(qs('#gem-count').value)||5,context=qs('#gem-context').value.trim();
+  if(!apiKey)return toast('API Key දෙන්න','error');
+  if(!lessonId)return toast('Lesson එකක් තෝරන්න','error');
+  DB.set('mccs_gemini_key',apiKey);
+  const lesson=DB.get('mccs_lessons',[]).find(l=>l.id===lessonId);
+  const btn=qs('#gem-btn');btn.disabled=true;btn.textContent='Generating...';
+  qs('#gem-output').innerHTML='<div class="loading"><div class="spinner"></div>Gemini AI ප්‍රශ්න සකසමින්...</div>';
+  try{
+    const items=await callGemini(apiKey,subj,grade,lesson,type,count,context);
+    generatedPreview=items.map(q=>({...q,type,subject:subj,grade:parseInt(grade),lessonId,generatedAt:Date.now(),createdBy:currentUser().username}));
+    qs('#gem-output').innerHTML=previewHtml();
+    toast('ප්‍රශ්න '+items.length+'ක් සකස් විය! 🎉','success');
+  }catch(e){console.error(e);qs('#gem-output').innerHTML=`<div class="auth-msg error" style="margin-top:0">❌ ${esc(e.message)}</div>`}
+  finally{btn.disabled=false;btn.textContent='✨ Generate with Gemini'}
+}
+function approveGenerated(){
+  const bank=DB.get('mccs_questions',[]);
+  generatedPreview.forEach(q=>{q.id='Q'+Date.now()+Math.random().toString(36).slice(2,7);bank.push(q)});
+  DB.set('mccs_questions',bank);
+  toast(generatedPreview.length+' ප්‍රශ්න එකතු කළා! ✓','success');
+  generatedPreview=[];render();
+}
+async function callGemini(apiKey,subject,grade,lesson,type,count,context){
+  const subjName=SUBJECTS[subject].en;
+  const typePrompt={
+    mcq:`MCQs. Each: "q", "options" (4 strings), "answer" (0-3 index), "explanation" (Sinhala), "difficulty".`,
+    tf:`True/False. Each: "q", "answer" (boolean), "explanation" (Sinhala), "difficulty".`,
+    fill:`Fill blanks. Each: "q" (with ______), "answer", "explanation" (Sinhala), "difficulty".`,
+    matching:`Matching sets. Each: "pairs" (4 objects with "left","right"), "explanation" (Sinhala), "difficulty".`
+  }[type];
+  const schema={
+    mcq:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{q:{type:'string'},options:{type:'array',items:{type:'string'}},answer:{type:'integer'},explanation:{type:'string'},difficulty:{type:'string'}},required:['q','options','answer','explanation']}}},required:['questions']},
+    tf:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{q:{type:'string'},answer:{type:'boolean'},explanation:{type:'string'},difficulty:{type:'string'}},required:['q','answer','explanation']}}},required:['questions']},
+    fill:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{q:{type:'string'},answer:{type:'string'},explanation:{type:'string'},difficulty:{type:'string'}},required:['q','answer','explanation']}}},required:['questions']},
+    matching:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{pairs:{type:'array',items:{type:'object',properties:{left:{type:'string'},right:{type:'string'}},required:['left','right']}},explanation:{type:'string'},difficulty:{type:'string'}},required:['pairs']}}},required:['questions']}
+  }[type];
+  const prompt=`You are an experienced Sri Lankan GCE A/L Commerce teacher writing exam-quality questions aligned with the NIE syllabus.
+Subject: ${subjName}, Grade: ${grade}, Lesson: ${lesson.title}
+${context?`Context:\n${context}`:''}
+Generate exactly ${count} ${typePrompt}
+Rules: NIE A/L aligned, Sinhala medium, test understanding, exactly one correct answer, vary difficulty.
+Return ONLY JSON matching schema.`;
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const body={contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.8,responseMimeType:'application/json',responseSchema:schema}};
+  const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok){const err=await res.text();
+    if(res.status===400&&/API key/i.test(err))throw new Error('API Key වැරදියි');
+    if(res.status===429)throw new Error('API quota ඉක්මවා ඇත');
+    throw new Error('Gemini: '+err.slice(0,150));
+  }
+  const data=await res.json();
+  const text=data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if(!text)throw new Error('Gemini පිළිතුරක් නැත');
+  let parsed;try{parsed=JSON.parse(text)}catch(e){throw new Error('Invalid JSON')}
+  if(!parsed.questions||!Array.isArray(parsed.questions))throw new Error('No questions array');
+  return parsed.questions;
+}
+
+/* ===== BANK ===== */
+function adminBank(isTeacher=false){
+  const u=currentUser();
+  const all=DB.get('mccs_questions',[]).filter(q=>!isTeacher||q.subject===u.subject);
+  const byLesson={};all.forEach(q=>{byLesson[q.lessonId]=(byLesson[q.lessonId]||0)+1});
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>!isTeacher||l.subject===u.subject);
+  return `<div class="admin-panel">
+    <h3>📚 Question Bank</h3>
+    <p class="hint">${all.length} ප්‍රශ්න ${isTeacher?'· ඔබේ විෂයට පමණක්':''}</p>
+    ${all.length===0?'<div class="empty-state"><div class="icon">📭</div><p>ප්‍රශ්න නැත. AI Generator එකෙන් generate කරන්න.</p></div>':`
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Subject</th><th>Grade</th><th>Lesson</th><th>Types</th><th>Count</th><th></th></tr></thead>
+    <tbody>${lessons.filter(l=>byLesson[l.id]).map(l=>{
+      const types={};all.filter(q=>q.lessonId===l.id).forEach(q=>{types[q.type]=(types[q.type]||0)+1});
+      return `<tr><td>${SUBJECTS[l.subject].en}</td><td>${l.grade}</td><td>${esc(l.title)}</td>
+        <td style="font-size:12px;color:var(--gold)">${Object.entries(types).map(([t,c])=>`${t.toUpperCase()}:${c}`).join(' · ')}</td>
+        <td><b style="color:var(--gold)">${byLesson[l.id]}</b></td>
+        <td><button class="btn btn-sm btn-danger" onclick="clearLessonQuestions('${l.id}')">Clear</button></td></tr>`;
+    }).join('')}</tbody></table></div>`}
+  </div>`;
+}
+function clearLessonQuestions(lessonId){
+  if(!confirm('මෙම පාඩමේ ප්‍රශ්න මකන්නද?'))return;
+  DB.set('mccs_questions',DB.get('mccs_questions',[]).filter(q=>q.lessonId!==lessonId));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== LESSONS ADMIN ===== */
+function adminLessons(){
+  const lessons=DB.get('mccs_lessons',[]);
+  return `<div class="admin-panel">
+    <h3>📖 Lesson Management</h3>
+    <div class="form-row">
+      <div class="form-field"><label>Subject</label>
+        <select id="les-subject">${Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
+      <div class="form-field"><label>Grade</label>
+        <select id="les-grade"><option value="12">12</option><option value="13">13</option></select></div>
+    </div>
+    <div class="form-field"><label>පාඩමේ නම</label><input id="les-title" placeholder="උදා: නව සංකල්ප"></div>
+    <div class="form-field"><label>AI Context</label><textarea id="les-context" placeholder="Syllabus ඉගෙනුම් ඵල"></textarea></div>
+    <button class="btn btn-primary" style="width:auto" onclick="addLesson()">➕ එකතු කරන්න</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Subject</th><th>Grade</th><th>Title</th><th></th></tr></thead>
+    <tbody>${lessons.map(l=>`<tr><td>${SUBJECTS[l.subject].en}</td><td>${l.grade}</td><td>${esc(l.title)}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="editLesson('${l.id}')">Edit</button>
+      <button class="btn btn-sm btn-danger" onclick="delLesson('${l.id}')">Del</button></td></tr>`).join('')}</tbody></table></div>
+  </div>`;
+}
+function addLesson(){
+  const title=qs('#les-title').value.trim();
+  if(!title)return toast('නම ඇතුළත් කරන්න','error');
+  const lessons=DB.get('mccs_lessons',[]);
+  const subj=qs('#les-subject').value,grade=parseInt(qs('#les-grade').value);
+  const maxOrder=Math.max(0,...lessons.filter(l=>l.subject===subj&&l.grade===grade).map(l=>l.order||0));
+  lessons.push({id:'L'+Date.now(),subject:subj,grade,title,order:maxOrder+1,context:qs('#les-context').value.trim(),notes:''});
+  DB.set('mccs_lessons',lessons);toast('පාඩම එකතු කළා ✓','success');render();
+}
+function editLesson(id){
+  const lessons=DB.get('mccs_lessons',[]);const l=lessons.find(x=>x.id===id);if(!l)return;
+  const t=prompt('නව නම:',l.title);if(t===null)return;
+  const c=prompt('AI Context:',l.context||'');if(c===null)return;
+  l.title=t.trim()||l.title;l.context=c.trim();
+  DB.set('mccs_lessons',lessons);toast('යාවත්කාලීන ✓','success');render();
+}
+function delLesson(id){
+  if(!confirm('මකන්නද?'))return;
+  DB.set('mccs_lessons',DB.get('mccs_lessons',[]).filter(l=>l.id!==id));
+  DB.set('mccs_questions',DB.get('mccs_questions',[]).filter(q=>q.lessonId!==id));
+  DB.set('mccs_past_papers',DB.get('mccs_past_papers',[]).filter(p=>p.lessonId!==id));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== PAST PAPERS ADMIN ===== */
+function ppUpdateLessons(){
+  const subj=qs('#pp-subject').value,grade=qs('#pp-grade').value;
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===subj&&String(l.grade)===String(grade));
+  const sel=qs('#pp-lesson');
+  if(sel)sel.innerHTML=lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('');
+}
+function ppSrcToggle(){
+  const src=document.querySelector('input[name="pp-src"]:checked').value;
+  qs('#pp-url-wrap').classList.toggle('hidden',src!=='url');
+  qs('#pp-file-wrap').classList.toggle('hidden',src!=='file');
+}
+function adminPapers(isTeacher=false){
+  const u=currentUser();
+  const allPapers=DB.get('mccs_past_papers',[]);
+  const papers=isTeacher?allPapers.filter(p=>p.subject===u.subject):allPapers;
+  const subjOptions=isTeacher
+    ?`<option value="${u.subject}">${SUBJECTS[u.subject].en}</option>`
+    :Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('');
+  const defaultSubj=isTeacher?u.subject:'BS';
+  const defaultLessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===defaultSubj&&String(l.grade)==='12');
+  const lessonsAll=DB.get('mccs_lessons',[]);
+  return `<div class="admin-panel">
+    <h3>📄 Past Papers Management</h3>
+    <p class="hint">පාඩමකට අදාළව past papers add කරන්න. URL (Google Drive / Dropbox) හෝ PDF file upload (max 2MB). ${isTeacher?'ඔබේ විෂයට පමණක්.':''}</p>
+    <div class="form-row">
+      <div class="form-field"><label>Subject</label>
+        <select id="pp-subject" ${isTeacher?'disabled':''} onchange="ppUpdateLessons()">${subjOptions}</select></div>
+      <div class="form-field"><label>Grade</label>
+        <select id="pp-grade" onchange="ppUpdateLessons()"><option value="12">12</option><option value="13">13</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>Year</label>
+        <input type="number" id="pp-year" value="${new Date().getFullYear()-1}" min="2000" max="2100"></div>
+      <div class="form-field"><label>Paper Type</label>
+        <select id="pp-type">
+          <option value="MCQ">MCQ</option>
+          <option value="Essay">Essay (Part II)</option>
+          <option value="Structured">Structured (Part I)</option>
+          <option value="Full">Full Paper</option>
+          <option value="Marking">Marking Scheme</option>
+        </select></div>
+    </div>
+    <div class="form-field"><label>Title (optional)</label>
+      <input id="pp-title" placeholder="Auto-generated if empty"></div>
+    <div class="form-field"><label>Lesson (Required)</label>
+      <select id="pp-lesson">${defaultLessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('')}</select>
+    </div>
+    <div class="form-field"><label>Source</label>
+      <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px">
+          <input type="radio" name="pp-src" value="url" checked onchange="ppSrcToggle()" style="width:auto;accent-color:var(--gold)"> URL
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px">
+          <input type="radio" name="pp-src" value="file" onchange="ppSrcToggle()" style="width:auto;accent-color:var(--gold)"> File Upload
+        </label>
+      </div>
+    </div>
+    <div class="form-field" id="pp-url-wrap">
+      <label>URL</label>
+      <input id="pp-url" placeholder="https://drive.google.com/file/d/...">
+    </div>
+    <div class="form-field hidden" id="pp-file-wrap">
+      <label>PDF File (max 2MB)</label>
+      <input type="file" id="pp-file" accept="application/pdf">
+    </div>
+    <button class="btn btn-primary" style="width:auto" onclick="savePaper(${isTeacher})">💾 Save Past Paper</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+    <h4 style="margin-bottom:14px;color:var(--gold)">Existing Papers (${papers.length})</h4>
+    ${papers.length?`<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table">
+      <thead><tr><th>Subject</th><th>Grade</th><th>Lesson</th><th>Year</th><th>Type</th><th></th></tr></thead>
+      <tbody>${papers.sort((a,b)=>b.addedAt-a.addedAt).map(p=>{
+        const lesson=lessonsAll.find(l=>l.id===p.lessonId);
+        return `<tr>
+        <td>${SUBJECTS[p.subject].en}</td><td>${p.grade}</td>
+        <td style="font-size:12px">${lesson?esc(lesson.title):'<span style="color:var(--danger)">Unattached</span>'}</td>
+        <td><b style="color:var(--gold)">${p.year}</b></td>
+        <td>${p.paperType}</td>
+        <td><a href="${p.url}" target="_blank" rel="noopener" style="color:var(--gold);font-size:12px;font-weight:700;text-decoration:none;margin-right:8px">View</a>
+          <button class="btn btn-sm btn-danger" onclick="delPaper('${p.id}')">Del</button></td>
+      </tr>`;}).join('')}</tbody>
+    </table></div>`:'<div class="empty-state"><div class="icon">📄</div><p>තවම past papers නැත</p></div>'}
+  </div>`;
+}
+async function savePaper(isTeacher){
+  const u=currentUser();
+  const subj=qs('#pp-subject').value;
+  const grade=parseInt(qs('#pp-grade').value);
+  const year=parseInt(qs('#pp-year').value);
+  const paperType=qs('#pp-type').value;
+  const titleInput=qs('#pp-title').value.trim();
+  const src=document.querySelector('input[name="pp-src"]:checked').value;
+  const lessonId=qs('#pp-lesson').value;
+  if(!lessonId)return toast('Lesson එකක් තෝරන්න','error');
+  if(!year||year<2000)return toast('වලංගු year එකක් දෙන්න','error');
+  let url='';
+  if(src==='url'){
+    url=qs('#pp-url').value.trim();
+    if(!url)return toast('URL දෙන්න','error');
+    if(!/^https?:\/\//i.test(url))return toast('http:// හෝ https:// වලින් පටන් ගන්න','error');
+  } else {
+    const file=qs('#pp-file').files[0];
+    if(!file)return toast('PDF file එකක් තෝරන්න','error');
+    if(file.size>2*1024*1024)return toast('File 2MB ට වඩා වැඩියි','error');
+    if(file.type!=='application/pdf')return toast('PDF file එකක් පමණක්','error');
+    url=await fileToDataUrl(file);
+  }
+  const papers=DB.get('mccs_past_papers',[]);
+  papers.push({
+    id:'P'+Date.now(),
+    subject:subj,grade,year,paperType,
+    title:titleInput || `${year} ${SUBJECTS[subj].en} ${paperType}`,
+    url,lessonId,addedBy:u.username,addedAt:Date.now()
+  });
+  try{
+    DB.set('mccs_past_papers',papers);
+  }catch(e){
+    toast('Storage full! URL එකක් භාවිත කරන්න','error');
+    return;
+  }
+  toast('Past paper එකතු කළා ✓','success');
+  render();
+}
+function delPaper(id){
+  if(!confirm('මෙම past paper එක මකන්නද?'))return;
+  DB.set('mccs_past_papers',DB.get('mccs_past_papers',[]).filter(p=>p.id!==id));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== TEACHERS ===== */
+function adminTeachers(){
+  const users=DB.get('mccs_users',[]).filter(u=>u.role==='teacher');
+  const bySubj={};users.forEach(t=>{(bySubj[t.subject]=bySubj[t.subject]||[]).push(t)});
+  return `<div class="admin-panel">
+    <h3>👨‍🏫 Teacher Management</h3>
+    <p class="hint">${users.length} ගුරුවරු · Default password: <b style="color:var(--gold)">teach123</b></p>
+    <div class="form-row">
+      <div class="form-field"><label>Username</label><input id="t-user" placeholder="e.g., new_teacher"></div>
+      <div class="form-field"><label>Password</label><input id="t-pass" type="password" placeholder="min 4 chars"></div>
+    </div>
+    <div class="form-field"><label>Subject</label>
+      <select id="t-subject">${Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
+    <button class="btn btn-primary" style="width:auto" onclick="addTeacher()">➕ ගුරුවරයෙක් එකතු කරන්න</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+    ${Object.keys(SUBJECTS).map(k=>{
+      const subs=bySubj[k]||[];if(!subs.length)return '';
+      return `<div style="margin-bottom:20px"><h4 style="color:var(--gold);margin-bottom:10px">${SUBJECTS[k].en} (${subs.length})</h4>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table class="students-table"><thead><tr><th>Username</th><th>Subject</th><th>Password</th><th></th></tr></thead>
+        <tbody>${subs.map(t=>`<tr><td>${esc(t.username)}</td><td>${SUBJECTS[t.subject].en}</td>
+          <td style="color:var(--muted);font-family:monospace">${esc(t.password)}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="delUser('${esc(t.username)}')">Delete</button></td></tr>`).join('')}</tbody></table></div></div>`;
+    }).join('')}
+  </div>`;
+}
+function addTeacher(){
+  const u=qs('#t-user').value.trim(),p=qs('#t-pass').value,subj=qs('#t-subject').value;
+  if(!u||!p)return toast('සියලු තොරතුරු පුරවන්න','error');
+  if(u.length<3)return toast('Username අවම 3','error');
+  if(p.length<4)return toast('Password අවම 4','error');
+  const users=DB.get('mccs_users',[]);
+  if(users.find(x=>x.username===u))return toast('මෙම username දැනටමත් ඇත','error');
+  users.push({username:u,password:p,role:'teacher',subject:subj,created:Date.now()});
+  DB.set('mccs_users',users);toast('ගුරුවරයා එකතු කළා ✓','success');render();
+}
+
+/* ===== STUDENTS ===== */
+function adminStudents(){
+  const users=DB.get('mccs_users',[]).filter(u=>u.role==='student');
+  return `<div class="admin-panel"><h3>👥 Students</h3>
+    <p class="hint">${users.length} ගිණුම්</p>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Username</th><th>School</th><th>Grade</th><th>Class</th><th></th></tr></thead>
+    <tbody>${users.map(u=>`<tr>
+      <td>${esc(u.username)}</td><td>${esc(u.school||'-')}</td><td>${u.grade||'-'}</td><td>${esc(u.class||'-')}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="delUser('${esc(u.username)}')">Delete</button></td></tr>`).join('')}</tbody></table></div>
+  </div>`;
+}
+function delUser(username){
+  if(!confirm('මකන්නද?'))return;
+  DB.set('mccs_users',DB.get('mccs_users',[]).filter(u=>u.username!==username));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== QUIZ CONFIG ===== */
+function adminQuiz(){
+  const cfg=DB.get('mccs_quiz_config');
+  const dt=new Date(cfg.startAt);
+  const local=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate())+'T'+pad(dt.getHours())+':'+pad(dt.getMinutes());
+  return `<div class="admin-panel"><h3>⚙️ Daily Quiz Configuration</h3>
+    <div class="form-row">
+      <div class="form-field"><label>ආරම්භක වේලාව</label><input type="datetime-local" id="q-start" value="${local}"></div>
+      <div class="form-field"><label>කාලය (මිනිත්තු)</label><input type="number" id="q-dur" value="${cfg.durationMin}" min="1" max="120"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>ප්‍රශ්න ගණන</label><input type="number" id="q-count" value="${cfg.questionCount}" min="1" max="100"></div>
+      <div class="form-field"><label>Grade</label>
+        <select id="q-grade"><option value="any" ${cfg.grade==='any'?'selected':''}>12 & 13</option>
+          <option value="12" ${cfg.grade==='12'?'selected':''}>Grade 12</option>
+          <option value="13" ${cfg.grade==='13'?'selected':''}>Grade 13</option></select></div>
+    </div>
+    <div class="form-field"><label>විෂයයන්</label>
+      <div class="checkbox-grid">${Object.keys(SUBJECTS).map(k=>`<label><input type="checkbox" class="q-subj" value="${k}" ${cfg.subjects.includes(k)?'checked':''}> ${SUBJECTS[k].en}</label>`).join('')}</div>
+    </div>
+    <div class="form-field"><label style="text-transform:none;font-size:14px"><input type="checkbox" id="q-active" ${cfg.active?'checked':''} style="width:auto;accent-color:var(--gold)"> Quiz සක්‍රීය</label></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" style="width:auto" onclick="saveQuizCfg()">💾 Save</button>
+      <button class="btn btn-outline" style="width:auto" onclick="resetQuizAttempts()">🔄 Reset</button>
+    </div>
+  </div>`;
+}
+function saveQuizCfg(){
+  const subjects=[...document.querySelectorAll('.q-subj:checked')].map(e=>e.value);
+  if(!subjects.length)return toast('අවම විෂයයක් තෝරන්න','error');
+  DB.set('mccs_quiz_config',{startAt:new Date(qs('#q-start').value).getTime(),durationMin:parseInt(qs('#q-dur').value)||10,questionCount:parseInt(qs('#q-count').value)||10,grade:qs('#q-grade').value,subjects,active:qs('#q-active').checked});
+  toast('Saved ✓','success');render();
+}
+function resetQuizAttempts(){
+  if(!confirm('Attempts reset කරන්නද?'))return;
+  DB.set('mccs_attempts',[]);toast('Reset','success');render();
+}
+
+/* ===== INIT ===== */
+(function init(){
+  playIntro();
+  setInterval(()=>{
+    if(state.view==='quiz'){
+      const cfg=DB.get('mccs_quiz_config');
+      const el=document.getElementById('countdown');
+      if(el&&Date.now()<cfg.startAt){
+        const left=Math.floor((cfg.startAt-Date.now())/1000);
+        el.textContent=pad(Math.floor(left/3600))+':'+pad(Math.floor(left%3600/60))+':'+pad(left%60);
+      }
+    }
+  },1000);
+})();
 </script>
 </body>
 </html>
