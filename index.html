@@ -1,4 +1,11 @@
-:root{
+<!DOCTYPE html>
+<html lang="si" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Mahinda College – Commerce Section</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
 --bg:#faf8f3;--bg-2:#f5f0e5;--surface:#ffffff;--surface-2:#f9f6f0;--surface-3:#f0ebe0;
 --gold:#b8860b;--gold-bright:#d4a017;--gold-light:#c99612;--gold-dim:#8b6914;
 --gold-glow:rgba(184,134,11,.25);--gold-glow-soft:rgba(184,134,11,.1);
@@ -484,3 +491,1790 @@ el.textContent=pad(Math.floor(left/3600))+':'+pad(Math.floor(left%3600/60))+':'+
 }
 },1000);
 })();
+:root{
+  --bg:#faf8f3;--bg-2:#f5f0e5;--surface:#ffffff;--surface-2:#f9f6f0;--surface-3:#f0ebe0;
+  --gold:#b8860b;--gold-bright:#d4a017;--gold-light:#c99612;--gold-dim:#8b6914;
+  --gold-glow:rgba(184,134,11,.25);--gold-glow-soft:rgba(184,134,11,.1);
+  --text:#1a1a1a;--text-2:#333333;--muted:#6a6a6a;--muted-2:#999999;
+  --border:#e5ddd0;--border-hi:#d4c9b8;
+  --success:#2e7d32;--success-bg:rgba(46,125,50,.1);
+  --danger:#c62828;--danger-bg:rgba(198,40,40,.1);
+  --info:#1565c0;--info-bg:rgba(21,101,192,.1);
+  --radius:14px;--radius-sm:10px;--radius-lg:20px;
+  --shadow-md:0 8px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.12);
+  --transition:.25s cubic-bezier(.4,0,.2,1);
+  --topbar-h:66px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans Sinhala','Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(212,160,23,.12),transparent),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(212,160,23,.08),transparent);background-attachment:fixed;overflow-x:hidden}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.25}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;transition:var(--transition);touch-action:manipulation}
+input,select,textarea{font-family:inherit;font-size:16px;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);width:100%;background:var(--surface-2);color:var(--text);transition:var(--transition)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow-soft);background:var(--surface-3)}
+input::placeholder,textarea::placeholder{color:var(--muted-2)}
+textarea{resize:vertical;min-height:80px}
+.hidden{display:none!important}
+img{max-width:100%;height:auto}
+
+#intro-screen{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at center,#faf8f3 0%,#f5f0e5 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 1s cubic-bezier(.4,0,.2,1),visibility 1s}
+#intro-screen.fade-out{opacity:0;visibility:hidden;pointer-events:none}
+#intro-screen::before{content:'';position:absolute;inset:-50%;background:radial-gradient(circle at 50% 50%,rgba(212,160,23,.18),transparent 55%);animation:introBgRotate 20s linear infinite}
+@keyframes introBgRotate{to{transform:rotate(360deg)}}
+.intro-ring{position:absolute;top:50%;left:50%;border:2px solid rgba(212,160,23,.4);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0}
+.intro-ring.r1{animation:introRingExpand 2.5s ease-out .2s infinite}
+.intro-ring.r2{animation:introRingExpand 2.5s ease-out 1s infinite}
+.intro-ring.r3{animation:introRingExpand 2.5s ease-out 1.8s infinite}
+@keyframes introRingExpand{0%{width:140px;height:140px;opacity:.9;border-width:2px}100%{width:600px;height:600px;opacity:0;border-width:1px}}
+.intro-content{text-align:center;position:relative;z-index:2;animation:introContentIn .8s ease-out;padding:0 20px}
+@keyframes introContentIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.intro-logo{width:clamp(100px,22vw,130px);height:clamp(100px,22vw,130px);background:linear-gradient(135deg,#d4a017 0%,#ffd700 50%,#d4a017 100%);background-size:200% 200%;color:#0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:clamp(40px,10vw,52px);font-weight:900;letter-spacing:-2px;margin:0 auto 28px;animation:introLogoIn 1.4s cubic-bezier(.34,1.56,.64,1),introLogoGlow 2s ease-in-out infinite alternate .7s,introLogoShimmer 2s linear infinite;box-shadow:0 0 40px rgba(212,160,23,.5),0 0 80px rgba(212,160,23,.25),inset 0 -6px 12px rgba(0,0,0,.15);position:relative;overflow:hidden}
+.intro-logo img{width:100%;height:100%;object-fit:contain}
+.intro-logo::after{content:'';position:absolute;inset:-12px;border:2px solid rgba(212,160,23,.3);border-radius:50%;animation:introLogoRing 1.6s ease-out infinite}
+@keyframes introLogoRing{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.5);opacity:0}}
+@keyframes introLogoIn{0%{transform:scale(0) rotate(-180deg);opacity:0}60%{transform:scale(1.18) rotate(12deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes introLogoGlow{from{box-shadow:0 0 40px rgba(212,160,23,.5),0 0 80px rgba(212,160,23,.25),inset 0 -6px 12px rgba(0,0,0,.15)}to{box-shadow:0 0 70px rgba(212,160,23,.8),0 0 140px rgba(212,160,23,.4),inset 0 -6px 12px rgba(0,0,0,.15)}}
+@keyframes introLogoShimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.intro-title{font-size:clamp(24px,7vw,34px);background:linear-gradient(135deg,#b8860b,#d4a017,#b8860b);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:introTextIn .9s ease-out .7s forwards,introTitleShimmer 3s linear infinite 1.5s;font-family:'Inter','Noto Sans Sinhala',sans-serif}
+@keyframes introTitleShimmer{to{background-position:200% center}}
+.intro-subtitle{font-size:clamp(11px,3vw,13px);color:var(--muted);letter-spacing:clamp(3px,1.5vw,6px);text-transform:uppercase;margin-top:12px;font-weight:600;opacity:0;animation:introTextIn .9s ease-out 1.1s forwards}
+@keyframes introTextIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.intro-particles{position:absolute;pointer-events:none;width:0;height:0}
+.intro-spark{position:absolute;font-size:18px;pointer-events:none;opacity:0;animation:sparkOut 1.6s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes sparkOut{0%{transform:translate(-50%,-50%) scale(0) rotate(0);opacity:0}20%{opacity:1;filter:blur(0)}100%{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1.3) rotate(180deg);opacity:0;filter:blur(3px)}}
+
+.flower-particle{position:fixed;pointer-events:none;font-size:var(--size,16px);z-index:9998;top:0;left:0;transform:translate(-50%,-50%);animation:flowerBurst var(--dur,1s) cubic-bezier(.2,.6,.3,1) forwards;will-change:transform,opacity,filter}
+@keyframes flowerBurst{0%{transform:translate(-50%,-50%) scale(.4) rotate(0);opacity:1;filter:blur(0)}35%{opacity:1;filter:blur(0)}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.8) rotate(var(--rot));opacity:0;filter:blur(7px)}}
+.flower-rain{position:fixed;pointer-events:none;font-size:var(--size,20px);z-index:9997;top:-80px;left:0;animation:flowerFall var(--dur,4s) linear forwards;will-change:transform,opacity}
+@keyframes flowerFall{0%{transform:translateY(0) translateX(0) rotate(0);opacity:0}10%{opacity:1}85%{opacity:.9}100%{transform:translateY(115vh) translateX(var(--sway,60px)) rotate(var(--rot,360deg));opacity:0}}
+
+#auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+#auth-screen::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 20% 30%,rgba(212,160,23,.15),transparent 40%),radial-gradient(circle at 80% 70%,rgba(212,160,23,.1),transparent 40%);animation:rotate 60s linear infinite;pointer-events:none}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.auth-card{background:linear-gradient(145deg,#ffffff,#faf8f3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(24px,5vw,40px) clamp(20px,4vw,32px);width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.9);position:relative;z-index:1;animation:fadeUp .6s cubic-bezier(.4,0,.2,1);max-height:95vh;overflow-y:auto}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.auth-logo{width:clamp(64px,15vw,76px);height:clamp(64px,15vw,76px);background:linear-gradient();color:#0a0a0a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;margin:0 auto 18px;box-shadow:0 8px 24px var(--gold-glow);font-family:'Inter',sans-serif;letter-spacing:-1px;overflow:hidden}
+.auth-logo img{width:100%;height:100%;object-fit:contain}
+.auth-card h1{text-align:center;font-size:clamp(19px,4.5vw,22px);margin-bottom:6px;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.auth-card p.sub{text-align:center;color:var(--muted);font-size:clamp(11px,3vw,13px);margin-bottom:22px;font-weight:500}
+.auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--surface-2);padding:5px;border-radius:12px;border:1px solid var(--border)}
+.auth-tabs button{flex:1;padding:10px 6px;border-radius:8px;font-weight:600;font-size:clamp(12px,3vw,14px);color:var(--muted)}
+.auth-tabs button.active{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;box-shadow:0 4px 12px var(--gold-glow)}
+.form-field{margin-bottom:14px}
+.form-field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:var(--transition);position:relative;min-height:44px}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;width:100%;box-shadow:0 4px 16px var(--gold-glow)}
+.btn-primary:hover:not(:disabled){box-shadow:0 6px 24px var(--gold-glow);transform:translateY(-1px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#0a0a0a;width:100%;box-shadow:0 4px 16px var(--gold-glow)}
+.btn-outline{background:var(--surface-2);border:1.5px solid var(--border-hi);color:var(--text)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);background:var(--surface-3)}
+.btn-sm{padding:8px 14px;font-size:13px;min-height:36px}
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1.5px solid rgba(198,40,40,.3)}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-ghost{background:transparent;color:var(--muted);font-size:12px;padding:10px;text-align:center;width:100%;margin-top:10px;font-weight:600}
+.btn-ghost:hover{color:var(--gold)}
+.auth-msg{margin-top:14px;padding:12px;border-radius:10px;font-size:13px;text-align:center;font-weight:600;animation:fadeUp .3s}
+.auth-msg.error{background:var(--danger-bg);color:var(--danger);border:1px solid rgba(198,40,40,.25)}
+.auth-msg.ok{background:var(--success-bg);color:var(--success);border:1px solid rgba(46,125,50,.25)}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+#app{display:none}
+.topbar{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px clamp(12px,3vw,20px);display:flex;align-items:center;gap:clamp(6px,2vw,12px);position:sticky;top:0;z-index:50;min-height:var(--topbar-h)}
+.topbar .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(),var());color:#0a0a0a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;font-family:'Inter',sans-serif;box-shadow:0 4px 12px rgba(184,134,11,.25);overflow:hidden}
+.topbar .logo img{width:100%;height:100%;object-fit:contain}
+.topbar .title{font-weight:700;font-size:clamp(12px,3vw,15px);line-height:1.2;min-width:0;flex-shrink:1}
+.topbar .title small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .spacer{flex:1}
+.topbar .user-chip{background:var(--surface-2);border:1px solid var(--border-hi);padding:6px 10px;border-radius:20px;font-size:13px;display:flex;align-items:center;gap:7px;max-width:200px;min-width:0}
+.topbar .user-chip .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:clamp(11px,2.8vw,13px)}
+.topbar .user-chip .role{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
+.topbar .user-chip .role.teacher{background:linear-gradient(135deg,#64b5f6,#2196f3);color:#fff}
+.topbar .user-chip .role.admin{background:linear-gradient(135deg,#ffd700,#d4a017);color:#0a0a0a}
+.topbar .user-chip .role.guest{background:var(--surface-3);color:var(--muted)}
+.icon-btn{background:var(--surface-2);border:1px solid var(--border-hi);width:40px;height:40px;border-radius:10px;font-size:16px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.icon-btn:hover{border-color:var(--gold);background:var(--surface-3)}
+.icon-btn .badge{position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;min-width:18px;height:18px;border-radius:10px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.topbar button.logout{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border-hi);padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600;flex-shrink:0}
+.topbar button.logout:hover{background:var(--danger-bg);color:var(--danger)}
+.topbar .btn-register{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;flex-shrink:0}
+.navbar{background:rgba(250,248,243,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 clamp(12px,3vw,20px);display:flex;gap:4px;overflow-x:auto;position:sticky;top:var(--topbar-h);z-index:40;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.navbar::-webkit-scrollbar{display:none}
+.navbar button{padding:14px clamp(12px,3vw,18px);font-weight:600;font-size:clamp(12px,3vw,14px);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;position:relative;flex-shrink:0}
+.navbar button:hover{color:var(--text-2)}
+.navbar button.active{color:var(--gold);border-bottom-color:var(--gold);text-shadow:0 0 20px var(--gold-glow)}
+.container{max-width:1180px;margin:0 auto;padding:clamp(16px,4vw,28px) clamp(12px,3vw,20px) 80px}
+
+.hero{background:linear-gradient(135deg,#fff8e6 0%,#ffffff 50%,#fff8e6 100%);border:1px solid #e8c86a;border-radius:var(--radius-lg);padding:clamp(20px,5vw,38px) clamp(16px,4vw,32px);margin-bottom:clamp(20px,4vw,32px);position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(184,134,11,.15),inset 0 1px 0 rgba(255,255,255,.8)}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(212,160,23,.22),transparent 70%);border-radius:50%;pointer-events:none}
+.hero h2{font-size:clamp(20px,5vw,28px);margin-bottom:10px;background:linear-gradient(135deg,var(--gold-bright),var(--gold-light));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1;word-break:break-word}
+.hero p{color:var(--muted);font-size:clamp(13px,3.2vw,15px);max-width:620px;position:relative;z-index:1}
+.hero .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-top:22px;position:relative;z-index:1}
+.hero .stat{background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border:1px solid var(--border);padding:14px 16px;border-radius:12px;min-width:0;transition:var(--transition);text-align:center}
+.hero .stat:hover{border-color:var(--gold);transform:translateY(-2px)}
+.hero .stat b{display:block;font-size:clamp(20px,4vw,24px);color:var(--gold);font-weight:800;line-height:1.2}
+.hero .stat span{font-size:clamp(10px,2.5vw,11px);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.guest-banner{background:var(--info-bg);border:1px solid rgba(21,101,192,.3);border-radius:12px;padding:14px 18px;margin-bottom:22px;display:flex;align-items:center;gap:14px;font-size:14px;flex-wrap:wrap}
+.guest-banner .gbi{font-size:22px}
+.guest-banner b{color:var(--info)}
+.guest-banner p{color:var(--text-2);font-size:13px;margin-top:2px}
+.guest-banner button{margin-left:auto;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;white-space:nowrap}
+
+.section-title{font-size:clamp(17px,4vw,20px);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.section-title::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));border-radius:2px;box-shadow:0 0 12px var(--gold-glow);flex-shrink:0}
+.subjects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:36px}
+.subject-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;transition:var(--transition);cursor:pointer;position:relative;overflow:hidden}
+.subject-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-color,rgba(212,160,23,.06)),transparent 60%);opacity:0;transition:opacity var(--transition);pointer-events:none}
+.subject-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 12px 32px rgba(0,0,0,.1),0 0 40px var(--gold-glow-soft)}
+.subject-card:hover::before{opacity:1}
+.subject-card .icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin-bottom:16px;box-shadow:0 6px 16px rgba(0,0,0,.15);position:relative;z-index:1}
+.subject-card h3{font-size:clamp(15px,3.5vw,17px);margin-bottom:4px;position:relative;z-index:1;word-break:break-word}
+.subject-card .code{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;position:relative;z-index:1}
+.subject-card .count{margin-top:16px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
+.subject-card .qcount{display:inline-flex;align-items:center;gap:4px;background:rgba(184,134,11,.15);color:var(--gold);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid rgba(184,134,11,.3)}
+
+.breadcrumb{font-size:clamp(11px,2.8vw,13px);color:var(--muted);margin-bottom:20px;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+.breadcrumb a{color:var(--gold);text-decoration:none;cursor:pointer;font-weight:600}
+.grade-tabs{display:flex;gap:8px;margin-bottom:24px;background:var(--surface);padding:6px;border-radius:12px;width:fit-content;max-width:100%;border:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.grade-tabs button{padding:10px clamp(14px,4vw,24px);border-radius:8px;font-weight:700;font-size:clamp(12px,3vw,14px);color:var(--muted);white-space:nowrap;flex-shrink:0}
+.grade-tabs button.active{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;box-shadow:0 4px 12px var(--gold-glow)}
+.lesson-list{display:grid;gap:12px}
+.lesson-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:clamp(14px,3vw,18px) clamp(14px,3.5vw,20px);display:flex;align-items:center;gap:clamp(10px,2.5vw,16px);cursor:pointer;transition:var(--transition)}
+.lesson-item:hover{border-color:var(--gold);transform:translateX(4px);background:var(--surface-2)}
+.lesson-item .num{width:42px;height:42px;background:var(--surface-3);border:1px solid var(--border-hi);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--gold);flex-shrink:0;font-size:15px;font-family:'Inter',sans-serif}
+.lesson-item .info{flex:1;min-width:0}
+.lesson-item .info h4{font-size:clamp(13px,3.2vw,15px);margin-bottom:3px;word-break:break-word}
+.lesson-item .info small{color:var(--muted);font-size:clamp(10px,2.6vw,12px)}
+.lesson-item .done-badge{background:var(--success-bg);color:var(--success);padding:5px 10px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid rgba(46,125,50,.3);white-space:nowrap;flex-shrink:0}
+.lesson-item .arrow{color:var(--muted);font-size:22px;transition:var(--transition);flex-shrink:0}
+.lesson-item:hover .arrow{color:var(--gold);transform:translateX(4px)}
+
+.lesson-header{background:linear-gradient(135deg,#fff8e6,#fefcf7);border:1px solid #e8c86a;border-radius:var(--radius-lg);padding:clamp(18px,4vw,28px);margin-bottom:24px;position:relative;overflow:hidden}
+.lesson-header h2{font-size:clamp(18px,4.5vw,24px);margin-bottom:8px;position:relative;z-index:1;word-break:break-word}
+.lesson-header .meta{font-size:clamp(11px,2.8vw,13px);color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;position:relative;z-index:1}
+.lesson-header .meta span{background:rgba(255,255,255,.75);padding:4px 10px;border-radius:20px;border:1px solid var(--border);font-weight:600;white-space:nowrap}
+.content-tabs{display:flex;gap:4px;margin-bottom:20px;flex-wrap:nowrap;background:var(--surface);padding:6px;border-radius:12px;width:fit-content;max-width:100%;border:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.content-tabs::-webkit-scrollbar{display:none}
+.content-tabs button{padding:10px clamp(12px,3vw,18px);font-weight:700;font-size:clamp(12px,3vw,14px);color:var(--muted);border-radius:8px;white-space:nowrap;flex-shrink:0}
+.content-tabs button.active{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;box-shadow:0 4px 12px var(--gold-glow)}
+.content-box{background:var(--surface);border-radius:var(--radius);padding:clamp(16px,4vw,28px);border:1.5px solid var(--border)}
+.notes h3{color:var(--gold);font-size:clamp(15px,3.5vw,17px);margin:22px 0 10px}
+.notes h3:first-child{margin-top:0}
+.notes p{margin-bottom:14px;color:var(--text-2);word-break:break-word}
+.notes ul{margin:0 0 14px 22px;color:var(--text-2)}
+.notes .highlight{background:linear-gradient(180deg,transparent 60%,rgba(212,160,23,.35) 60%);font-weight:600}
+.notes .def-box{background:#fdf8ec;border-left:4px solid var(--gold);padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0;color:var(--text-2);word-break:break-word}
+.notes .def-box b{color:var(--gold)}
+
+.game-selector{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+.game-tile{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:clamp(16px,3vw,22px) clamp(12px,2.5vw,16px);text-align:center;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden}
+.game-tile:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
+.game-tile .gi{font-size:clamp(26px,6vw,32px);margin-bottom:10px}
+.game-tile h4{font-size:clamp(12px,3vw,14px);margin-bottom:4px}
+.game-tile small{font-size:11px;color:var(--muted);font-weight:600}
+.q-card{background:var(--surface-2);border-radius:var(--radius);padding:clamp(16px,4vw,24px);margin-bottom:16px;border:1px solid var(--border)}
+.q-card .qtext{font-size:clamp(14px,3.5vw,16px);font-weight:600;margin-bottom:18px;word-break:break-word}
+.opt-list{display:grid;gap:10px}
+.opt-btn{padding:14px 18px;background:var(--surface);border:1.5px solid var(--border-hi);border-radius:12px;text-align:left;font-size:clamp(13px,3.2vw,15px);color:var(--text);word-break:break-word;min-height:48px}
+.opt-btn:hover:not(:disabled){border-color:var(--gold);background:var(--surface-3);transform:translateX(3px)}
+.opt-btn.correct{background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:600}
+.opt-btn.wrong{background:var(--danger-bg);border-color:var(--danger);color:var(--danger)}
+.opt-btn:disabled{cursor:default}
+.tf-btns{display:flex;gap:12px}
+.tf-btns button{flex:1;padding:16px;border-radius:12px;background:var(--surface);border:1.5px solid var(--border-hi);font-weight:700;font-size:clamp(13px,3.2vw,15px);min-height:52px}
+.tf-btns button:hover:not(:disabled){border-color:var(--gold);background:var(--surface-3)}
+.tf-btns button.correct{background:var(--success-bg);border-color:var(--success);color:var(--success)}
+.tf-btns button.wrong{background:var(--danger-bg);border-color:var(--danger);color:var(--danger)}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.match-col{display:flex;flex-direction:column;gap:10px}
+.match-item{padding:13px 14px;background:var(--surface);border:1.5px solid var(--border-hi);border-radius:12px;font-size:clamp(12px,3vw,14px);cursor:pointer;transition:var(--transition);word-break:break-word;min-height:48px;display:flex;align-items:center}
+.match-item:hover{border-color:var(--gold);background:var(--surface-3)}
+.match-item.selected{border-color:var(--gold);background:rgba(212,160,23,.1);box-shadow:0 0 0 3px var(--gold-glow-soft)}
+.match-item.matched{background:var(--success-bg);border-color:var(--success);color:var(--success);cursor:default;opacity:.8}
+.game-result{background:linear-gradient(135deg,#fff8e6,#fefcf7);border:2px solid var(--gold);border-radius:var(--radius-lg);padding:clamp(20px,5vw,32px);text-align:center;margin-top:20px}
+.game-result h3{color:var(--gold);font-size:clamp(18px,4.5vw,22px);margin-bottom:10px}
+.game-result .score-big{font-size:clamp(36px,10vw,48px);font-weight:900;background:linear-gradient(135deg,var(--gold-bright),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin:8px 0 12px;font-family:'Inter',sans-serif}
+.game-result p{color:var(--muted);margin-bottom:20px}
+
+.quiz-banner{background:linear-gradient(135deg,#fff8e6,#fefcf7);border:1.5px solid #e8c86a;border-radius:var(--radius-lg);padding:clamp(24px,5vw,36px) clamp(16px,4vw,28px);margin-bottom:24px;text-align:center;position:relative;overflow:hidden}
+.quiz-banner h2{font-size:clamp(18px,4.5vw,22px);margin-bottom:10px;color:var(--gold)}
+.quiz-banner .countdown{font-size:clamp(30px,9vw,42px);font-weight:900;color:var(--gold);margin:16px 0;letter-spacing:2px;font-variant-numeric:tabular-nums;font-family:'Inter',sans-serif;text-shadow:0 0 30px var(--gold-glow)}
+.quiz-banner p{color:var(--muted);font-size:clamp(12px,3vw,14px)}
+.quiz-meta{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.quiz-meta div{background:rgba(255,255,255,.75);padding:8px 14px;border-radius:20px;font-size:clamp(11px,2.8vw,12px);font-weight:600;border:1px solid var(--border)}
+.quiz-runner{background:var(--surface);border-radius:var(--radius);padding:clamp(16px,4vw,28px);border:1.5px solid var(--border)}
+.quiz-runner .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.quiz-runner .qhead .timer{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:8px 14px;border-radius:20px;font-weight:800;font-size:clamp(12px,3vw,14px);font-variant-numeric:tabular-nums;box-shadow:0 4px 12px var(--gold-glow);font-family:'Inter',sans-serif;flex-shrink:0}
+.leaderboard-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);font-size:clamp(11px,2.8vw,14px)}
+.leaderboard-table th{background:linear-gradient(135deg,#fff8e6,#f5f0e5);color:var(--gold);padding:12px clamp(8px,2vw,16px);text-align:left;font-size:clamp(10px,2.4vw,12px);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #e8c86a;white-space:nowrap}
+.leaderboard-table td{padding:12px clamp(8px,2vw,16px);border-bottom:1px solid var(--border);font-size:clamp(11px,2.8vw,14px);color:var(--text-2)}
+.leaderboard-table tr:last-child td{border-bottom:none}
+.leaderboard-table tr.top-1{background:rgba(212,160,23,.12)}
+.leaderboard-table tr.top-2{background:rgba(192,192,192,.1)}
+.leaderboard-table tr.top-3{background:rgba(205,127,50,.1)}
+.leaderboard-table .rank{font-weight:800;color:var(--gold);font-size:clamp(13px,3vw,16px);font-family:'Inter',sans-serif}
+
+.notif-list{display:grid;gap:12px}
+.notif-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:clamp(14px,3vw,18px) clamp(14px,3.5vw,20px);position:relative}
+.notif-item .nhead{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.notif-item .nhead .nfrom{font-size:clamp(10px,2.6vw,12px);color:var(--muted);font-weight:600;background:var(--surface-2);padding:3px 10px;border-radius:20px;border:1px solid var(--border-hi)}
+.notif-item .nhead .nfrom.teacher{color:var(--info);border-color:rgba(21,101,192,.3);background:var(--info-bg)}
+.notif-item .nhead .nfrom.admin{color:var(--gold);border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.1)}
+.notif-item .ntitle{font-size:clamp(13px,3.2vw,15px);font-weight:700;margin-bottom:6px;word-break:break-word}
+.notif-item .nbody{font-size:clamp(12px,3vw,14px);color:var(--text-2);margin-bottom:8px;line-height:1.5;word-break:break-word}
+.notif-item .ntime{font-size:11px;color:var(--muted)}
+
+.admin-tabs{display:flex;gap:6px;margin-bottom:24px;flex-wrap:nowrap;background:var(--surface);padding:6px;border-radius:12px;width:fit-content;max-width:100%;border:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.admin-tabs::-webkit-scrollbar{display:none}
+.admin-tabs button{padding:10px clamp(12px,3vw,16px);background:transparent;border-radius:8px;font-weight:700;font-size:clamp(11px,2.8vw,13px);color:var(--muted);white-space:nowrap;flex-shrink:0}
+.admin-tabs button:hover{color:var(--text-2)}
+.admin-tabs button.active{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;box-shadow:0 4px 12px var(--gold-glow)}
+.admin-panel{background:var(--surface);border-radius:var(--radius);padding:clamp(16px,4vw,28px);border:1.5px solid var(--border)}
+.admin-panel h3{font-size:clamp(16px,3.8vw,18px);color:var(--gold);margin-bottom:8px;word-break:break-word}
+.admin-panel .hint{font-size:clamp(11px,2.8vw,13px);color:var(--muted);margin-bottom:22px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.checkbox-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.checkbox-grid label{display:flex;align-items:center;gap:10px;font-size:clamp(12px,3vw,14px);padding:10px 12px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:var(--transition)}
+.checkbox-grid label:hover{border-color:var(--gold)}
+.checkbox-grid input{width:auto;accent-color:var(--gold);flex-shrink:0}
+.q-preview{background:var(--surface-2);border-radius:12px;padding:clamp(12px,3vw,16px);margin-bottom:12px;border:1px solid var(--border);font-size:clamp(12px,3vw,14px);word-break:break-word}
+.q-preview .qtag{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:800;margin-right:8px;letter-spacing:.5px}
+.students-table{width:100%;border-collapse:collapse;font-size:clamp(11px,2.8vw,13px);display:block;overflow-x:auto;white-space:nowrap}
+.students-table th{background:var(--surface-2);padding:10px 12px;text-align:left;font-weight:700;color:var(--gold);font-size:clamp(10px,2.4vw,11px);text-transform:uppercase;letter-spacing:.5px}
+.students-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text-2)}
+.empty-state{text-align:center;padding:clamp(30px,8vw,50px) 20px;color:var(--muted)}
+.empty-state .icon{font-size:clamp(40px,10vw,52px);margin-bottom:14px;opacity:.6}
+.empty-state h3{color:var(--gold);margin-bottom:8px;font-size:clamp(15px,3.8vw,18px)}
+.empty-state p{max-width:400px;margin:0 auto;font-size:clamp(12px,3vw,14px)}
+.loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:36px;color:var(--muted);flex-wrap:wrap;text-align:center}
+.spinner{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:700;box-shadow:0 12px 32px rgba(0,0,0,.2),0 0 30px rgba(184,134,11,.2);z-index:999;transform:translateY(120px);opacity:0;transition:.3s cubic-bezier(.4,0,.2,1);max-width:calc(100vw - 48px);word-break:break-word}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{background:linear-gradient(135deg,var(--danger),#e53935);color:#fff}
+.toast.success{background:linear-gradient(135deg,var(--success),#43a047);color:#fff}
+
+.paper-card{display:block;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;text-decoration:none;color:inherit;transition:var(--transition);cursor:pointer}
+.paper-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.1)}
+.paper-card .phead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:6px;flex-wrap:wrap}
+.paper-card .pyear{font-size:20px;font-weight:900;color:var(--gold);font-family:'Inter',sans-serif;line-height:1}
+.paper-card .ptype{background:rgba(184,134,11,.15);color:var(--gold);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;border:1px solid rgba(184,134,11,.3);text-transform:uppercase;white-space:nowrap}
+.paper-card .ptitle{font-size:clamp(12px,3vw,13px);font-weight:600;color:var(--text);line-height:1.4;margin-bottom:8px;word-break:break-word}
+.paper-card .pfoot{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.paper-card .ptag{background:var(--surface-3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;border:1px solid var(--border-hi)}
+
+.paper-subject-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.paper-subject-tabs::-webkit-scrollbar{display:none}
+.paper-subject-tabs button{padding:10px clamp(12px,3vw,18px);border-radius:10px;background:var(--surface);border:1.5px solid var(--border);font-weight:700;font-size:clamp(11px,2.8vw,13px);color:var(--muted);white-space:nowrap;transition:var(--transition);flex-shrink:0}
+.paper-subject-tabs button:hover{border-color:var(--gold);color:var(--text)}
+.paper-subject-tabs button.active{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;border-color:var(--gold);box-shadow:0 4px 12px var(--gold-glow)}
+.paper-summary{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:14px 16px;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
+.paper-summary .psi{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+.paper-summary h3{font-size:clamp(13px,3.2vw,16px);color:var(--text);margin:0;word-break:break-word}
+.paper-summary small{color:var(--muted);font-size:clamp(10px,2.6vw,12px);display:block;margin-top:2px}
+.lesson-papers-block{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:clamp(14px,3vw,18px) clamp(14px,3.5vw,20px);margin-bottom:14px}
+.lesson-papers-block .lpb-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.lesson-papers-block .lpb-head .lpb-num{width:36px;height:36px;background:var(--surface-3);border:1px solid var(--border-hi);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:800;font-size:14px;flex-shrink:0;font-family:'Inter',sans-serif}
+.lesson-papers-block .lpb-head h5{font-size:clamp(13px,3.2vw,15px);color:var(--text);margin:0;flex:1;min-width:0;word-break:break-word}
+.lesson-papers-block .lpb-head .lpb-count{background:rgba(184,134,11,.15);color:var(--gold);padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid rgba(184,134,11,.3);white-space:nowrap}
+.year-row{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-top:1px dashed var(--border)}
+.year-row:first-of-type{border-top:none;padding-top:0}
+.year-row .year-badge{flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0a0a0a;padding:6px 12px;border-radius:10px;font-weight:900;font-size:clamp(12px,3vw,13px);font-family:'Inter',sans-serif;min-width:62px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.year-row .year-papers{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;flex:1;min-width:0}
+.year-row .year-papers .paper-card{padding:12px 14px}
+.year-row .year-papers .paper-card .pyear{display:none}
+.year-row .year-papers .paper-card .ptitle{font-size:clamp(11px,2.8vw,13px);margin-bottom:6px}
+.no-papers-note{color:var(--muted);font-size:clamp(11px,2.8vw,13px);font-style:italic;padding:6px 0}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablet */
+@media(max-width:900px){
+  .form-row{grid-template-columns:1fr 1fr}
+  .hero .stats{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))}
+}
+
+/* Mobile */
+@media(max-width:700px){
+  :root{--topbar-h:60px}
+  .form-row{grid-template-columns:1fr}
+  .topbar .title small{display:none}
+  .topbar .user-chip .role{display:none}
+  .topbar .user-chip{padding:6px 8px;max-width:120px}
+  .match-wrap{grid-template-columns:1fr}
+  .content-box,.admin-panel{padding:16px}
+  .quiz-banner .countdown{font-size:32px}
+  .hero{padding:22px 18px}
+  .hero h2{font-size:20px}
+  .topbar{padding:10px 12px;gap:6px}
+  .navbar{padding:0 12px;top:60px}
+  .container{padding:16px 12px 60px}
+  .admin-tabs,.content-tabs,.grade-tabs{width:100%}
+  .topbar button.logout{padding:8px 10px;font-size:11px}
+  .guest-banner{flex-direction:column;align-items:flex-start;text-align:left}
+  .guest-banner button{margin-left:0;margin-top:8px;width:100%}
+  .quiz-runner .qhead{flex-direction:column}
+  .year-row{flex-direction:column;gap:8px}
+  .year-row .year-badge{min-width:auto;align-self:flex-start}
+  .year-row .year-papers{width:100%;grid-template-columns:1fr}
+  .subjects-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .subject-card{padding:16px}
+  .subject-card .icon{width:48px;height:48px;font-size:15px;margin-bottom:12px}
+  .game-selector{grid-template-columns:1fr 1fr;gap:10px}
+  .lesson-item .done-badge{font-size:9px;padding:4px 8px}
+  .toast{bottom:16px;right:16px;left:16px;max-width:none;text-align:center}
+  .quiz-meta div{font-size:11px;padding:6px 12px}
+  .hero .stats{grid-template-columns:1fr 1fr;gap:10px}
+  .leaderboard-table{font-size:11px}
+  .leaderboard-table th,.leaderboard-table td{padding:8px 6px}
+  .icon-btn{width:36px;height:36px;font-size:14px}
+  .topbar .logo{width:38px;height:38px;border-radius:10px}
+}
+
+/* Small mobile */
+@media(max-width:380px){
+  .subjects-grid{grid-template-columns:1fr}
+  .game-selector{grid-template-columns:1fr}
+  .hero .stats{grid-template-columns:1fr 1fr}
+  .auth-card{padding:20px 16px}
+  .content-tabs button{padding:9px 10px;font-size:11px}
+  .admin-tabs button{padding:9px 10px;font-size:10px}
+}
+
+/* Landscape mobile - prevent navbar overlap */
+@media(max-height:500px) and (orientation:landscape){
+  #auth-screen{padding:10px}
+  .auth-card{max-height:98vh;padding:16px}
+  .auth-logo{width:50px;height:50px;margin-bottom:10px}
+  .auth-card h1{font-size:16px}
+  .auth-card p.sub{margin-bottom:12px;font-size:11px}
+  .form-field{margin-bottom:8px}
+}
+</style>
+</head>
+<body>
+
+<div id="intro-screen">
+  <div class="intro-ring r1"></div>
+  <div class="intro-ring r2"></div>
+  <div class="intro-ring r3"></div>
+  <div class="intro-content">
+   <div><img src="MahindaCollegeCrest.png" height="150" width="150" alt="Crest" onerror="this.style.display='none'"></div></div>
+    <h1 class="intro-title">Mahinda College</h1>
+    <p class="intro-subtitle">Commerce Section</p>
+  </div>
+  <div class="intro-particles" id="intro-particles"></div>
+</div>
+
+<div id="auth-screen" style="display:none">
+  <div class="auth-card" style="position:relative">
+    <div class="auth-logo"><img src="MahindaCollegeCrest.png" height="87" width="87" alt="Crest" onerror="this.textContent='MC'"></div>
+    <h1>Mahinda College</h1>
+    <p class="sub">Commerce Section ·  ඉගෙනුම් වේදිකාව</p>
+    <div class="auth-tabs">
+      <button id="tab-login" class="active" onclick="switchAuth('login')">ඇතුල් වීම</button>
+      <button id="tab-register" onclick="switchAuth('register')">ලියාපදිංචිය</button>
+    </div>
+    <div id="login-form">
+      <div class="form-field"><label>Username</label><input id="login-user" autocomplete="username"></div>
+      <div class="form-field"><label>Password</label><input id="login-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-primary" onclick="doLogin()">ඇතුල් වන්න →</button>
+      <div class="divider">හෝ</div>
+      <button class="btn btn-outline" style="width:100%" onclick="enterGuest()">🌐 Register නොකර Browse කරන්න</button>
+      <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;line-height:1.6">: <b style="color:var(--gold)"></b><br>Teacher: <b style="color:var(--info)">bs_teacher1/teach123</b></p>
+    </div>
+    <div id="reg-gate" class="hidden">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:44px;margin-bottom:10px">🔒</div>
+        <p style="font-size:13px;color:var(--muted);font-weight:600;line-height:1.6">ලියාපදිංචිය සඳහා<br>විශේෂ password එකක් අවශ්‍යයි</p>
+      </div>
+      <div class="form-field">
+        <label>Registration Password</label>
+        <input id="reg-gate-pass" type="password" placeholder="••••••••••" onkeydown="if(event.key==='Enter')verifyRegPassword()">
+      </div>
+      <button class="btn btn-gold" onclick="verifyRegPassword()">🔓 Continue →</button>
+      <button class="btn-ghost" onclick="switchAuth('login')">← Back to Login</button>
+      <div id="reg-gate-msg"></div>
+    </div>
+    <div id="register-form" class="hidden">
+      <div class="form-row">
+        <div class="form-field"><label>Username</label><input id="reg-user"></div>
+        <div class="form-field"><label>Password</label><input id="reg-pass" type="password"></div>
+      </div>
+      <div class="form-field"><label>School</label><input id="reg-school" value="Mahinda College"></div>
+      <div class="form-row">
+        <div class="form-field"><label>Grade</label><select id="reg-grade"><option value="12">Grade 12</option><option value="13">Grade 13</option></select></div>
+        <div class="form-field"><label>Class</label><input id="reg-class" placeholder="e.g., 12A, 13B"></div>
+      </div>
+      <button class="btn btn-gold" onclick="doRegister()">ලියාපදිංචි වන්න →</button>
+      <p style="font-size:11px;color:var(--muted);margin-top:14px;text-align:center;line-height:1.5">ඕනෑම පාසලක සිසුන්ට ලියාපදිංචි විය හැක</p>
+    </div>
+    <div id="auth-msg"></div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div class="logo"><img src="MahindaCollegeCrest.png" height="90" width="90" ></div>
+    <div class="title">Mahinda College<small id="tb-subtitle">Commerce Section</small></div>
+    <div class="spacer"></div>
+    <button class="icon-btn hidden" id="notif-btn" onclick="nav('notifications')" title="Notifications">🔔<span class="badge hidden" id="notif-badge">0</span></button>
+    <div class="user-chip"><span class="name" id="tb-name">—</span><span class="role" id="tb-role">student</span></div>
+    <button class="icon-btn hidden" id="pw-btn" onclick="changePassword()" title="Change Password">🔑</button>
+    <button class="logout hidden" id="logout-btn" onclick="doLogout()">Logout</button>
+    <button class="btn-register hidden" id="guest-register" onclick="goRegister()">Register →</button>
+  </div>
+  <div class="navbar" id="navbar"></div>
+  <div class="container" id="main-view"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* Light theme only - no toggle */
+document.documentElement.setAttribute('data-theme', 'light');
+try{localStorage.setItem('mccs_theme','light')}catch(e){}
+
+const DB={
+  get(k,d=null){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){localStorage.setItem(k,JSON.stringify(v))},
+  del(k){localStorage.removeItem(k)}
+};
+
+const REG_PASSWORD = '@#mahinda123';
+const FLOWER_CHARS = ['🌸','🌺','🌼','🌷','💮','🏵️','❀','✿','🌹','💐'];
+
+let state={view:'home',subject:null,grade:12,lesson:null,adminTab:'ai',teacherTab:'ai',paperSubject:'BS',paperGrade:12};
+
+const SUBJECTS={
+  BS:{name:'ව්‍යාපාර අධ්‍යයනය',en:'Business Studies',color:'linear-gradient(135deg,#c62828,#8e0000)',icon:'ව්‍යා',accent:'rgba(198,40,40,.08)'},
+  ACC:{name:'ගිණුම්කරණය',en:'Accounting',color:'linear-gradient(135deg,#1565c0,#0d47a1)',icon:'ගිණු',accent:'rgba(21,101,192,.08)'},
+  ECON:{name:'ආර්ථික විද්‍යාව',en:'Economics',color:'linear-gradient(135deg,#2e7d32,#1b5e20)',icon:'ආර්',accent:'rgba(46,125,50,.08)'},
+  ICT:{name:'තොරතුරු තාක්ෂණය',en:'ICT',color:'linear-gradient(135deg,#6a1b9a,#4a148c)',icon:'ICT',accent:'rgba(106,27,154,.08)'}
+};
+
+const DEFAULT_LESSONS={
+  BS:{12:['ව්‍යාපාරයක ස්වභාවය','ව්‍යාපාර පරිසරය','ව්‍යාපාර හිමිකම්','කළමනාකරණය','මානව සම්පත් කළමනාකරණය'],
+      13:['අලෙවිකරණය','මූල්‍ය කළමනාකරණය','නිෂ්පාදන කළමනාකරණය','ව්‍යාපාර නීතිය','ව්‍යවසායකත්වය']},
+  ACC:{12:['ගිණුම්කරණයේ මූලිකාංග','ගිණුම්කරණ සමීකරණය','ද්විත්ව සටහන් ක්‍රමය','ප්‍රධාන පොත්','අත්තිකාරම් ශේෂය'],
+       13:['අවසන් ගිණුම්','හවුල්කාර ගිණුම්','සමාගම් ගිණුම්','මුදල් ප්‍රවාහ ප්‍රකාශය','අනුපාත විශ්ලේෂණය']},
+  ECON:{12:['ආර්ථික විද්‍යාවේ මූලික සංකල්ප','ඉල්ලුම හා සැපයුම','ප්‍රත්‍යස්ථිතිය','පාරිභෝගික හැසිරීම','නිෂ්පාදන පිරිවැය'],
+        13:['ජාතික ආදායම','මුදල් හා බැංකු','උද්ධමනය','ජාත්‍යන්තර වෙළඳාම','සංවර්ධන ආර්ථිකය']},
+  ICT:{12:['තොරතුරු තාක්ෂණයේ මූලිකාංග','පරිගණක පද්ධති','දත්ත සන්නිවේදනය','අන්තර්ජාලය','විද්‍යුත් වෙළඳාම'],
+       13:['දත්ත සමුදාය කළමනාකරණය','පද්ධති විශ්ලේෂණය','ක්‍රමලේඛනය','වෙබ් සංවර්ධනය','ජාල ආරක්ෂාව']}
+};
+
+const DEFAULT_TEACHERS=[
+  {username:'bs_teacher1',subject:'BS'},{username:'bs_teacher2',subject:'BS'},{username:'bs_teacher3',subject:'BS'},
+  {username:'acc_teacher1',subject:'ACC'},{username:'acc_teacher2',subject:'ACC'},{username:'acc_teacher3',subject:'ACC'},
+  {username:'econ_teacher1',subject:'ECON'},{username:'econ_teacher2',subject:'ECON'},
+  {username:'ict_teacher1',subject:'ICT'},{username:'ict_teacher2',subject:'ICT'}
+];
+
+function seed(){
+  if(!DB.get('mccs_users')){
+    const users=[
+      {username:'admin',password:'admin123',role:'admin',created:Date.now()},
+      {username:'student1',password:'pass123',grade:'12',school:'Mahinda College',class:'12A',role:'student',created:Date.now()}
+    ];
+    DEFAULT_TEACHERS.forEach(t=>users.push({username:t.username,password:'teach123',role:'teacher',subject:t.subject,created:Date.now()}));
+    DB.set('mccs_users',users);
+  }
+  if(!DB.get('mccs_lessons')){
+    const lessons=[];let id=1;
+    for(const s of Object.keys(DEFAULT_LESSONS)){
+      for(const g of [12,13]){
+        DEFAULT_LESSONS[s][g].forEach((t,i)=>{lessons.push({id:'L'+(id++),subject:s,grade:g,title:t,order:i+1,context:'',notes:''})});
+      }
+    }
+    DB.set('mccs_lessons',lessons);
+  }
+  if(!DB.get('mccs_questions'))DB.set('mccs_questions',[]);
+  if(!DB.get('mccs_past_papers'))DB.set('mccs_past_papers',[]);
+  if(!DB.get('mccs_progress'))DB.set('mccs_progress',{});
+  if(!DB.get('mccs_attempts'))DB.set('mccs_attempts',[]);
+  if(!DB.get('mccs_notifications'))DB.set('mccs_notifications',[]);
+  if(!DB.get('mccs_quiz_config'))DB.set('mccs_quiz_config',{startAt:Date.now()+3600*1000,durationMin:10,questionCount:10,subjects:['BS','ACC','ECON','ICT'],grade:'any',active:true});
+}
+seed();
+
+function toast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;setTimeout(()=>t.className='toast '+type,3000)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function currentUser(){return DB.get('mccs_user')}
+function setUser(u){u?DB.set('mccs_user',u):DB.del('mccs_user')}
+function qs(sel){return document.querySelector(sel)}
+function pad(n){return String(n).padStart(2,'0')}
+function fmtDate(ts){const d=new Date(ts);return d.toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}
+function rnd(a,b){return a+Math.random()*(b-a)}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function fileToDataUrl(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
+
+/* ===== INTRO ===== */
+function playIntro(){
+  const el=document.getElementById('intro-screen');
+  if(!el){finishInit();return}
+  setTimeout(spawnIntroParticles,600);
+  setTimeout(spawnIntroParticles,1200);
+  setTimeout(()=>{
+    el.classList.add('fade-out');
+    setTimeout(()=>{el.style.display='none';finishInit()},1000);
+  },2200);
+}
+function spawnIntroParticles(){
+  const container=document.getElementById('intro-particles');
+  const logo=document.querySelector('.intro-logo');
+  if(!container||!logo)return;
+  const rect=logo.getBoundingClientRect();
+  container.style.top=(rect.top+rect.height/2)+'px';
+  container.style.left=(rect.left+rect.width/2)+'px';
+  const COUNT=14;
+  for(let i=0;i<COUNT;i++){
+    const s=document.createElement('span');
+    s.className='intro-spark';
+    s.textContent=pick(['✨','⭐','✦','💫','🌟']);
+    const angle=(Math.PI*2*i/COUNT)+rnd(-0.3,0.3);
+    const dist=rnd(90,180);
+    s.style.setProperty('--tx',(Math.cos(angle)*dist).toFixed(1)+'px');
+    s.style.setProperty('--ty',(Math.sin(angle)*dist).toFixed(1)+'px');
+    s.style.animationDelay=(i*0.04)+'s';
+    s.style.fontSize=rnd(10,18)+'px';
+    container.appendChild(s);
+    setTimeout(()=>s.remove(),2500);
+  }
+}
+function finishInit(){
+  const u=currentUser();
+  if(u){
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    if(u.grade && !isNaN(parseInt(u.grade)))state.paperGrade=parseInt(u.grade);
+    renderNav();render();
+  } else {
+    document.getElementById('auth-screen').style.display='flex';
+  }
+}
+
+/* ===== FLOWER BURST / RAIN ===== */
+function flowerBurst(x,y){
+  const COUNT=10;
+  for(let i=0;i<COUNT;i++){
+    const f=document.createElement('span');
+    f.className='flower-particle';
+    f.textContent=pick(FLOWER_CHARS);
+    f.style.left=x+'px';f.style.top=y+'px';
+    const angle=(Math.PI*2*i/COUNT)+rnd(-0.4,0.4);
+    const dist=rnd(70,160);
+    f.style.setProperty('--dx',(Math.cos(angle)*dist).toFixed(1)+'px');
+    f.style.setProperty('--dy',(Math.sin(angle)*dist-rnd(20,70)).toFixed(1)+'px');
+    f.style.setProperty('--rot',rnd(-540,540).toFixed(0)+'deg');
+    f.style.setProperty('--size',rnd(14,24).toFixed(0)+'px');
+    f.style.setProperty('--dur',rnd(0.9,1.4).toFixed(2)+'s');
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1600);
+  }
+}
+function flowerRain(){
+  const COUNT=70;
+  for(let i=0;i<COUNT;i++){
+    setTimeout(()=>{
+      const f=document.createElement('span');
+      f.className='flower-rain';
+      f.textContent=pick(FLOWER_CHARS);
+      f.style.left=rnd(-2,100).toFixed(1)+'vw';
+      f.style.setProperty('--size',rnd(16,30).toFixed(0)+'px');
+      f.style.setProperty('--dur',rnd(3,6).toFixed(2)+'s');
+      f.style.setProperty('--rot',rnd(-720,720).toFixed(0)+'deg');
+      f.style.setProperty('--sway',rnd(-120,120).toFixed(0)+'px');
+      f.style.animationDelay=rnd(0,0.6).toFixed(2)+'s';
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),8000);
+    },i*45);
+  }
+}
+document.addEventListener('click',(e)=>{
+  const intro=document.getElementById('intro-screen');
+  if(intro && !intro.classList.contains('fade-out')) return;
+  const t=e.target.closest('button, .btn, .opt-btn, .match-item, .game-tile, .subject-card, .lesson-item');
+  if(!t||t.disabled)return;
+  flowerBurst(e.clientX,e.clientY);
+},true);
+
+/* ===== AUTH ===== */
+function switchAuth(tab){
+  qs('#tab-login').classList.toggle('active',tab==='login');
+  qs('#tab-register').classList.toggle('active',tab==='register');
+  qs('#login-form').classList.toggle('hidden',tab!=='login');
+  qs('#reg-gate').classList.toggle('hidden',tab!=='register');
+  qs('#register-form').classList.add('hidden');
+  qs('#auth-msg').innerHTML='';
+  if(tab==='register'){
+    qs('#reg-gate-pass').value='';
+    qs('#reg-gate-msg').innerHTML='';
+    setTimeout(()=>{const el=qs('#reg-gate-pass');if(el)el.focus()},100);
+  }
+}
+function verifyRegPassword(){
+  if(qs('#reg-gate-pass').value===REG_PASSWORD){
+    qs('#reg-gate').classList.add('hidden');
+    qs('#register-form').classList.remove('hidden');
+    qs('#reg-gate-msg').innerHTML='';
+    setTimeout(()=>{const el=qs('#reg-user');if(el)el.focus()},100);
+  } else {
+    qs('#reg-gate-msg').innerHTML='<div class="auth-msg error">❌ වැරදි password. නැවත උත්සාහ කරන්න.</div>';
+    qs('#reg-gate-pass').value='';
+    qs('#reg-gate-pass').focus();
+  }
+}
+function authMsg(m,type){qs('#auth-msg').innerHTML=`<div class="auth-msg ${type}">${esc(m)}</div>`}
+function doLogin(){
+  const u=qs('#login-user').value.trim(),p=qs('#login-pass').value;
+  if(!u||!p)return authMsg('Username සහ password ඇතුළත් කරන්න','error');
+  const users=DB.get('mccs_users',[]);
+  const found=users.find(x=>x.username===u&&x.password===p);
+  if(!found)return authMsg('වැරදි username හෝ password','error');
+  setUser(found);showApp(true);
+}
+function doRegister(){
+  const u=qs('#reg-user').value.trim(),p=qs('#reg-pass').value;
+  const school=qs('#reg-school').value.trim(),g=qs('#reg-grade').value,cls=qs('#reg-class').value.trim();
+  if(!u||!p||!school)return authMsg('සියලු තොරතුරු ඇතුළත් කරන්න','error');
+  if(u.length<3)return authMsg('Username අවම අකුරු 3ක්','error');
+  if(p.length<4)return authMsg('Password අවම අකුරු 4ක්','error');
+  const users=DB.get('mccs_users',[]);
+  if(users.find(x=>x.username===u))return authMsg('මෙම username දැනටමත් ඇත','error');
+  users.push({username:u,password:p,grade:g,school,class:cls||'-',role:'student',created:Date.now()});
+  DB.set('mccs_users',users);
+  authMsg('ලියාපදිංචිය සාර්ථකයි! දැන් login වන්න','ok');
+  setTimeout(()=>{switchAuth('login');qs('#login-user').value=u},1000);
+}
+function enterGuest(){setUser({username:'Guest',role:'guest',grade:'any',school:'',class:''});showApp(false)}
+function goRegister(){
+  setUser(null);
+  qs('#app').style.display='none';
+  qs('#auth-screen').style.display='flex';
+  qs('#login-user').value='';qs('#login-pass').value='';qs('#auth-msg').innerHTML='';
+  switchAuth('register');
+}
+function doLogout(){setUser(null);location.reload()}
+function changePassword(){
+  const u=currentUser();
+  if(!u||u.role==='guest')return;
+  const oldPw=prompt('Current password:');
+  if(oldPw===null)return;
+  if(oldPw!==u.password)return toast('වැරදි password','error');
+  const newPw=prompt('New password (min 4 chars):');
+  if(!newPw||newPw.length<4)return toast('අවම අකුරු 4','error');
+  const users=DB.get('mccs_users',[]);
+  const uu=users.find(x=>x.username===u.username);
+  if(!uu)return;
+  uu.password=newPw;DB.set('mccs_users',users);setUser(uu);
+  toast('Password වෙනස් විය ✓','success');
+}
+function showApp(withRain=false){
+  qs('#auth-screen').classList.add('hidden');
+  qs('#app').style.display='block';
+  const u=currentUser();
+  if(u && u.grade && !isNaN(parseInt(u.grade))){state.paperGrade=parseInt(u.grade);}
+  renderNav();render();
+  if(withRain)flowerRain();
+}
+function renderNav(){
+  const u=currentUser();
+  qs('#tb-name').textContent=u.username;
+  const r=qs('#tb-role');r.textContent=u.role;r.className='role '+u.role;
+  if(u.school)qs('#tb-subtitle').textContent=u.school;
+  qs('#notif-btn').classList.toggle('hidden',u.role==='guest');
+  qs('#pw-btn').classList.toggle('hidden',u.role==='guest');
+  qs('#logout-btn').classList.toggle('hidden',u.role==='guest');
+  qs('#guest-register').classList.toggle('hidden',u.role!=='guest');
+  updateNotifBadge();
+  let items=[{v:'home',l:'Home'},{v:'subjects',l:'විෂයයන්'},{v:'papers',l:'📄 Past Papers'},{v:'leaderboard',l:'Ranking'}];
+  if(u.role!=='guest')items.push({v:'quiz',l:'Daily Quiz'});
+  if(u.role==='admin')items.push({v:'admin',l:'Admin Panel'});
+  if(u.role==='teacher')items.push({v:'teacher',l:'Teacher Panel'});
+  items.push({v:'notifications',l:'🔔'});
+  qs('#navbar').innerHTML=items.map(i=>`<button class="${state.view===i.v?'active':''}" onclick="nav('${i.v}')">${i.l}</button>`).join('');
+}
+function nav(view,params={}){
+  Object.assign(state,params);state.view=view;
+  renderNav();render();window.scrollTo(0,0);
+}
+
+/* ===== NOTIFICATIONS ===== */
+function notifMatches(n,u){
+  if(!u||u.role==='guest')return false;
+  if(n.toType==='all')return true;
+  if(n.toType==='user')return n.toValue===u.username;
+  if(n.toType==='role')return n.toValue===u.role;
+  if(n.toType==='grade')return String(u.grade)===String(n.toValue);
+  if(n.toType==='students')return u.role==='student';
+  if(n.toType==='teachers')return u.role==='teacher';
+  return false;
+}
+function myNotifications(){
+  const u=currentUser();
+  if(!u||u.role==='guest')return [];
+  return DB.get('mccs_notifications',[]).filter(n=>notifMatches(n,u)).sort((a,b)=>b.createdAt-a.createdAt);
+}
+function unreadCount(){
+  const u=currentUser();
+  if(!u||u.role==='guest')return 0;
+  return myNotifications().filter(n=>!(n.readBy||[]).includes(u.username)).length;
+}
+function updateNotifBadge(){const c=unreadCount();const b=qs('#notif-badge');if(b){b.textContent=c;b.classList.toggle('hidden',c===0)}}
+function sendNotification(fromUser,toType,toValue,title,body){
+  const notifs=DB.get('mccs_notifications',[]);
+  notifs.push({id:'N'+Date.now()+Math.random().toString(36).slice(2,6),from:fromUser.username,fromRole:fromUser.role,toType,toValue,title,body,createdAt:Date.now(),readBy:[]});
+  DB.set('mccs_notifications',notifs);
+}
+
+/* ===== ROUTER ===== */
+function render(){
+  const el=qs('#main-view');
+  const views={home:viewHome,subjects:viewSubjects,lessons:viewLessons,lesson:viewLesson,quiz:viewQuiz,leaderboard:viewLeaderboard,admin:viewAdmin,teacher:viewTeacher,notifications:viewNotifications,papers:viewPapers};
+  el.innerHTML=(views[state.view]||(()=>'<div class="empty-state">Page not found</div>'))();
+}
+function questionsFor(subject,grade,lessonId){
+  return DB.get('mccs_questions',[]).filter(q=>q.subject===subject && q.grade===grade && (!lessonId||q.lessonId===lessonId));
+}
+
+/* ===== HOME ===== */
+function viewHome(){
+  const u=currentUser();
+  const allQ=DB.get('mccs_questions',[]);
+  const allP=DB.get('mccs_past_papers',[]);
+  const myAttempts=u.role!=='guest'?DB.get('mccs_attempts',[]).filter(a=>a.username===u.username):[];
+  const subjectsHtml=Object.keys(SUBJECTS).map(k=>{
+    const s=SUBJECTS[k];const qc=allQ.filter(q=>q.subject===k).length;
+    return `<div class="subject-card" style="--accent-color:${s.accent}" onclick="nav('lessons',{subject:'${k}'})">
+      <div class="icon" style="background:${s.color}">${s.icon}</div>
+      <h3>${s.name}</h3><div class="code">${s.en}</div>
+      <div class="count"><span class="qcount">🤖 ${qc} AI ප්‍රශ්න</span>Grade 12 & 13</div>
+    </div>`;
+  }).join('');
+  return `
+  ${u.role==='guest'?`<div class="guest-banner"><span class="gbi">🌐</span>
+    <div><b>Guest මාදිලියේ බලමින් සිටී</b><p>Progress save කරන්න, Daily Quiz වලට සහභාගී වන්න register වන්න.</p></div>
+    <button onclick="goRegister()">Register →</button></div>`:''}
+  <div class="hero">
+    <h2>ආයුබෝවන්, ${esc(u.username)}! 👋</h2>
+    <p>මෙය Mahinda College Commerce Section හි AI-සහායක ඉගෙනුම් වේදිකාවයි. සියලුම ප්‍රශ්න Gemini AI මගින් සකස් වේ.</p>
+    <div class="stats">
+      <div class="stat"><b>${allQ.length}</b><span>AI ප්‍රශ්න</span></div>
+      <div class="stat"><b>${allP.length}</b><span>Past Papers</span></div>
+      <div class="stat"><b>${myAttempts.length}</b><span>Attempts</span></div>
+      <div class="stat"><b>4</b><span>විෂයයන්</span></div>
+    </div>
+  </div>
+  <h3 class="section-title">විෂයයන්</h3>
+  <div class="subjects-grid">${subjectsHtml}</div>`;
+}
+function viewSubjects(){
+  return `<div class="breadcrumb"><a onclick="nav('home')">Home</a></div>
+  <h3 class="section-title">සියලුම විෂයයන්</h3>
+  <div class="subjects-grid">
+    ${Object.keys(SUBJECTS).map(k=>{const s=SUBJECTS[k];const qc=DB.get('mccs_questions',[]).filter(q=>q.subject===k).length;
+      return `<div class="subject-card" style="--accent-color:${s.accent}" onclick="nav('lessons',{subject:'${k}'})">
+        <div class="icon" style="background:${s.color}">${s.icon}</div><h3>${s.name}</h3>
+        <div class="code">${s.en}</div><div class="count"><span class="qcount">🤖 ${qc} AI ප්‍රශ්න</span></div></div>`;
+    }).join('')}
+  </div>`;
+}
+
+/* ===== LESSONS ===== */
+function viewLessons(){
+  const s=SUBJECTS[state.subject];
+  if(!s)return '<div class="empty-state">Subject not found</div>';
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===state.subject&&l.grade===state.grade);
+  const progress=DB.get('mccs_progress',{});
+  const u=currentUser();
+  return `<div class="breadcrumb"><a onclick="nav('home')">Home</a> › <a onclick="nav('subjects')">විෂයයන්</a> › ${s.name}</div>
+  <h3 class="section-title">${s.name}</h3>
+  <div class="grade-tabs">
+    <button class="${state.grade==12?'active':''}" onclick="setGrade(12)">Grade 12</button>
+    <button class="${state.grade==13?'active':''}" onclick="setGrade(13)">Grade 13</button>
+  </div>
+  <div class="lesson-list">
+    ${lessons.length?lessons.map(l=>{
+      const qCount=questionsFor(state.subject,state.grade,l.id).length;
+      const key=u.username+'_'+l.id;
+      const done=progress[key];
+      return `<div class="lesson-item" onclick="openLesson('${l.id}')">
+        <div class="num">${l.order}</div>
+        <div class="info"><h4>${esc(l.title)}</h4><small>${qCount} AI ප්‍රශ්න ${qCount===0?'· ප්‍රශ්න නැත':''}</small></div>
+        ${done?'<span class="done-badge">✓ Completed</span>':''}
+        <span class="arrow">›</span></div>`;
+    }).join(''):'<div class="empty-state"><div class="icon">📚</div><p>පාඩම් නැත</p></div>'}
+  </div>`;
+}
+function setGrade(g){state.grade=g;render()}
+function openLesson(id){state.lesson=DB.get('mccs_lessons',[]).find(l=>l.id===id);lessonTab='games';nav('lesson')}
+
+/* ===== LESSON VIEW ===== */
+let lessonTab='games';
+function viewLesson(){
+  const l=state.lesson;
+  if(!l)return '<div class="empty-state">Lesson not found</div>';
+  const s=SUBJECTS[l.subject];
+  const qs_=questionsFor(l.subject,l.grade,l.id);
+  const u=currentUser();
+  const key=u.username+'_'+l.id;
+  const done=DB.get('mccs_progress',{})[key];
+  const paperCount=DB.get('mccs_past_papers',[]).filter(p=>p.lessonId===l.id).length;
+  return `<div class="breadcrumb"><a onclick="nav('home')">Home</a> › <a onclick="nav('lessons',{subject:'${l.subject}'})">${s.name}</a> › Grade ${l.grade}</div>
+  <div class="lesson-header"><h2>${esc(l.title)}</h2>
+    <div class="meta"><span>${s.name}</span><span>Grade ${l.grade}</span><span>${qs_.length} AI ප්‍රශ්න</span><span>${paperCount} Past Papers</span></div>
+  </div>
+  <div class="content-tabs">
+    <button class="${lessonTab==='notes'?'active':''}" onclick="setLessonTab('notes')">📝 සටහන්</button>
+    <button class="${lessonTab==='games'?'active':''}" onclick="setLessonTab('games')">🎮 Games</button>
+    <button class="${lessonTab==='papers'?'active':''}" onclick="setLessonTab('papers')">📄 Past Papers</button>
+  </div>
+  <div class="content-box" id="lesson-content">
+    ${lessonTab==='notes'?renderNotes(l,done,key):lessonTab==='papers'?renderLessonPapers(l):renderGames(l,qs_)}
+  </div>`;
+}
+function setLessonTab(t){lessonTab=t;render()}
+function renderNotes(l,done,key){
+  const u=currentUser();
+  return `<div class="notes">
+    ${l.notes?l.notes:`<div class="empty-state"><div class="icon">📝</div><h3>සටහන් තවම නැත</h3><p>Admin හෝ Teacher Panel එකෙන් සටහන් එකතු කළ හැක.</p></div>`}
+    ${l.context?`<div class="def-box"><b>AI Context:</b> ${esc(l.context)}</div>`:''}
+    <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border)">
+      ${u.role==='guest'?'<p style="color:var(--info);font-size:13px">ℹ️ Progress save කරන්න register වන්න</p>':
+        (done?'<p style="color:var(--success);font-weight:700">✓ ඔබ මෙම පාඩම සම්පූර්ණ කර ඇත</p>':
+        '<button class="btn btn-primary" style="max-width:240px" onclick="markComplete(\''+key+'\')">✓ Completed ලෙස සලකුණු කරන්න</button>')}
+    </div>
+  </div>`;
+}
+function markComplete(key){
+  const u=currentUser();
+  if(u.role==='guest')return toast('Register කරන්න progress save කරන්න','error');
+  const p=DB.get('mccs_progress',{});p[key]={completedAt:Date.now()};
+  DB.set('mccs_progress',p);
+  toast('පාඩම සම්පූර්ණ කළා! 🎉','success');render();
+}
+function renderGames(l,qs_){
+  if(!qs_.length){
+    return `<div class="empty-state"><div class="icon">🤖</div><h3>මෙම පාඩමට තවම ප්‍රශ්න නැත</h3>
+      <p>Teacher Panel → AI Generator එකෙන් ප්‍රශ්න generate කරන්න.</p></div>`;
+  }
+  const types=[
+    {k:'mcq',icon:'🧠',name:'MCQ Challenge'},
+    {k:'matching',icon:'🔗',name:'Matching Game'},
+    {k:'tf',icon:'✓✗',name:'True / False'},
+    {k:'fill',icon:'✏️',name:'Fill Blanks'}
+  ];
+  const typesWithQ=types.filter(t=>qs_.some(q=>q.type===t.k));
+  if(!typesWithQ.length)return '<div class="empty-state">No playable questions</div>';
+  return `<div class="game-selector">${typesWithQ.map(t=>{
+    const cnt=qs_.filter(q=>q.type===t.k).length;
+    return `<div class="game-tile" onclick="playGame('${l.id}','${t.k}')">
+      <div class="gi">${t.icon}</div><h4>${t.name}</h4><small>${cnt} ප්‍රශ්න</small></div>`;
+  }).join('')}</div>`;
+}
+
+/* ===== LESSON PAPERS ===== */
+function renderLessonPapers(l){
+  const papers=DB.get('mccs_past_papers',[]).filter(p=>p.subject===l.subject&&p.grade===l.grade&&p.lessonId===l.id);
+  if(!papers.length){
+    return `<div class="empty-state"><div class="icon">📄</div><h3>මෙම පාඩමට Past Papers නැත</h3>
+      <p>Admin හෝ Teacher Panel එකෙන් add කරන්න</p></div>`;
+  }
+  const byYear={};
+  papers.forEach(p=>{if(!byYear[p.year])byYear[p.year]=[];byYear[p.year].push(p)});
+  const years=Object.keys(byYear).sort((a,b)=>b-a);
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:rgba(184,134,11,.08);border-radius:10px;border:1px solid rgba(184,134,11,.2)">
+    <span style="color:var(--gold);font-weight:700;font-size:14px">📄 ${papers.length} Past Papers · ${years.length} වර්ෂ</span>
+  </div>
+  ${years.map(year=>`
+    <div class="year-row">
+      <span class="year-badge">${year}</span>
+      <div class="year-papers">${byYear[year].sort((a,b)=>a.paperType.localeCompare(b.paperType)).map(p=>paperCard(p)).join('')}</div>
+    </div>
+  `).join('')}`;
+}
+function paperCard(p){
+  return `<a href="${p.url}" target="_blank" rel="noopener" class="paper-card">
+    <div class="phead">
+      <span class="pyear">${p.year}</span>
+      <span class="ptype">${p.paperType}</span>
+    </div>
+    <div class="ptitle">${esc(p.title)}</div>
+    <div class="pfoot">
+      <span class="ptag">G${p.grade}</span>
+      <span>📥 Open PDF</span>
+    </div>
+  </a>`;
+}
+
+/* ===== PAST PAPERS VIEW (Student browse - hierarchy) ===== */
+function setPaperSubject(s){state.paperSubject=s;render()}
+function setPaperGrade(g){state.paperGrade=g;render()}
+
+function viewPapers(){
+  const papers=DB.get('mccs_past_papers',[]);
+  const subj=state.paperSubject||'BS';
+  const grade=state.paperGrade||12;
+  const s=SUBJECTS[subj];
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===subj&&l.grade===grade).sort((a,b)=>a.order-b.order);
+  const subjPapers=papers.filter(p=>p.subject===subj&&p.grade===grade);
+  const lessonIds=lessons.map(l=>l.id);
+  const unattached=subjPapers.filter(p=>!p.lessonId||!lessonIds.includes(p.lessonId));
+
+  return `<h3 class="section-title">📄 Past Papers</h3>
+  <div class="paper-subject-tabs">
+    ${Object.keys(SUBJECTS).map(k=>`<button class="${k===subj?'active':''}" onclick="setPaperSubject('${k}')">${SUBJECTS[k].en}</button>`).join('')}
+  </div>
+  <div class="grade-tabs">
+    <button class="${grade===12?'active':''}" onclick="setPaperGrade(12)">Grade 12</button>
+    <button class="${grade===13?'active':''}" onclick="setPaperGrade(13)">Grade 13</button>
+  </div>
+  <div class="paper-summary">
+    <div class="psi" style="background:${s.color}">${s.icon}</div>
+    <div style="flex:1;min-width:0">
+      <h3>${s.name}</h3>
+      <small>Grade ${grade} · ${lessons.length} lessons · ${subjPapers.length} papers</small>
+    </div>
+  </div>
+  ${lessons.length ? lessons.map(lesson=>{
+    const lPapers=subjPapers.filter(p=>p.lessonId===lesson.id);
+    const byYear={};
+    lPapers.forEach(p=>{if(!byYear[p.year])byYear[p.year]=[];byYear[p.year].push(p)});
+    const years=Object.keys(byYear).sort((a,b)=>b-a);
+    return `<div class="lesson-papers-block">
+      <div class="lpb-head">
+        <div class="lpb-num">${lesson.order}</div>
+        <h5>${esc(lesson.title)}</h5>
+        <span class="lpb-count">${lPapers.length} papers</span>
+      </div>
+      ${years.length ? years.map(year=>`
+        <div class="year-row">
+          <span class="year-badge">${year}</span>
+          <div class="year-papers">${byYear[year].sort((a,b)=>a.paperType.localeCompare(b.paperType)).map(p=>paperCard(p)).join('')}</div>
+        </div>
+      `).join('') : '<p class="no-papers-note">මෙම පාඩමට තවම past papers නැත</p>'}
+    </div>`;
+  }).join('') : '<div class="empty-state"><div class="icon">📚</div><h3>පාඩම් නැත</h3></div>'}
+  ${unattached.length ? `
+    <div class="lesson-papers-block" style="border-style:dashed;margin-top:20px">
+      <div class="lpb-head">
+        <div class="lpb-num">📌</div>
+        <h5>General Papers (Lesson එකකට attach නොකළ)</h5>
+        <span class="lpb-count">${unattached.length}</span>
+      </div>
+      ${unattached.sort((a,b)=>b.year-a.year).map(p=>paperCard(p)).join('')}
+    </div>
+  ` : ''}
+  `;
+}
+
+/* ===== GAME ENGINE ===== */
+let currentGame=null;
+function playGame(lessonId,type){
+  const l=state.lesson;
+  let qs_=questionsFor(l.subject,l.grade,lessonId).filter(q=>q.type===type);
+  qs_=qs_.sort(()=>Math.random()-0.5).slice(0,10);
+  if(!qs_.length)return toast('ප්‍රශ්න නැත','error');
+  currentGame={type,questions:qs_,index:0,correct:0,answered:false};
+  renderGameStep();
+}
+function renderGameStep(){
+  const g=currentGame,el=qs('#lesson-content');if(!g)return;
+  if(g.index>=g.questions.length){
+    el.innerHTML=`<div class="game-result"><h3>🎉 ක්‍රීඩාව අවසන්!</h3>
+      <div class="score-big">${g.correct} / ${g.questions.length}</div>
+      <p>${g.correct===g.questions.length?'පරිපූර්ණ! 🏆':'හොඳ උත්සාහයක්! 💪'}</p>
+      <button class="btn btn-primary" style="max-width:220px;margin:0 auto" onclick="setLessonTab('games')">නැවත ක්‍රීඩා →</button></div>`;
+    return;
+  }
+  const q=g.questions[g.index];g.answered=false;
+  let html=`<div class="q-card"><div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">ප්‍රශ්න ${g.index+1} / ${g.questions.length}</div>`;
+  if(g.type==='mcq'){
+    html+=`<div class="qtext">${esc(q.q)}</div><div class="opt-list">`;
+    q.options.forEach((o,i)=>{html+=`<button class="opt-btn" onclick="answerMCQ(${i},${q.answer})">${esc(o)}</button>`});
+    html+='</div>';
+  }else if(g.type==='tf'){
+    html+=`<div class="qtext">${esc(q.q)}</div><div class="tf-btns">
+      <button onclick="answerTF(true,${q.answer})">✓ සත්‍ය</button>
+      <button onclick="answerTF(false,${q.answer})">✗ අසත්‍ය</button></div>`;
+  }else if(g.type==='fill'){
+    html+=`<div class="qtext">${esc(q.q)}</div>
+      <input id="fill-in" placeholder="පිළිතුර" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')answerFill()">
+      <button class="btn btn-primary" onclick="answerFill()">Submit</button>`;
+  }else if(g.type==='matching'){
+    html+='<p style="color:var(--muted);font-size:13px;margin-bottom:14px">වම් පස අයිතමයට ගැලපෙන දකුණු පස තෝරන්න</p>';
+    const pairs=q.pairs||[];
+    const left=pairs.map((p,i)=>({i,t:p.left}));
+    const right=pairs.map((p,i)=>({i,t:p.right})).sort(()=>Math.random()-0.5);
+    g.matchState={left,right,selected:null,matched:0,total:pairs.length};
+    html+=`<div class="match-wrap">
+      <div class="match-col">${left.map(x=>`<div class="match-item" id="m-left-${x.i}" onclick="selectMatch(${x.i})">${esc(x.t)}</div>`).join('')}</div>
+      <div class="match-col">${right.map(x=>`<div class="match-item" id="m-right-${x.i}" onclick="tryMatchRight(${x.i})">${esc(x.t)}</div>`).join('')}</div>
+    </div>`;
+  }
+  el.innerHTML=html+'</div>';
+}
+function answerMCQ(selected,correct){
+  if(currentGame.answered)return;currentGame.answered=true;
+  document.querySelectorAll('.opt-btn').forEach((b,i)=>{
+    if(i===correct)b.classList.add('correct');else if(i===selected)b.classList.add('wrong');b.disabled=true;
+  });
+  if(selected===correct)currentGame.correct++;
+  setTimeout(()=>{currentGame.index++;renderGameStep()},1000);
+}
+function answerTF(selected,correct){
+  if(currentGame.answered)return;currentGame.answered=true;
+  const btns=document.querySelectorAll('.tf-btns button');
+  const label=correct?'✓ සත්‍ය':'✗ අසත්‍ය';
+  btns.forEach(b=>{
+    if(b.textContent===label)b.classList.add('correct');
+    else if(b.textContent===(selected?'✓ සත්‍ය':'✗ අසත්‍ය'))b.classList.add('wrong');
+    b.disabled=true;
+  });
+  if(selected===correct)currentGame.correct++;
+  setTimeout(()=>{currentGame.index++;renderGameStep()},1000);
+}
+function answerFill(){
+  if(currentGame.answered)return;
+  const inp=qs('#fill-in');if(!inp)return;
+  const val=inp.value.trim().toLowerCase();
+  const q=currentGame.questions[currentGame.index];
+  const correct=q.answer.trim().toLowerCase();
+  currentGame.answered=true;inp.disabled=true;
+  if(val===correct){currentGame.correct++;inp.style.borderColor='var(--success)';toast('නිවැරදි! ✓','success')}
+  else{inp.style.borderColor='var(--danger)';toast('වැරදි. පිළිතුර: '+q.answer,'error')}
+  setTimeout(()=>{currentGame.index++;renderGameStep()},1500);
+}
+function selectMatch(i){
+  const st=currentGame.matchState;
+  if(qs('#m-left-'+i).classList.contains('matched'))return;
+  document.querySelectorAll('.match-item').forEach(e=>e.classList.remove('selected'));
+  qs('#m-left-'+i).classList.add('selected');st.selected=i;
+}
+function tryMatchRight(i){
+  const st=currentGame.matchState;
+  if(st.selected===null)return toast('මුලින්ම වම් පස තෝරන්න','error');
+  if(qs('#m-right-'+i).classList.contains('matched'))return;
+  if(st.selected===i){
+    qs('#m-left-'+i).classList.add('matched');qs('#m-right-'+i).classList.add('matched');
+    qs('#m-left-'+i).classList.remove('selected');st.matched++;st.selected=null;
+    if(st.matched===st.total){currentGame.correct++;setTimeout(()=>{currentGame.index++;renderGameStep()},700)}
+  }else{
+    qs('#m-right-'+i).classList.add('matched');toast('වැරදි','error');
+    qs('#m-left-'+i).classList.remove('matched');
+    setTimeout(()=>qs('#m-right-'+i).classList.remove('matched'),400);
+  }
+}
+
+/* ===== QUIZ ===== */
+let quizTimer=null;
+function viewQuiz(){
+  const u=currentUser();
+  if(u.role==='guest')return `<div class="empty-state"><div class="icon">🔒</div><h3>Register කරන්න</h3><p>Daily Quiz වලට සහභාගී වීමට ගිණුමක් අවශ්‍යයි</p><button class="btn btn-primary" style="max-width:200px;margin:18px auto 0" onclick="goRegister()">Register →</button></div>`;
+  const cfg=DB.get('mccs_quiz_config');
+  const allQ=DB.get('mccs_questions',[]);
+  const eligible=allQ.filter(q=>cfg.subjects.includes(q.subject)&&(cfg.grade==='any'||q.grade==cfg.grade));
+  const now=Date.now();
+  if(quizTimer){clearInterval(quizTimer);quizTimer=null}
+  if(!cfg.active||now<cfg.startAt){
+    return `<h3 class="section-title">Daily Quiz</h3>
+    <div class="quiz-banner"><h2>⏰ ඊළඟ Daily Quiz</h2>
+      <div class="countdown" id="countdown">--:--:--</div>
+      <p>නියමිත වේලාවට ස්වයංක්‍රීයව ආරම්භ වේ</p>
+      <div class="quiz-meta"><div>${cfg.questionCount} ප්‍රශ්න</div><div>${cfg.durationMin} මිනිත්තු</div>
+        <div>${cfg.grade==='any'?'Grade 12 & 13':'Grade '+cfg.grade}</div><div>${eligible.length} available</div></div></div>`;
+  }
+  const attempt=DB.get('mccs_attempts',[]).find(a=>a.username===u.username&&a.quizStart===cfg.startAt);
+  if(attempt){
+    return `<h3 class="section-title">Daily Quiz</h3>
+    <div class="quiz-banner"><h2>✅ ඔබ දැනටමත් සහභාගී වී ඇත</h2>
+      <p>ලකුණු: <b style="color:var(--gold);font-size:24px">${attempt.score}/${attempt.total}</b></p>
+      <p style="margin-top:8px">Ranking: <b style="color:var(--gold)">#${attempt.rank||'-'}</b></p></div>
+    <button class="btn btn-outline" onclick="nav('leaderboard')">🏆 Ranking බලන්න</button>`;
+  }
+  const questions=eligible.sort(()=>Math.random()-0.5).slice(0,cfg.questionCount);
+  if(questions.length<cfg.questionCount){
+    return `<h3 class="section-title">Daily Quiz</h3>
+    <div class="quiz-banner"><h2>⚠️ ප්‍රශ්න මදි</h2><p>ප්‍රශ්න ${questions.length}ක් පමණක් ඇත, ${cfg.questionCount}ක් අවශ්‍ය</p></div>`;
+  }
+  return `<h3 class="section-title">Daily Quiz — Grade ${cfg.grade==='any'?'12/13':cfg.grade}</h3>
+  <div class="quiz-banner"><h2>🎯 තරගය ආරම්භ වී ඇත!</h2>
+    <div class="countdown" id="quiz-timer">${pad(cfg.durationMin)}:00</div>
+    <p>${questions.length} ප්‍රශ්න · ${cfg.durationMin} මිනිත්තු</p>
+    <button class="btn btn-gold" style="max-width:260px;margin:18px auto 0" onclick="startQuiz()">Start Quiz →</button></div>`;
+}
+function startQuiz(){
+  const cfg=DB.get('mccs_quiz_config');
+  const allQ=DB.get('mccs_questions',[]);
+  const eligible=allQ.filter(q=>cfg.subjects.includes(q.subject)&&(cfg.grade==='any'||q.grade===cfg.grade));
+  const questions=eligible.sort(()=>Math.random()-0.5).slice(0,cfg.questionCount);
+  const endAt=Date.now()+cfg.durationMin*60*1000;
+  window._quizState={questions,answers:new Array(questions.length).fill(null),startAt:Date.now(),endAt,idx:0};
+  renderQuizRunner();
+  quizTimer=setInterval(()=>{
+    const left=Math.max(0,Math.floor((window._quizState.endAt-Date.now())/1000));
+    const el=qs('#quiz-timer');if(el)el.textContent=pad(Math.floor(left/60))+':'+pad(left%60);
+    if(left<=0){clearInterval(quizTimer);finishQuiz()}
+  },1000);
+}
+function renderQuizRunner(){
+  const st=window._quizState;if(!st)return;
+  const q=st.questions[st.idx];
+  const lesson=DB.get('mccs_lessons',[]).find(l=>l.id===q.lessonId);
+  const subj=SUBJECTS[q.subject]||{en:q.subject,color:'linear-gradient(135deg,#555,#333)'};
+  const left=Math.max(0,Math.floor((st.endAt-Date.now())/1000));
+  qs('#main-view').innerHTML=`<div class="quiz-runner">
+    <div class="qhead">
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:0">
+        <span style="font-size:13px;color:var(--muted);font-weight:600">ප්‍රශ්න ${st.idx+1} / ${st.questions.length}</span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="background:${subj.color};color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap">${subj.en}</span>
+          <span style="background:rgba(184,134,11,.15);color:var(--gold);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid rgba(184,134,11,.3)">📖 ${esc(lesson?lesson.title:'-')}</span>
+          <span style="background:var(--surface-3);color:var(--muted);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid var(--border-hi)">Grade ${q.grade}</span>
+        </div>
+      </div>
+      <span class="timer" id="quiz-timer">${pad(Math.floor(left/60))}:${pad(left%60)}</span>
+    </div>
+    <div class="qtext" style="font-size:16px;font-weight:600;margin-bottom:16px">${esc(q.q)}</div>
+    <div class="opt-list">${q.options.map((o,i)=>`<button class="opt-btn" onclick="quizPick(${i})" ${st.answers[st.idx]!==null?'disabled':''}>${esc(o)}</button>`).join('')}</div>
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="quizPrev()" ${st.idx===0?'disabled':''}>◀ කලින්</button>
+      <button class="btn btn-primary" style="width:auto" onclick="quizNext()">${st.idx===st.questions.length-1?'Submit →':'ඊළඟ ▶'}</button></div>
+  </div>`;
+  if(st.answers[st.idx]!==null){document.querySelectorAll('.opt-btn').forEach((b,i)=>{if(i===st.answers[st.idx])b.style.borderColor='var(--gold)'})}
+}
+function quizPick(i){window._quizState.answers[window._quizState.idx]=i;renderQuizRunner()}
+function quizPrev(){if(window._quizState.idx>0){window._quizState.idx--;renderQuizRunner()}}
+function quizNext(){
+  const st=window._quizState;
+  if(st.answers[st.idx]===null)return toast('පිළිතුරක් තෝරන්න','error');
+  if(st.idx<st.questions.length-1){st.idx++;renderQuizRunner()}else finishQuiz();
+}
+function finishQuiz(){
+  if(!window._quizState)return;
+  if(quizTimer){clearInterval(quizTimer);quizTimer=null}
+  const st=window._quizState,cfg=DB.get('mccs_quiz_config'),u=currentUser();
+  let score=0;st.questions.forEach((q,i)=>{if(st.answers[i]===q.answer)score++});
+  const elapsed=Date.now()-st.startAt;
+  const attempts=DB.get('mccs_attempts',[]);
+  attempts.push({username:u.username,grade:u.grade,school:u.school||'',cls:u.class||'',score,total:st.questions.length,elapsed,at:Date.now(),quizStart:cfg.startAt});
+  DB.set('mccs_attempts',attempts);
+  const sameQuiz=attempts.filter(a=>a.quizStart===cfg.startAt).sort((a,b)=>b.score-a.score||a.elapsed-b.elapsed);
+  sameQuiz.forEach((a,i)=>{a.rank=i+1});DB.set('mccs_attempts',attempts);
+  const lessons=DB.get('mccs_lessons',[]);
+  const breakdown={};
+  st.questions.forEach((q,i)=>{
+    if(!breakdown[q.subject])breakdown[q.subject]={correct:0,total:0,lessons:{}};
+    breakdown[q.subject].total++;
+    const l=lessons.find(x=>x.id===q.lessonId);
+    const lname=l?l.title:'Unknown';
+    if(!breakdown[q.subject].lessons[lname])breakdown[q.subject].lessons[lname]={correct:0,total:0};
+    breakdown[q.subject].lessons[lname].total++;
+    if(st.answers[i]===q.answer){breakdown[q.subject].correct++;breakdown[q.subject].lessons[lname].correct++}
+  });
+  const breakdownHtml=Object.entries(breakdown).map(([subj,data])=>{
+    const s=SUBJECTS[subj]||{en:subj,color:'linear-gradient(135deg,#555,#333)'};
+    const pct=Math.round(data.correct/data.total*100);
+    const lessonRows=Object.entries(data.lessons).map(([lname,ld])=>{
+      const lpct=Math.round(ld.correct/ld.total*100);
+      const color=lpct>=70?'var(--success)':lpct>=40?'var(--gold)':'var(--danger)';
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--surface-2);border-radius:8px;margin-bottom:6px;font-size:13px;gap:8px">
+        <span style="color:var(--text-2);word-break:break-word">📖 ${esc(lname)}</span>
+        <span style="color:${color};font-weight:700;white-space:nowrap">${ld.correct}/${ld.total}</span></div>`;
+    }).join('');
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap">
+        <span style="background:${s.color};color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">${s.en}</span>
+        <span style="color:${pct>=70?'var(--success)':pct>=40?'var(--gold)':'var(--danger)'};font-weight:700;font-size:14px">${data.correct}/${data.total} (${pct}%)</span>
+      </div>${lessonRows}</div>`;
+  }).join('');
+  window._quizState=null;
+  qs('#main-view').innerHTML=`<div class="game-result"><h3>✅ Quiz අවසන්!</h3>
+    <div class="score-big">${score} / ${st.questions.length}</div>
+    <p>ගත කළ කාලය: ${Math.round(elapsed/1000)}s</p></div>
+    <div style="margin-top:24px"><h4 style="color:var(--gold);margin-bottom:14px;font-size:16px">📊 විෂය අනුව ප්‍රතිඵලය</h4>${breakdownHtml}</div>
+    <button class="btn btn-primary" style="max-width:240px;margin:20px auto 0;display:block" onclick="nav('leaderboard')">🏆 Ranking බලන්න</button>`;
+}
+
+/* ===== LEADERBOARD ===== */
+function viewLeaderboard(){
+  const cfg=DB.get('mccs_quiz_config');
+  const attempts=DB.get('mccs_attempts',[]).filter(a=>a.quizStart===cfg.startAt);
+  const sorted=[...attempts].sort((a,b)=>b.score-a.score||a.elapsed-b.elapsed);
+  return `<h3 class="section-title">🏆 Daily Quiz Ranking</h3>
+  ${sorted.length===0?'<div class="empty-state"><div class="icon">🏅</div><h3>තවම ප්‍රතිඵල නැත</h3><p>Daily Quiz එකට සහභාගී වන්න</p></div>':`
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius)">
+  <table class="leaderboard-table">
+    <thead><tr><th>#</th><th>ශිෂ්‍යයා</th><th>School</th><th>Class</th><th>ලකුණු</th><th>කාලය</th></tr></thead>
+    <tbody>${sorted.map((a,i)=>`<tr class="${i===0?'top-1':i===1?'top-2':i===2?'top-3':''}">
+      <td class="rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+      <td>${esc(a.username)}</td><td style="font-size:12px">${esc(a.school||'-')}</td><td style="font-size:12px">${esc(a.cls||'-')}</td>
+      <td><b style="color:var(--gold)">${a.score}/${a.total}</b></td><td>${Math.round(a.elapsed/1000)}s</td></tr>`).join('')}</tbody></table></div>`}
+  <button class="btn btn-outline btn-sm" style="margin-top:18px" onclick="downloadRanking()">📄 PDF</button>`;
+}
+function downloadRanking(){
+  const cfg=DB.get('mccs_quiz_config');
+  const attempts=DB.get('mccs_attempts',[]).filter(a=>a.quizStart===cfg.startAt).sort((a,b)=>b.score-a.score||a.elapsed-b.elapsed);
+  const win=window.open('','_blank');
+  win.document.write(`<html><head><title>Ranking</title><style>body{font-family:sans-serif;padding:20px}h1{color:#0a0a0a;font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:13px}th{background:#d4a017;color:#0a0a0a;padding:8px;text-align:left}td{padding:8px;border-bottom:1px solid #eee}</style></head><body>
+  <h1>Mahinda College – Daily Quiz Ranking</h1><p>Date: ${new Date(cfg.startAt).toLocaleString()}</p>
+  <table><thead><tr><th>Rank</th><th>Student</th><th>School</th><th>Class</th><th>Score</th><th>Time</th></tr></thead>
+  <tbody>${attempts.map((a,i)=>`<tr><td>${i+1}</td><td>${esc(a.username)}</td><td>${esc(a.school||'-')}</td><td>${esc(a.cls||'-')}</td><td>${a.score}/${a.total}</td><td>${Math.round(a.elapsed/1000)}s</td></tr>`).join('')}</tbody></table></body></html>`);
+  setTimeout(()=>win.print(),500);
+}
+
+/* ===== NOTIFICATIONS VIEW ===== */
+function viewNotifications(){
+  const u=currentUser();
+  if(u.role==='guest')return '<div class="empty-state"><div class="icon">🔒</div><h3>Register කරන්න</h3></div>';
+  const notifs=myNotifications();
+  if(notifs.length){
+    const all=DB.get('mccs_notifications',[]);
+    all.forEach(n=>{if(notifMatches(n,u)){n.readBy=n.readBy||[];if(!n.readBy.includes(u.username))n.readBy.push(u.username)}});
+    DB.set('mccs_notifications',all);updateNotifBadge();
+  }
+  const canSend=u.role==='admin'||u.role==='teacher';
+  return `<h3 class="section-title">🔔 Notifications</h3>
+  ${canSend?`<button class="btn btn-primary" style="max-width:240px;margin-bottom:20px" onclick="openCompose()">✉️ අලුත් Notification</button>`:''}
+  <div class="notif-list">
+    ${notifs.length?notifs.map(n=>`
+      <div class="notif-item">
+        <div class="nhead"><span class="nfrom ${n.fromRole}">${n.fromRole==='admin'?'👑':'👨‍🏫'} ${esc(n.from)}</span>
+          <span class="ntime">${fmtDate(n.createdAt)}</span></div>
+        <div class="ntitle">${esc(n.title)}</div>
+        <div class="nbody">${esc(n.body)}</div>
+      </div>`).join(''):'<div class="empty-state"><div class="icon">🔔</div><h3>Notifications නැත</h3><p>නව දැනුම්දීම් එන විට මෙහි දිස්වේ</p></div>'}
+  </div>`;
+}
+function openCompose(){
+  const u=currentUser();
+  const isAdmin=u.role==='admin';
+  let toOptions=`<option value="students">සියලු ශිෂ්‍යයන්</option><option value="all">සියලු දෙනා</option>`;
+  if(isAdmin){toOptions+=`<option value="teachers">සියලු ගුරුවරු</option><option value="grade12">Grade 12 සියලු</option><option value="grade13">Grade 13 සියලු</option>`}
+  const students=DB.get('mccs_users',[]).filter(x=>x.role==='student');
+  qs('#main-view').innerHTML=`<h3 class="section-title">✉️ Notification යවන්න</h3>
+  <div class="admin-panel">
+    <div class="form-field"><label>යවන්නේ කාටද?</label>
+      <select id="notif-to">${toOptions}
+        <optgroup label="නිශ්චිත ශිෂ්‍යයෙකුට">
+          ${students.map(s=>`<option value="user:${esc(s.username)}">${esc(s.username)} (${esc(s.class||'-')})</option>`).join('')}
+        </optgroup></select></div>
+    <div class="form-field"><label>මාතෘකාව</label><input id="notif-title" placeholder="Notification title"></div>
+    <div class="form-field"><label>පණිවිඩය</label><textarea id="notif-body" placeholder="ඔබේ පණිවිඩය..."></textarea></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" style="width:auto" onclick="sendComposed()">📤 යවන්න</button>
+      <button class="btn btn-outline" onclick="nav('notifications')">Cancel</button></div>
+  </div>`;
+}
+function sendComposed(){
+  const u=currentUser();
+  const to=qs('#notif-to').value;
+  const title=qs('#notif-title').value.trim();
+  const body=qs('#notif-body').value.trim();
+  if(!title||!body)return toast('මාතෘකාව සහ පණිවිඩය ඇතුළත් කරන්න','error');
+  let toType,toValue;
+  if(to==='all'){toType='all';toValue=null}
+  else if(to==='students'){toType='students';toValue=null}
+  else if(to==='teachers'){toType='teachers';toValue=null}
+  else if(to==='grade12'){toType='grade';toValue='12'}
+  else if(to==='grade13'){toType='grade';toValue='13'}
+  else if(to.startsWith('user:')){toType='user';toValue=to.slice(5)}
+  sendNotification(u,toType,toValue,title,body);
+  toast('Notification යවන ලදී ✓','success');nav('notifications');
+}
+
+/* ===== ADMIN ===== */
+function viewAdmin(){
+  const tabs=[
+    {k:'ai',l:'🤖 AI Generator'},{k:'bank',l:'📚 Question Bank'},
+    {k:'lessons',l:'📖 Lessons'},{k:'papers',l:'📄 Past Papers'},
+    {k:'teachers',l:'👨‍🏫 Teachers'},{k:'students',l:'👥 Students'},{k:'quiz',l:'⚙️ Quiz Config'}
+  ];
+  return `<h3 class="section-title">Admin Panel</h3>
+  <div class="admin-tabs">${tabs.map(t=>`<button class="${state.adminTab===t.k?'active':''}" onclick="setAdminTab('${t.k}')">${t.l}</button>`).join('')}</div>
+  <div id="admin-content">${renderAdminTab()}</div>`;
+}
+function setAdminTab(t){state.adminTab=t;render()}
+function renderAdminTab(){
+  const m={ai:adminAI,bank:adminBank,lessons:adminLessons,teachers:adminTeachers,students:adminStudents,quiz:adminQuiz,papers:()=>adminPapers(false)};
+  return (m[state.adminTab]||(()=>''))();
+}
+
+/* ===== TEACHER ===== */
+function viewTeacher(){
+  const tabs=[
+    {k:'ai',l:'🤖 AI Generator'},{k:'bank',l:'📚 My Questions'},
+    {k:'papers',l:'📄 Past Papers'},
+    {k:'students',l:'👥 My Students'},{k:'send',l:'📢 Send Notification'}
+  ];
+  return `<h3 class="section-title">Teacher Panel — ${SUBJECTS[currentUser().subject].en}</h3>
+  <div class="admin-tabs">${tabs.map(t=>`<button class="${state.teacherTab===t.k?'active':''}" onclick="setTeacherTab('${t.k}')">${t.l}</button>`).join('')}</div>
+  <div id="admin-content">${renderTeacherTab()}</div>`;
+}
+function setTeacherTab(t){state.teacherTab=t;render()}
+function renderTeacherTab(){
+  if(state.teacherTab==='send')return teacherSendUI();
+  const m={ai:()=>adminAI(true),bank:()=>adminBank(true),students:teacherStudents,papers:()=>adminPapers(true)};
+  return (m[state.teacherTab]||(()=>''))();
+}
+function teacherStudents(){
+  const attempts=DB.get('mccs_attempts',[]);
+  const users=DB.get('mccs_users',[]).filter(x=>x.role==='student');
+  return `<div class="admin-panel"><h3>👥 My Students (${users.length})</h3>
+    <p class="hint">ශිෂ්‍යයන්ගේ quiz attempts</p>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Username</th><th>School</th><th>Class</th><th>Attempts</th><th>Best</th></tr></thead>
+    <tbody>${users.map(s=>{
+      const sAttempts=attempts.filter(a=>a.username===s.username);
+      const best=sAttempts.length?Math.max(...sAttempts.map(a=>a.score)):0;
+      return `<tr><td>${esc(s.username)}</td><td>${esc(s.school||'-')}</td><td>${esc(s.class||'-')}</td><td>${sAttempts.length}</td><td style="color:var(--gold);font-weight:700">${best}</td></tr>`;
+    }).join('')}</tbody></table></div></div>`;
+}
+function teacherSendUI(){
+  const users=DB.get('mccs_users',[]).filter(x=>x.role==='student');
+  return `<div class="admin-panel"><h3>📢 Notification යවන්න</h3>
+    <p class="hint">ඔබේ විෂයට අදාළ දැනුම්දීම්</p>
+    <div class="form-field"><label>යවන්නේ කාටද?</label>
+      <select id="notif-to"><option value="students">සියලු ශිෂ්‍යයන්</option>
+        <optgroup label="නිශ්චිත ශිෂ්‍යයෙකුට">
+          ${users.map(s=>`<option value="user:${esc(s.username)}">${esc(s.username)} (${esc(s.class||'-')})</option>`).join('')}
+        </optgroup></select></div>
+    <div class="form-field"><label>මාතෘකාව</label><input id="notif-title" placeholder="Notification title"></div>
+    <div class="form-field"><label>පණිවිඩය</label><textarea id="notif-body" placeholder="ඔබේ පණිවිඩය..."></textarea></div>
+    <button class="btn btn-primary" style="width:auto" onclick="sendComposed()">📤 යවන්න</button>
+  </div>`;
+}
+
+/* ===== AI GENERATOR ===== */
+let generatedPreview=[];
+function adminAI(isTeacher=false){
+  const u=currentUser();
+  const apiKey=DB.get('mccs_gemini_key','');
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>!isTeacher||l.subject===u.subject);
+  const subjOptions=isTeacher?`<option value="${u.subject}">${SUBJECTS[u.subject].en}</option>`
+    :Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('');
+  return `<div class="admin-panel">
+    <h3>🤖 AI Question Generator${isTeacher?' — '+SUBJECTS[u.subject].en:''}</h3>
+    <p class="hint">පාඩමක් තෝරලා Gemini AI මගින් ප්‍රශ්න සකසන්න.</p>
+    <div class="form-row">
+      <div class="form-field"><label>Gemini API Key</label>
+        <input type="password" id="gem-key" value="${esc(apiKey)}" placeholder="AIza..."></div>
+      <div class="form-field"><label>Subject</label>
+        <select id="gem-subject" ${isTeacher?'disabled':''} onchange="updateLessonDropdown()">${subjOptions}</select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>Grade</label>
+        <select id="gem-grade" onchange="updateLessonDropdown()"><option value="12">Grade 12</option><option value="13">Grade 13</option></select></div>
+      <div class="form-field"><label>Lesson</label>
+        <select id="gem-lesson">${lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>වර්ගය</label>
+        <select id="gem-type"><option value="mcq">MCQ</option><option value="tf">True/False</option>
+          <option value="fill">Fill Blanks</option><option value="matching">Matching</option></select></div>
+      <div class="form-field"><label>ගණන</label><input type="number" id="gem-count" value="5" min="1" max="20"></div>
+    </div>
+    <div class="form-field"><label>අමතර Context (optional)</label>
+      <textarea id="gem-context" placeholder="Syllabus කරුණු"></textarea></div>
+    <button class="btn btn-primary" id="gem-btn" style="width:auto" onclick="generateAI()">✨ Generate with Gemini</button>
+    <div id="gem-output" style="margin-top:22px">${generatedPreview.length?previewHtml():''}</div>
+  </div>`;
+}
+function updateLessonDropdown(){
+  const subj=qs('#gem-subject').value,grade=qs('#gem-grade').value;
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===subj&&String(l.grade)===String(grade));
+  qs('#gem-lesson').innerHTML=lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('');
+}
+function previewHtml(){
+  return `<h4 style="margin-bottom:14px;color:var(--gold)">Preview (${generatedPreview.length})</h4>
+    ${generatedPreview.map(q=>`<div class="q-preview">
+      <span class="qtag">${q.type.toUpperCase()}</span>
+      ${q.type==='mcq'?`<b>${esc(q.q)}</b><br><small style="color:var(--muted);display:block;margin-top:6px;line-height:1.6">${q.options.map((o,j)=>`${String.fromCharCode(65+j)}. ${esc(o)}${j===q.answer?' ✓':''}`).join(' | ')}</small>`:''}
+      ${q.type==='tf'?`<b>${esc(q.q)}</b> → <b style="color:var(--gold)">${q.answer?'සත්‍ය':'අසත්‍ය'}</b>`:''}
+      ${q.type==='fill'?`<b>${esc(q.q)}</b> → <b style="color:var(--gold)">${esc(q.answer)}</b>`:''}
+      ${q.type==='matching'?`<b>Matching:</b> ${(q.pairs||[]).map(p=>`${esc(p.left)} → ${esc(p.right)}`).join(' · ')}`:''}
+      ${q.explanation?`<div style="font-size:12px;color:var(--muted);margin-top:6px">💡 ${esc(q.explanation)}</div>`:''}
+    </div>`).join('')}
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="approveGenerated()">✅ Approve All</button>
+      <button class="btn btn-outline" onclick="generatedPreview=[];render()">✕ Discard</button></div>`;
+}
+async function generateAI(){
+  const apiKey=qs('#gem-key').value.trim();
+  const subj=qs('#gem-subject').value,grade=qs('#gem-grade').value;
+  const lessonId=qs('#gem-lesson').value,type=qs('#gem-type').value;
+  const count=parseInt(qs('#gem-count').value)||5,context=qs('#gem-context').value.trim();
+  if(!apiKey)return toast('API Key දෙන්න','error');
+  if(!lessonId)return toast('Lesson එකක් තෝරන්න','error');
+  DB.set('mccs_gemini_key',apiKey);
+  const lesson=DB.get('mccs_lessons',[]).find(l=>l.id===lessonId);
+  const btn=qs('#gem-btn');btn.disabled=true;btn.textContent='Generating...';
+  qs('#gem-output').innerHTML='<div class="loading"><div class="spinner"></div>Gemini AI ප්‍රශ්න සකසමින්...</div>';
+  try{
+    const items=await callGemini(apiKey,subj,grade,lesson,type,count,context);
+    generatedPreview=items.map(q=>({...q,type,subject:subj,grade:parseInt(grade),lessonId,generatedAt:Date.now(),createdBy:currentUser().username}));
+    qs('#gem-output').innerHTML=previewHtml();
+    toast('ප්‍රශ්න '+items.length+'ක් සකස් විය! 🎉','success');
+  }catch(e){console.error(e);qs('#gem-output').innerHTML=`<div class="auth-msg error" style="margin-top:0">❌ ${esc(e.message)}</div>`}
+  finally{btn.disabled=false;btn.textContent='✨ Generate with Gemini'}
+}
+function approveGenerated(){
+  const bank=DB.get('mccs_questions',[]);
+  generatedPreview.forEach(q=>{q.id='Q'+Date.now()+Math.random().toString(36).slice(2,7);bank.push(q)});
+  DB.set('mccs_questions',bank);
+  toast(generatedPreview.length+' ප්‍රශ්න එකතු කළා! ✓','success');
+  generatedPreview=[];render();
+}
+async function callGemini(apiKey,subject,grade,lesson,type,count,context){
+  const subjName=SUBJECTS[subject].en;
+  const typePrompt={
+    mcq:`MCQs. Each: "q", "options" (4 strings), "answer" (0-3 index), "explanation" (Sinhala), "difficulty".`,
+    tf:`True/False. Each: "q", "answer" (boolean), "explanation" (Sinhala), "difficulty".`,
+    fill:`Fill blanks. Each: "q" (with ______), "answer", "explanation" (Sinhala), "difficulty".`,
+    matching:`Matching sets. Each: "pairs" (4 objects with "left","right"), "explanation" (Sinhala), "difficulty".`
+  }[type];
+  const schema={
+    mcq:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{q:{type:'string'},options:{type:'array',items:{type:'string'}},answer:{type:'integer'},explanation:{type:'string'},difficulty:{type:'string'}},required:['q','options','answer','explanation']}}},required:['questions']},
+    tf:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{q:{type:'string'},answer:{type:'boolean'},explanation:{type:'string'},difficulty:{type:'string'}},required:['q','answer','explanation']}}},required:['questions']},
+    fill:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{q:{type:'string'},answer:{type:'string'},explanation:{type:'string'},difficulty:{type:'string'}},required:['q','answer','explanation']}}},required:['questions']},
+    matching:{type:'object',properties:{questions:{type:'array',items:{type:'object',properties:{pairs:{type:'array',items:{type:'object',properties:{left:{type:'string'},right:{type:'string'}},required:['left','right']}},explanation:{type:'string'},difficulty:{type:'string'}},required:['pairs']}}},required:['questions']}
+  }[type];
+  const prompt=`You are an experienced Sri Lankan GCE A/L Commerce teacher writing exam-quality questions aligned with the NIE syllabus.
+Subject: ${subjName}, Grade: ${grade}, Lesson: ${lesson.title}
+${context?`Context:\n${context}`:''}
+Generate exactly ${count} ${typePrompt}
+Rules: NIE A/L aligned, Sinhala medium, test understanding, exactly one correct answer, vary difficulty.
+Return ONLY JSON matching schema.`;
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const body={contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.8,responseMimeType:'application/json',responseSchema:schema}};
+  const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok){const err=await res.text();
+    if(res.status===400&&/API key/i.test(err))throw new Error('API Key වැරදියි');
+    if(res.status===429)throw new Error('API quota ඉක්මවා ඇත');
+    throw new Error('Gemini: '+err.slice(0,150));
+  }
+  const data=await res.json();
+  const text=data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if(!text)throw new Error('Gemini පිළිතුරක් නැත');
+  let parsed;try{parsed=JSON.parse(text)}catch(e){throw new Error('Invalid JSON')}
+  if(!parsed.questions||!Array.isArray(parsed.questions))throw new Error('No questions array');
+  return parsed.questions;
+}
+
+/* ===== BANK ===== */
+function adminBank(isTeacher=false){
+  const u=currentUser();
+  const all=DB.get('mccs_questions',[]).filter(q=>!isTeacher||q.subject===u.subject);
+  const byLesson={};all.forEach(q=>{byLesson[q.lessonId]=(byLesson[q.lessonId]||0)+1});
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>!isTeacher||l.subject===u.subject);
+  return `<div class="admin-panel">
+    <h3>📚 Question Bank</h3>
+    <p class="hint">${all.length} ප්‍රශ්න ${isTeacher?'· ඔබේ විෂයට පමණක්':''}</p>
+    ${all.length===0?'<div class="empty-state"><div class="icon">📭</div><p>ප්‍රශ්න නැත. AI Generator එකෙන් generate කරන්න.</p></div>':`
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Subject</th><th>Grade</th><th>Lesson</th><th>Types</th><th>Count</th><th></th></tr></thead>
+    <tbody>${lessons.filter(l=>byLesson[l.id]).map(l=>{
+      const types={};all.filter(q=>q.lessonId===l.id).forEach(q=>{types[q.type]=(types[q.type]||0)+1});
+      return `<tr><td>${SUBJECTS[l.subject].en}</td><td>${l.grade}</td><td>${esc(l.title)}</td>
+        <td style="font-size:12px;color:var(--gold)">${Object.entries(types).map(([t,c])=>`${t.toUpperCase()}:${c}`).join(' · ')}</td>
+        <td><b style="color:var(--gold)">${byLesson[l.id]}</b></td>
+        <td><button class="btn btn-sm btn-danger" onclick="clearLessonQuestions('${l.id}')">Clear</button></td></tr>`;
+    }).join('')}</tbody></table></div>`}
+  </div>`;
+}
+function clearLessonQuestions(lessonId){
+  if(!confirm('මෙම පාඩමේ ප්‍රශ්න මකන්නද?'))return;
+  DB.set('mccs_questions',DB.get('mccs_questions',[]).filter(q=>q.lessonId!==lessonId));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== LESSONS ADMIN ===== */
+function adminLessons(){
+  const lessons=DB.get('mccs_lessons',[]);
+  return `<div class="admin-panel">
+    <h3>📖 Lesson Management</h3>
+    <div class="form-row">
+      <div class="form-field"><label>Subject</label>
+        <select id="les-subject">${Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
+      <div class="form-field"><label>Grade</label>
+        <select id="les-grade"><option value="12">12</option><option value="13">13</option></select></div>
+    </div>
+    <div class="form-field"><label>පාඩමේ නම</label><input id="les-title" placeholder="උදා: නව සංකල්ප"></div>
+    <div class="form-field"><label>AI Context</label><textarea id="les-context" placeholder="Syllabus ඉගෙනුම් ඵල"></textarea></div>
+    <button class="btn btn-primary" style="width:auto" onclick="addLesson()">➕ එකතු කරන්න</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Subject</th><th>Grade</th><th>Title</th><th></th></tr></thead>
+    <tbody>${lessons.map(l=>`<tr><td>${SUBJECTS[l.subject].en}</td><td>${l.grade}</td><td>${esc(l.title)}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="editLesson('${l.id}')">Edit</button>
+      <button class="btn btn-sm btn-danger" onclick="delLesson('${l.id}')">Del</button></td></tr>`).join('')}</tbody></table></div>
+  </div>`;
+}
+function addLesson(){
+  const title=qs('#les-title').value.trim();
+  if(!title)return toast('නම ඇතුළත් කරන්න','error');
+  const lessons=DB.get('mccs_lessons',[]);
+  const subj=qs('#les-subject').value,grade=parseInt(qs('#les-grade').value);
+  const maxOrder=Math.max(0,...lessons.filter(l=>l.subject===subj&&l.grade===grade).map(l=>l.order||0));
+  lessons.push({id:'L'+Date.now(),subject:subj,grade,title,order:maxOrder+1,context:qs('#les-context').value.trim(),notes:''});
+  DB.set('mccs_lessons',lessons);toast('පාඩම එකතු කළා ✓','success');render();
+}
+function editLesson(id){
+  const lessons=DB.get('mccs_lessons',[]);const l=lessons.find(x=>x.id===id);if(!l)return;
+  const t=prompt('නව නම:',l.title);if(t===null)return;
+  const c=prompt('AI Context:',l.context||'');if(c===null)return;
+  l.title=t.trim()||l.title;l.context=c.trim();
+  DB.set('mccs_lessons',lessons);toast('යාවත්කාලීන ✓','success');render();
+}
+function delLesson(id){
+  if(!confirm('මකන්නද?'))return;
+  DB.set('mccs_lessons',DB.get('mccs_lessons',[]).filter(l=>l.id!==id));
+  DB.set('mccs_questions',DB.get('mccs_questions',[]).filter(q=>q.lessonId!==id));
+  DB.set('mccs_past_papers',DB.get('mccs_past_papers',[]).filter(p=>p.lessonId!==id));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== PAST PAPERS ADMIN ===== */
+function ppUpdateLessons(){
+  const subj=qs('#pp-subject').value,grade=qs('#pp-grade').value;
+  const lessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===subj&&String(l.grade)===String(grade));
+  const sel=qs('#pp-lesson');
+  if(sel)sel.innerHTML=lessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('');
+}
+function ppSrcToggle(){
+  const src=document.querySelector('input[name="pp-src"]:checked').value;
+  qs('#pp-url-wrap').classList.toggle('hidden',src!=='url');
+  qs('#pp-file-wrap').classList.toggle('hidden',src!=='file');
+}
+function adminPapers(isTeacher=false){
+  const u=currentUser();
+  const allPapers=DB.get('mccs_past_papers',[]);
+  const papers=isTeacher?allPapers.filter(p=>p.subject===u.subject):allPapers;
+  const subjOptions=isTeacher
+    ?`<option value="${u.subject}">${SUBJECTS[u.subject].en}</option>`
+    :Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('');
+  const defaultSubj=isTeacher?u.subject:'BS';
+  const defaultLessons=DB.get('mccs_lessons',[]).filter(l=>l.subject===defaultSubj&&String(l.grade)==='12');
+  const lessonsAll=DB.get('mccs_lessons',[]);
+  return `<div class="admin-panel">
+    <h3>📄 Past Papers Management</h3>
+    <p class="hint">පාඩමකට අදාළව past papers add කරන්න. URL (Google Drive / Dropbox) හෝ PDF file upload (max 2MB). ${isTeacher?'ඔබේ විෂයට පමණක්.':''}</p>
+    <div class="form-row">
+      <div class="form-field"><label>Subject</label>
+        <select id="pp-subject" ${isTeacher?'disabled':''} onchange="ppUpdateLessons()">${subjOptions}</select></div>
+      <div class="form-field"><label>Grade</label>
+        <select id="pp-grade" onchange="ppUpdateLessons()"><option value="12">12</option><option value="13">13</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>Year</label>
+        <input type="number" id="pp-year" value="${new Date().getFullYear()-1}" min="2000" max="2100"></div>
+      <div class="form-field"><label>Paper Type</label>
+        <select id="pp-type">
+          <option value="MCQ">MCQ</option>
+          <option value="Essay">Essay (Part II)</option>
+          <option value="Structured">Structured (Part I)</option>
+          <option value="Full">Full Paper</option>
+          <option value="Marking">Marking Scheme</option>
+        </select></div>
+    </div>
+    <div class="form-field"><label>Title (optional)</label>
+      <input id="pp-title" placeholder="Auto-generated if empty"></div>
+    <div class="form-field"><label>Lesson (Required)</label>
+      <select id="pp-lesson">${defaultLessons.map(l=>`<option value="${l.id}">${esc(l.title)}</option>`).join('')}</select>
+    </div>
+    <div class="form-field"><label>Source</label>
+      <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px">
+          <input type="radio" name="pp-src" value="url" checked onchange="ppSrcToggle()" style="width:auto;accent-color:var(--gold)"> URL
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px">
+          <input type="radio" name="pp-src" value="file" onchange="ppSrcToggle()" style="width:auto;accent-color:var(--gold)"> File Upload
+        </label>
+      </div>
+    </div>
+    <div class="form-field" id="pp-url-wrap">
+      <label>URL</label>
+      <input id="pp-url" placeholder="https://drive.google.com/file/d/...">
+    </div>
+    <div class="form-field hidden" id="pp-file-wrap">
+      <label>PDF File (max 2MB)</label>
+      <input type="file" id="pp-file" accept="application/pdf">
+    </div>
+    <button class="btn btn-primary" style="width:auto" onclick="savePaper(${isTeacher})">💾 Save Past Paper</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+    <h4 style="margin-bottom:14px;color:var(--gold)">Existing Papers (${papers.length})</h4>
+    ${papers.length?`<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table">
+      <thead><tr><th>Subject</th><th>Grade</th><th>Lesson</th><th>Year</th><th>Type</th><th></th></tr></thead>
+      <tbody>${papers.sort((a,b)=>b.addedAt-a.addedAt).map(p=>{
+        const lesson=lessonsAll.find(l=>l.id===p.lessonId);
+        return `<tr>
+        <td>${SUBJECTS[p.subject].en}</td><td>${p.grade}</td>
+        <td style="font-size:12px">${lesson?esc(lesson.title):'<span style="color:var(--danger)">Unattached</span>'}</td>
+        <td><b style="color:var(--gold)">${p.year}</b></td>
+        <td>${p.paperType}</td>
+        <td><a href="${p.url}" target="_blank" rel="noopener" style="color:var(--gold);font-size:12px;font-weight:700;text-decoration:none;margin-right:8px">View</a>
+          <button class="btn btn-sm btn-danger" onclick="delPaper('${p.id}')">Del</button></td>
+      </tr>`;}).join('')}</tbody>
+    </table></div>`:'<div class="empty-state"><div class="icon">📄</div><p>තවම past papers නැත</p></div>'}
+  </div>`;
+}
+async function savePaper(isTeacher){
+  const u=currentUser();
+  const subj=qs('#pp-subject').value;
+  const grade=parseInt(qs('#pp-grade').value);
+  const year=parseInt(qs('#pp-year').value);
+  const paperType=qs('#pp-type').value;
+  const titleInput=qs('#pp-title').value.trim();
+  const src=document.querySelector('input[name="pp-src"]:checked').value;
+  const lessonId=qs('#pp-lesson').value;
+  if(!lessonId)return toast('Lesson එකක් තෝරන්න','error');
+  if(!year||year<2000)return toast('වලංගු year එකක් දෙන්න','error');
+  let url='';
+  if(src==='url'){
+    url=qs('#pp-url').value.trim();
+    if(!url)return toast('URL දෙන්න','error');
+    if(!/^https?:\/\//i.test(url))return toast('http:// හෝ https:// වලින් පටන් ගන්න','error');
+  } else {
+    const file=qs('#pp-file').files[0];
+    if(!file)return toast('PDF file එකක් තෝරන්න','error');
+    if(file.size>2*1024*1024)return toast('File 2MB ට වඩා වැඩියි','error');
+    if(file.type!=='application/pdf')return toast('PDF file එකක් පමණක්','error');
+    url=await fileToDataUrl(file);
+  }
+  const papers=DB.get('mccs_past_papers',[]);
+  papers.push({
+    id:'P'+Date.now(),
+    subject:subj,grade,year,paperType,
+    title:titleInput || `${year} ${SUBJECTS[subj].en} ${paperType}`,
+    url,lessonId,addedBy:u.username,addedAt:Date.now()
+  });
+  try{
+    DB.set('mccs_past_papers',papers);
+  }catch(e){
+    toast('Storage full! URL එකක් භාවිත කරන්න','error');
+    return;
+  }
+  toast('Past paper එකතු කළා ✓','success');
+  render();
+}
+function delPaper(id){
+  if(!confirm('මෙම past paper එක මකන්නද?'))return;
+  DB.set('mccs_past_papers',DB.get('mccs_past_papers',[]).filter(p=>p.id!==id));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== TEACHERS ===== */
+function adminTeachers(){
+  const users=DB.get('mccs_users',[]).filter(u=>u.role==='teacher');
+  const bySubj={};users.forEach(t=>{(bySubj[t.subject]=bySubj[t.subject]||[]).push(t)});
+  return `<div class="admin-panel">
+    <h3>👨‍🏫 Teacher Management</h3>
+    <p class="hint">${users.length} ගුරුවරු · Default password: <b style="color:var(--gold)">teach123</b></p>
+    <div class="form-row">
+      <div class="form-field"><label>Username</label><input id="t-user" placeholder="e.g., new_teacher"></div>
+      <div class="form-field"><label>Password</label><input id="t-pass" type="password" placeholder="min 4 chars"></div>
+    </div>
+    <div class="form-field"><label>Subject</label>
+      <select id="t-subject">${Object.keys(SUBJECTS).map(k=>`<option value="${k}">${SUBJECTS[k].en}</option>`).join('')}</select></div>
+    <button class="btn btn-primary" style="width:auto" onclick="addTeacher()">➕ ගුරුවරයෙක් එකතු කරන්න</button>
+    <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+    ${Object.keys(SUBJECTS).map(k=>{
+      const subs=bySubj[k]||[];if(!subs.length)return '';
+      return `<div style="margin-bottom:20px"><h4 style="color:var(--gold);margin-bottom:10px">${SUBJECTS[k].en} (${subs.length})</h4>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table class="students-table"><thead><tr><th>Username</th><th>Subject</th><th>Password</th><th></th></tr></thead>
+        <tbody>${subs.map(t=>`<tr><td>${esc(t.username)}</td><td>${SUBJECTS[t.subject].en}</td>
+          <td style="color:var(--muted);font-family:monospace">${esc(t.password)}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="delUser('${esc(t.username)}')">Delete</button></td></tr>`).join('')}</tbody></table></div></div>`;
+    }).join('')}
+  </div>`;
+}
+function addTeacher(){
+  const u=qs('#t-user').value.trim(),p=qs('#t-pass').value,subj=qs('#t-subject').value;
+  if(!u||!p)return toast('සියලු තොරතුරු පුරවන්න','error');
+  if(u.length<3)return toast('Username අවම 3','error');
+  if(p.length<4)return toast('Password අවම 4','error');
+  const users=DB.get('mccs_users',[]);
+  if(users.find(x=>x.username===u))return toast('මෙම username දැනටමත් ඇත','error');
+  users.push({username:u,password:p,role:'teacher',subject:subj,created:Date.now()});
+  DB.set('mccs_users',users);toast('ගුරුවරයා එකතු කළා ✓','success');render();
+}
+
+/* ===== STUDENTS ===== */
+function adminStudents(){
+  const users=DB.get('mccs_users',[]).filter(u=>u.role==='student');
+  return `<div class="admin-panel"><h3>👥 Students</h3>
+    <p class="hint">${users.length} ගිණුම්</p>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <table class="students-table"><thead><tr><th>Username</th><th>School</th><th>Grade</th><th>Class</th><th></th></tr></thead>
+    <tbody>${users.map(u=>`<tr>
+      <td>${esc(u.username)}</td><td>${esc(u.school||'-')}</td><td>${u.grade||'-'}</td><td>${esc(u.class||'-')}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="delUser('${esc(u.username)}')">Delete</button></td></tr>`).join('')}</tbody></table></div>
+  </div>`;
+}
+function delUser(username){
+  if(!confirm('මකන්නද?'))return;
+  DB.set('mccs_users',DB.get('mccs_users',[]).filter(u=>u.username!==username));
+  toast('මකා දමන ලදී','success');render();
+}
+
+/* ===== QUIZ CONFIG ===== */
+function adminQuiz(){
+  const cfg=DB.get('mccs_quiz_config');
+  const dt=new Date(cfg.startAt);
+  const local=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate())+'T'+pad(dt.getHours())+':'+pad(dt.getMinutes());
+  return `<div class="admin-panel"><h3>⚙️ Daily Quiz Configuration</h3>
+    <div class="form-row">
+      <div class="form-field"><label>ආරම්භක වේලාව</label><input type="datetime-local" id="q-start" value="${local}"></div>
+      <div class="form-field"><label>කාලය (මිනිත්තු)</label><input type="number" id="q-dur" value="${cfg.durationMin}" min="1" max="120"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>ප්‍රශ්න ගණන</label><input type="number" id="q-count" value="${cfg.questionCount}" min="1" max="100"></div>
+      <div class="form-field"><label>Grade</label>
+        <select id="q-grade"><option value="any" ${cfg.grade==='any'?'selected':''}>12 & 13</option>
+          <option value="12" ${cfg.grade==='12'?'selected':''}>Grade 12</option>
+          <option value="13" ${cfg.grade==='13'?'selected':''}>Grade 13</option></select></div>
+    </div>
+    <div class="form-field"><label>විෂයයන්</label>
+      <div class="checkbox-grid">${Object.keys(SUBJECTS).map(k=>`<label><input type="checkbox" class="q-subj" value="${k}" ${cfg.subjects.includes(k)?'checked':''}> ${SUBJECTS[k].en}</label>`).join('')}</div>
+    </div>
+    <div class="form-field"><label style="text-transform:none;font-size:14px"><input type="checkbox" id="q-active" ${cfg.active?'checked':''} style="width:auto;accent-color:var(--gold)"> Quiz සක්‍රීය</label></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" style="width:auto" onclick="saveQuizCfg()">💾 Save</button>
+      <button class="btn btn-outline" style="width:auto" onclick="resetQuizAttempts()">🔄 Reset</button>
+    </div>
+  </div>`;
+}
+function saveQuizCfg(){
+  const subjects=[...document.querySelectorAll('.q-subj:checked')].map(e=>e.value);
+  if(!subjects.length)return toast('අවම විෂයයක් තෝරන්න','error');
+  DB.set('mccs_quiz_config',{startAt:new Date(qs('#q-start').value).getTime(),durationMin:parseInt(qs('#q-dur').value)||10,questionCount:parseInt(qs('#q-count').value)||10,grade:qs('#q-grade').value,subjects,active:qs('#q-active').checked});
+  toast('Saved ✓','success');render();
+}
+function resetQuizAttempts(){
+  if(!confirm('Attempts reset කරන්නද?'))return;
+  DB.set('mccs_attempts',[]);toast('Reset','success');render();
+}
+
+/* ===== INIT ===== */
+(function init(){
+  playIntro();
+  setInterval(()=>{
+    if(state.view==='quiz'){
+      const cfg=DB.get('mccs_quiz_config');
+      const el=document.getElementById('countdown');
+      if(el&&Date.now()<cfg.startAt){
+        const left=Math.floor((cfg.startAt-Date.now())/1000);
+        el.textContent=pad(Math.floor(left/3600))+':'+pad(Math.floor(left%3600/60))+':'+pad(left%60);
+      }
+    }
+  },1000);
+})();
+</script>
+</body>
+</html>
