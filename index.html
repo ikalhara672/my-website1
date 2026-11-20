@@ -1186,8 +1186,248 @@ function viewQuiz(){
   const eligible=allQ.filter(q=>cfg.subjects.includes(q.subject)&&(cfg.grade==='any'||q.grade===cfg.grade));
   const now=Date.now();
   if(quizTimer){clearInterval(quizTimer);quizTimer=null}
-  if(!cfg.active
-  /* ⚠️ FILE TRUNCATED HERE - මෙතැන් සිට මට ලැබුණේ නැත */
+    if(!cfg.active){
+    return `<div class="quiz-banner"><h2>🔒 Daily Quiz</h2><p>Quiz එක දැනට නතර කර ඇත.</p></div>`;
+  }
+
+  if(!eligible.length){
+    return `<div class="empty-state"><div class="icon">🤖</div><h3>ප්‍රශ්න නැත</h3><p>Admin ප්‍රශ්න add කරන තෙක් රැඳී සිටින්න.</p></div>`;
+  }
+
+  const endAt = cfg.startAt + cfg.durationMin*60*1000;
+
+  if(now < cfg.startAt){
+    setTimeout(()=>{ if(state.view==='quiz') _startCountdown(cfg.startAt); }, 30);
+    return `<div class="quiz-banner">
+      <h2>⏰ Daily Quiz</h2>
+      <div class="countdown" id="cd">--:--</div>
+      <p>Quiz එක ${new Date(cfg.startAt).toLocaleString()} ට ආරම්භ වේ</p>
+      <div class="quiz-meta">
+        <div>❓ ${cfg.questionCount} ප්‍රශ්න</div>
+        <div>⏱️ ${cfg.durationMin} මිනිත්තු</div>
+        <div>📚 ${cfg.subjects.length} විෂයයන්</div>
+      </div>
+    </div>`;
+  }
+
+  if(now > endAt){
+    const myA = DB.get('mccs_attempts',[]).find(a=>a.username===u.username && a.quizId===cfg.startAt);
+    return `<div class="quiz-banner">
+      <h2>⏳ Quiz අවසන්</h2>
+      <p>ඊළඟ quiz එක එන තෙක් රැඳී සිටින්න.</p>
+      ${myA?`<div class="quiz-meta"><div>ඔබගේ Score: ${myA.score}/${myA.total}</div></div>`:''}
+    </div>`;
+  }
+
+  const existing = DB.get('mccs_attempts',[]).find(a=>a.username===u.username && a.quizId===cfg.startAt);
+  if(existing){
+    return `<div class="quiz-banner">
+      <h2>✅ සම්පූර්ණයි</h2>
+      <p>ඔබ දැනටමත් මෙම quiz එකට සහභාගී වී ඇත.</p>
+      <div class="quiz-meta"><div>Score: ${existing.score}/${existing.total}</div></div>
+    </div>`;
+  }
+
+  setTimeout(()=>{ if(state.view==='quiz') _startCountdown(endAt); }, 30);
+  return `<div class="quiz-banner">
+    <h2>🎯 Daily Quiz</h2>
+    <div class="countdown" id="cd">--:--</div>
+    <p>ඉතිරි කාලය</p>
+    <div class="quiz-meta">
+      <div>❓ ${cfg.questionCount} ප්‍රශ්න</div>
+      <div>⏱️ ${cfg.durationMin} මිනිත්තු</div>
+    </div>
+    <button class="btn btn-gold" style="max-width:240px;margin:20px auto 0" onclick="startDailyQuiz()">Quiz ආරම්භ කරන්න →</button>
+  </div>`;
+}
+
+function _startCountdown(target){
+  if(quizTimer){clearInterval(quizTimer);quizTimer=null}
+  function tick(){
+    const el = document.getElementById('cd');
+    if(!el){ if(quizTimer) clearInterval(quizTimer); quizTimer=null; return; }
+    const d = target - Date.now();
+    if(d<=0){
+      el.textContent='00:00';
+      clearInterval(quizTimer); quizTimer=null;
+      if(state.view==='quiz') setTimeout(()=>render(), 400);
+      return;
+    }
+    const m = Math.floor(d/60000), s = Math.floor((d%60000)/1000);
+    el.textContent = pad(m)+':'+pad(s);
+  }
+  tick();
+  quizTimer = setInterval(tick, 1000);
+}
+
+let quizState = null;
+
+function startDailyQuiz(){
+  const u = currentUser();
+  if(!u || u.role==='guest'){ toast('Register කරන්න','error'); return; }
+  const cfg = DB.get('mccs_quiz_config');
+  const allQ = DB.get('mccs_questions',[]).filter(q=>
+    cfg.subjects.includes(q.subject) && (cfg.grade==='any'||q.grade===cfg.grade) && q.type==='mcq'
+  );
+  if(!allQ.length){ toast('ප්‍රශ්න නැත','error'); return; }
+  const picked = allQ.sort(()=>Math.random()-0.5).slice(0, cfg.questionCount);
+  quizState = {
+    questions: picked,
+    index: 0,
+    correct: 0,
+    quizId: cfg.startAt,
+    endAt: cfg.startAt + cfg.durationMin*60*1000
+  };
+  _renderQuizQ();
+}
+
+function _renderQuizQ(){
+  if(!quizState) return;
+  if(quizState.index >= quizState.questions.length){ _endQuiz(); return; }
+  const q = quizState.questions[quizState.index];
+  const el = qs('#main-view');
+  const left = Math.max(0, Math.floor((quizState.endAt - Date.now())/1000));
+  el.innerHTML = `<div class="quiz-runner">
+    <div class="qhead">
+      <b>ප්‍රශ්න ${quizState.index+1} / ${quizState.questions.length}</b>
+      <div class="timer" id="qtimer">${pad(Math.floor(left/60))}:${pad(left%60)}</div>
+    </div>
+    <div class="qtext">${esc(q.q)}</div>
+    <div class="opt-list">
+      ${q.options.map((o,i)=>`<button class="opt-btn" onclick="answerQuiz(${i})">${esc(o)}</button>`).join('')}
+    </div>
+  </div>`;
+  if(quizTimer){clearInterval(quizTimer);quizTimer=null}
+  quizTimer = setInterval(()=>{
+    if(!quizState) return;
+    const t = document.getElementById('qtimer');
+    if(!t) return;
+    const l = Math.max(0, Math.floor((quizState.endAt - Date.now())/1000));
+    t.textContent = pad(Math.floor(l/60))+':'+pad(l%60);
+    if(l<=0){ clearInterval(quizTimer); quizTimer=null; _endQuiz(); }
+  }, 1000);
+}
+
+function answerQuiz(i){
+  if(!quizState) return;
+  const q = quizState.questions[quizState.index];
+  if(i === q.answer) quizState.correct++;
+  quizState.index++;
+  _renderQuizQ();
+}
+
+function _endQuiz(){
+  if(quizTimer){clearInterval(quizTimer);quizTimer=null}
+  if(!quizState) return;
+  const u = currentUser();
+  const attempt = {
+    id: 'A'+Date.now()+Math.random().toString(36).slice(2,6),
+    username: u.username,
+    quizId: quizState.quizId,
+    score: quizState.correct,
+    total: quizState.questions.length,
+    createdAt: Date.now()
+  };
+  const all = DB.get('mccs_attempts',[]);
+  all.push(attempt);
+  DB.set('mccs_attempts', all);
+  const el = qs('#main-view');
+  el.innerHTML = `<div class="game-result">
+    <h3>🎉 සම්පූර්ණයි!</h3>
+    <div class="score-big">${quizState.correct} / ${quizState.questions.length}</div>
+    <p>${quizState.correct===quizState.questions.length?'පරිපූර්ණ! 🏆':'හොඳ උත්සාහයක්! 💪'}</p>
+    <button class="btn btn-primary" style="max-width:220px;margin:0 auto" onclick="nav('leaderboard')">Leaderboard →</button>
+  </div>`;
+  quizState = null;
+}
+
+function viewLeaderboard(){
+  const attempts = DB.get('mccs_attempts',[]);
+  const map = {};
+  attempts.forEach(a=>{
+    if(!a.username) return;
+    if(!map[a.username]) map[a.username] = {username:a.username, score:0, total:0, count:0};
+    map[a.username].score += a.score||0;
+    map[a.username].total += a.total||0;
+    map[a.username].count++;
+  });
+  const rows = Object.values(map).sort((a,b)=>b.score-a.score).slice(0,50);
+  return `<h3 class="section-title">🏆 Leaderboard</h3>
+  ${rows.length ? `<table class="leaderboard-table">
+    <thead><tr><th>#</th><th>Student</th><th>Score</th><th>Attempts</th></tr></thead>
+    <tbody>
+      ${rows.map((r,i)=>`<tr class="${i===0?'top-1':i===1?'top-2':i===2?'top-3':''}">
+        <td class="rank">${i+1}</td>
+        <td>${esc(r.username)}</td>
+        <td>${r.score} / ${r.total}</td>
+        <td>${r.count}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>` : `<div class="empty-state"><div class="icon">🏆</div><h3>තවම Rankings නැත</h3><p>Quiz එකක් සම්පූර්ණ කරන්න.</p></div>`}`;
+}
+
+function viewNotifications(){
+  const u = currentUser();
+  if(!u || u.role==='guest'){
+    return `<div class="empty-state"><div class="icon">🔔</div><h3>Register කරන්න</h3><p>Notifications බැලීමට ගිණුමක් අවශ්‍යයි</p></div>`;
+  }
+  const list = myNotifications();
+  if(list.length){
+    const all = DB.get('mccs_notifications',[]);
+    let changed = false;
+    all.forEach(n=>{
+      if(notifMatches(n,u) && !(n.readBy||[]).includes(u.username)){
+        n.readBy = [...(n.readBy||[]), u.username];
+        changed = true;
+      }
+    });
+    if(changed) DB.set('mccs_notifications', all);
+  }
+  return `<h3 class="section-title">🔔 Notifications</h3>
+  <div class="notif-list">
+    ${list.length ? list.map(n=>`<div class="notif-item">
+      <div class="nhead">
+        <span class="nfrom ${n.fromRole||''}">${esc(n.from||'System')}</span>
+        <span class="ntime">${fmtDate(n.createdAt)}</span>
+      </div>
+      <div class="ntitle">${esc(n.title)}</div>
+      <div class="nbody">${esc(n.body)}</div>
+    </div>`).join('') : `<div class="empty-state"><div class="icon">📭</div><h3>Notifications නැත</h3><p>අලුත් දේ එන තෙක් රැඳී සිටින්න.</p></div>`}
+  </div>`;
+}
+
+function viewAdmin(){
+  const u = currentUser();
+  if(!u || u.role!=='admin'){
+    return `<div class="empty-state"><div class="icon">🔒</div><h3>Access Denied</h3><p>Admin පමණි</p></div>`;
+  }
+  return `<div class="admin-panel">
+    <h3>⚙️ Admin Panel</h3>
+    <p class="hint">Admin functions සඳහා. (මෙය stub එකකි — පූර්ණ functionality පසුව එකතු කරන්න)</p>
+    <div class="empty-state"><div class="icon">🚧</div><h3>Coming Soon</h3><p>Admin panel ඉක්මනින් එනවා.</p></div>
+  </div>`;
+}
+
+function viewTeacher(){
+  const u = currentUser();
+  if(!u || (u.role!=='teacher' && u.role!=='admin')){
+    return `<div class="empty-state"><div class="icon">🔒</div><h3>Access Denied</h3><p>Teacher පමණි</p></div>`;
+  }
+  return `<div class="admin-panel">
+    <h3>👨‍🏫 Teacher Panel</h3>
+    <p class="hint">Teacher functions සඳහා. (මෙය stub එකකි)</p>
+    <div class="empty-state"><div class="icon">🚧</div><h3>Coming Soon</h3></div>
+  </div>`;
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  playIntro();
+  setTimeout(()=>{
+    const intro = document.getElementById('intro-screen');
+    if(intro && !intro.classList.contains('fade-out')){
+      intro.style.display = 'none';
+      _finishInit();
+    }
+  }, 5000);
+});
 </script>
-</body>
-</html>
