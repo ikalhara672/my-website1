@@ -399,7 +399,7 @@ img{max-width:100%;height:auto}
       <button class="btn btn-primary" onclick="doLogin()">ඇතුල් වන්න →</button>
       <div class="divider">හෝ</div>
       <button class="btn btn-outline" style="width:100%" onclick="enterGuest()">🌐 Register නොකර Browse කරන්න</button>
-      <p style="font-size:11px;color:var(--muted);margin-top:16px;text-align:center;line-height:1.6">: <b style="color:var(--gold)"></b><br>Teacher: <b style="color:var(--info)">bs_teacher1/teach123</b></p>
+      
     </div>
     <div id="reg-gate" class="hidden">
       <div style="text-align:center;margin-bottom:20px">
@@ -448,16 +448,121 @@ img{max-width:100%;height:auto}
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 /* Light theme only - no toggle */
 document.documentElement.setAttribute('data-theme', 'light');
 try{localStorage.setItem('mccs_theme','light')}catch(e){}
 
+
+/* ================= FIREBASE ================= */
+const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT_ID",storageBucket:"YOUR_PROJECT.appspot.com",messagingSenderId:"YOUR_SENDER_ID",appId:"YOUR_APP_ID"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(),fs=firebase.firestore();
+const EMAIL_DOMAIN='@mahinda.app';
+const DEFAULT_QCFG={startAt:Date.now()+3600*1000,durationMin:10,questionCount:10,subjects:['BS','ACC','ECON','ICT'],grade:'any',active:true};
+const COLS={mccs_users:['users','uid'],mccs_lessons:['lessons','id'],mccs_questions:['questions','id'],mccs_past_papers:['past_papers','id'],mccs_attempts:['attempts','id'],mccs_notifications:['notifications','id']};
+const cache={mccs_users:[],mccs_lessons:[],mccs_questions:[],mccs_past_papers:[],mccs_attempts:[],mccs_notifications:[],mccs_progress:{},mccs_quiz_config:DEFAULT_QCFG};
+const clone=o=>o===undefined?undefined:JSON.parse(JSON.stringify(o));
+const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+let _cu=null,_registering=false,_privStarted=false,_lessonsLoaded=false,_seeded=false,_rt,_dirty=false,_inGame=false;
+
 const DB={
-  get(k,d=null){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){localStorage.setItem(k,JSON.stringify(v))},
-  del(k){localStorage.removeItem(k)}
+  get(k,d=null){
+    if(k==='mccs_gemini_key'){try{return localStorage.getItem(k)||d}catch(e){return d}}
+    const v=cache[k];return(v===undefined||v===null)?d:clone(v);
+  },
+  set(k,v){
+    if(k==='mccs_gemini_key'){try{localStorage.setItem(k,v)}catch(e){}return}
+    syncWrite(k,v);
+  },
+  del(){}
 };
+function syncWrite(k,v){
+  const me=_cu||{},old=cache[k];const ops=[];
+  const put=(c,id,d)=>ops.push(b=>b.set(fs.collection(c).doc(id),d));
+  const del=(c,id)=>ops.push(b=>b.delete(fs.collection(c).doc(id)));
+  if(k==='mccs_quiz_config'){cache[k]=clone(v);put('config','quiz',v)}
+  else if(k==='mccs_progress'){
+    cache[k]=clone(v);
+    for(const id in v)if(!same(v[id],old[id]))put('progress',id,{...v[id],username:id.slice(0,id.lastIndexOf('_'))});
+    for(const id in old)if(!(id in v))del('progress',id);
+  }else{
+    const[col,kf]=COLS[k];
+    v.forEach(x=>{if(!x[kf])x[kf]=(kf==='id'?'X':'U')+Date.now()+Math.random().toString(36).slice(2,7)});
+    cache[k]=clone(v);
+    const om=new Map((old||[]).map(x=>[x[kf],x]));
+    v.forEach(x=>{
+      if(same(x,om.get(x[kf])))return;
+      if(k==='mccs_attempts'&&me.role!=='admin'&&x.username!==me.username)return;
+      put(col,x[kf],x);
+    });
+    const nm=new Set(v.map(x=>x[kf]));
+    om.forEach((x,id)=>{if(!nm.has(id))del(col,id)});
+  }
+  for(let i=0;i<ops.length;i+=400){
+    const b=fs.batch();ops.slice(i,i+400).forEach(f=>f(b));
+    b.commit().catch(e=>{console.error(e);toast('Save failed: '+(e.code||e.message),'error')});
+  }
+}
+function snap(col,key,kf){
+  return fs.collection(col).onSnapshot(s=>{cache[key]=s.docs.map(d=>({...d.data(),[kf]:d.id}));
+    if(key==='mccs_lessons'){_lessonsLoaded=true;maybeSeed()}liveRefresh()},e=>console.warn(col,e.code));
+}
+function startPublic(){
+  snap('lessons','mccs_lessons','id');snap('questions','mccs_questions','id');snap('past_papers','mccs_past_papers','id');
+  fs.collection('config').doc('quiz').onSnapshot(d=>{cache.mccs_quiz_config=d.exists?d.data():DEFAULT_QCFG;liveRefresh()},e=>console.warn(e.code));
+}
+function startPrivate(u){
+  if(_privStarted||!u||u.role==='guest')return;_privStarted=true;
+  snap('users','mccs_users','uid');snap('attempts','mccs_attempts','id');snap('notifications','mccs_notifications','id');
+  let q=fs.collection('progress');if(u.role==='student')q=q.where('username','==',u.username);
+  q.onSnapshot(s=>{const o={};s.docs.forEach(d=>{o[d.id]=d.data()});cache.mccs_progress=o;liveRefresh()},e=>console.warn('progress',e.code));
+  maybeSeed();
+}
+function maybeSeed(){
+  if(_seeded||!_lessonsLoaded||!_cu||_cu.role!=='admin'||cache.mccs_lessons.length)return;_seeded=true;
+  const lessons=[];let id=1;
+  for(const s of Object.keys(DEFAULT_LESSONS))for(const g of [12,13])DEFAULT_LESSONS[s][g].forEach((t,i)=>lessons.push({id:'L'+(id++),subject:s,grade:g,title:t,order:i+1,context:'',notes:''}));
+  DB.set('mccs_lessons',lessons);
+}
+function liveRefresh(){
+  clearTimeout(_rt);_rt=setTimeout(()=>{
+    if(!_cu||qs('#app').style.display==='none')return;
+    try{updateNotifBadge()}catch(e){}
+    const a=document.activeElement;
+    if(_dirty||_inGame||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&qs('#main-view').contains(a)))return;
+    render();
+  },250);
+}
+function fbErr(e){
+  const c=e&&e.code||'';
+  if(/invalid-credential|wrong-password|user-not-found/.test(c))return 'වැරදි username හෝ password';
+  if(c.includes('email-already-in-use'))return 'මෙම username දැනටමත් ඇත';
+  if(c.includes('weak-password'))return 'Password අවම අකුරු 6ක් විය යුතුයි';
+  if(c.includes('network'))return 'Internet සම්බන්ධතාවය පරීක්ෂා කරන්න';
+  if(c.includes('permission'))return 'අවසරය නැත (Firestore rules පරීක්ෂා කරන්න)';
+  return (e&&e.message)||'දෝෂයක් සිදුවිය';
+}
+async function nextStudentId(){
+  const ref=fs.collection('counters').doc('students');
+  const n=await fs.runTransaction(async t=>{const d=await t.get(ref);const v=(d.exists?d.data().n:0)+1;t.set(ref,{n:v});return v});
+  return 'MC'+new Date().getFullYear()+'-'+String(n).padStart(4,'0');
+}
+const authReady=new Promise(res=>{
+  startPublic();
+  auth.onAuthStateChanged(async fu=>{
+    if(_registering)return;
+    if(fu){
+      try{const s=await fs.collection('users').doc(fu.uid).get();
+        if(s.exists){_cu={...s.data(),uid:fu.uid};startPrivate(_cu)}else await auth.signOut();
+      }catch(e){console.error(e)}
+    }else if(!_cu){try{const g=sessionStorage.getItem('mccs_guest');if(g)_cu=JSON.parse(g)}catch(e){}}
+    res();
+  });
+});
 
 const REG_PASSWORD = '@#mahinda123';
 const FLOWER_CHARS = ['🌸','🌺','🌼','🌷','💮','🏵️','❀','✿','🌹','💐'];
@@ -489,37 +594,11 @@ const DEFAULT_TEACHERS=[
   {username:'ict_teacher1',subject:'ICT'},{username:'ict_teacher2',subject:'ICT'}
 ];
 
-function seed(){
-  if(!DB.get('mccs_users')){
-    const users=[
-      {username:'admin',password:'admin123',role:'admin',created:Date.now()},
-      {username:'student1',password:'pass123',grade:'12',school:'Mahinda College',class:'12A',role:'student',created:Date.now()}
-    ];
-    DEFAULT_TEACHERS.forEach(t=>users.push({username:t.username,password:'teach123',role:'teacher',subject:t.subject,created:Date.now()}));
-    DB.set('mccs_users',users);
-  }
-  if(!DB.get('mccs_lessons')){
-    const lessons=[];let id=1;
-    for(const s of Object.keys(DEFAULT_LESSONS)){
-      for(const g of [12,13]){
-        DEFAULT_LESSONS[s][g].forEach((t,i)=>{lessons.push({id:'L'+(id++),subject:s,grade:g,title:t,order:i+1,context:'',notes:''})});
-      }
-    }
-    DB.set('mccs_lessons',lessons);
-  }
-  if(!DB.get('mccs_questions'))DB.set('mccs_questions',[]);
-  if(!DB.get('mccs_past_papers'))DB.set('mccs_past_papers',[]);
-  if(!DB.get('mccs_progress'))DB.set('mccs_progress',{});
-  if(!DB.get('mccs_attempts'))DB.set('mccs_attempts',[]);
-  if(!DB.get('mccs_notifications'))DB.set('mccs_notifications',[]);
-  if(!DB.get('mccs_quiz_config'))DB.set('mccs_quiz_config',{startAt:Date.now()+3600*1000,durationMin:10,questionCount:10,subjects:['BS','ACC','ECON','ICT'],grade:'any',active:true});
-}
-seed();
 
 function toast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;setTimeout(()=>t.className='toast '+type,3000)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function currentUser(){return DB.get('mccs_user')}
-function setUser(u){u?DB.set('mccs_user',u):DB.del('mccs_user')}
+function currentUser(){return _cu}
+function setUser(u){_cu=u||null;try{if(u&&u.role==='guest')sessionStorage.setItem('mccs_guest',JSON.stringify(u));else sessionStorage.removeItem('mccs_guest')}catch(e){}}
 function qs(sel){return document.querySelector(sel)}
 function pad(n){return String(n).padStart(2,'0')}
 function fmtDate(ts){const d=new Date(ts);return d.toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}
@@ -560,7 +639,8 @@ function spawnIntroParticles(){
     setTimeout(()=>s.remove(),2500);
   }
 }
-function finishInit(){
+function finishInit(){authReady.then(_finishInit)}
+function _finishInit(){
   const u=currentUser();
   if(u){
     document.getElementById('auth-screen').style.display='none';
@@ -644,26 +724,33 @@ function verifyRegPassword(){
   }
 }
 function authMsg(m,type){qs('#auth-msg').innerHTML=`<div class="auth-msg ${type}">${esc(m)}</div>`}
-function doLogin(){
-  const u=qs('#login-user').value.trim(),p=qs('#login-pass').value;
+async function doLogin(){
+  const u=qs('#login-user').value.trim().toLowerCase(),p=qs('#login-pass').value;
   if(!u||!p)return authMsg('Username සහ password ඇතුළත් කරන්න','error');
-  const users=DB.get('mccs_users',[]);
-  const found=users.find(x=>x.username===u&&x.password===p);
-  if(!found)return authMsg('වැරදි username හෝ password','error');
-  setUser(found);showApp(true);
+  try{
+    const c=await auth.signInWithEmailAndPassword(u+EMAIL_DOMAIN,p);
+    const s=await fs.collection('users').doc(c.user.uid).get();
+    if(!s.exists){await auth.signOut();return authMsg('මෙම ගිණුම ඉවත් කර ඇත','error')}
+    setUser({...s.data(),uid:c.user.uid});startPrivate(_cu);showApp(true);
+  }catch(e){authMsg(fbErr(e),'error')}
 }
-function doRegister(){
-  const u=qs('#reg-user').value.trim(),p=qs('#reg-pass').value;
+async function doRegister(){
+  const u=qs('#reg-user').value.trim().toLowerCase(),p=qs('#reg-pass').value;
   const school=qs('#reg-school').value.trim(),g=qs('#reg-grade').value,cls=qs('#reg-class').value.trim();
   if(!u||!p||!school)return authMsg('සියලු තොරතුරු ඇතුළත් කරන්න','error');
-  if(u.length<3)return authMsg('Username අවම අකුරු 3ක්','error');
-  if(p.length<4)return authMsg('Password අවම අකුරු 4ක්','error');
-  const users=DB.get('mccs_users',[]);
-  if(users.find(x=>x.username===u))return authMsg('මෙම username දැනටමත් ඇත','error');
-  users.push({username:u,password:p,grade:g,school,class:cls||'-',role:'student',created:Date.now()});
-  DB.set('mccs_users',users);
-  authMsg('ලියාපදිංචිය සාර්ථකයි! දැන් login වන්න','ok');
-  setTimeout(()=>{switchAuth('login');qs('#login-user').value=u},1000);
+  if(!/^[a-z0-9.\-]{3,20}$/.test(u))return authMsg('Username: a-z, 0-9, . - පමණක් (3-20)','error');
+  if(p.length<6)return authMsg('Password අවම අකුරු 6ක්','error');
+  _registering=true;
+  try{
+    const c=await auth.createUserWithEmailAndPassword(u+EMAIL_DOMAIN,p);
+    const studentId=await nextStudentId();
+    const prof={uid:c.user.uid,username:u,studentId,role:'student',grade:g,school,class:cls||'-',created:Date.now()};
+    await fs.collection('users').doc(c.user.uid).set(prof);
+    setUser(prof);_registering=false;startPrivate(prof);toast('ඔබේ Student ID: '+studentId,'success');showApp(true);
+  }catch(e){
+    _registering=false;try{if(auth.currentUser)await auth.currentUser.delete()}catch(x){}
+    authMsg(fbErr(e),'error');
+  }
 }
 function enterGuest(){setUser({username:'Guest',role:'guest',grade:'any',school:'',class:''});showApp(false)}
 function goRegister(){
@@ -673,20 +760,16 @@ function goRegister(){
   qs('#login-user').value='';qs('#login-pass').value='';qs('#auth-msg').innerHTML='';
   switchAuth('register');
 }
-function doLogout(){setUser(null);location.reload()}
-function changePassword(){
-  const u=currentUser();
-  if(!u||u.role==='guest')return;
-  const oldPw=prompt('Current password:');
-  if(oldPw===null)return;
-  if(oldPw!==u.password)return toast('වැරදි password','error');
-  const newPw=prompt('New password (min 4 chars):');
-  if(!newPw||newPw.length<4)return toast('අවම අකුරු 4','error');
-  const users=DB.get('mccs_users',[]);
-  const uu=users.find(x=>x.username===u.username);
-  if(!uu)return;
-  uu.password=newPw;DB.set('mccs_users',users);setUser(uu);
-  toast('Password වෙනස් විය ✓','success');
+async function doLogout(){setUser(null);try{await auth.signOut()}catch(e){}location.reload()}
+async function changePassword(){
+  const u=currentUser();if(!u||u.role==='guest')return;
+  const oldPw=prompt('Current password:');if(!oldPw)return;
+  const newPw=prompt('New password (අවම 6):');if(!newPw||newPw.length<6)return toast('Password අවම අකුරු 6ක්','error');
+  try{
+    const fu=auth.currentUser;
+    await fu.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(fu.email,oldPw));
+    await fu.updatePassword(newPw);toast('Password වෙනස් විය ✓','success');
+  }catch(e){toast(fbErr(e),'error')}
 }
 function showApp(withRain=false){
   qs('#auth-screen').classList.add('hidden');
@@ -699,7 +782,7 @@ function showApp(withRain=false){
 function renderNav(){
   const u=currentUser();
   qs('#tb-name').textContent=u.username;
-  const r=qs('#tb-role');r.textContent=u.role;r.className='role '+u.role;
+  const r=qs('#tb-role');r.textContent=u.role+(u.studentId?' · '+u.studentId:'');r.className='role '+u.role;
   if(u.school)qs('#tb-subtitle').textContent=u.school;
   qs('#notif-btn').classList.toggle('hidden',u.role==='guest');
   qs('#pw-btn').classList.toggle('hidden',u.role==='guest');
@@ -748,7 +831,7 @@ function sendNotification(fromUser,toType,toValue,title,body){
 
 /* ===== ROUTER ===== */
 function render(){
-  const el=qs('#main-view');
+  _dirty=false;const el=qs('#main-view');
   const views={home:viewHome,subjects:viewSubjects,lessons:viewLessons,lesson:viewLesson,quiz:viewQuiz,leaderboard:viewLeaderboard,admin:viewAdmin,teacher:viewTeacher,notifications:viewNotifications,papers:viewPapers};
   el.innerHTML=(views[state.view]||(()=>'<div class="empty-state">Page not found</div>'))();
 }
@@ -1393,6 +1476,8 @@ function adminAI(isTeacher=false){
           <option value="fill">Fill Blanks</option><option value="matching">Matching</option></select></div>
       <div class="form-field"><label>ගණන</label><input type="number" id="gem-count" value="5" min="1" max="20"></div>
     </div>
+    <div class="form-field"><label>🔗 Source Link (optional) — link එකෙන් auto ප්‍රශ්න සාදයි</label><input id="gem-link" type="url" placeholder="https://..."></div>
+    <label style="display:flex;gap:8px;align-items:center;margin-bottom:14px;font-size:13px"><input type="checkbox" id="gem-auto" style="width:auto"> Approve නොකර කෙලින්ම පාඩමට publish කරන්න (auto)</label>
     <div class="form-field"><label>අමතර Context (optional)</label>
       <textarea id="gem-context" placeholder="Syllabus කරුණු"></textarea></div>
     <button class="btn btn-primary" id="gem-btn" style="width:auto" onclick="generateAI()">✨ Generate with Gemini</button>
@@ -1422,7 +1507,7 @@ async function generateAI(){
   const apiKey=qs('#gem-key').value.trim();
   const subj=qs('#gem-subject').value,grade=qs('#gem-grade').value;
   const lessonId=qs('#gem-lesson').value,type=qs('#gem-type').value;
-  const count=parseInt(qs('#gem-count').value)||5,context=qs('#gem-context').value.trim();
+  const count=parseInt(qs('#gem-count').value)||5,context=qs('#gem-context').value.trim();const link=qs('#gem-link').value.trim(),auto=qs('#gem-auto').checked;
   if(!apiKey)return toast('API Key දෙන්න','error');
   if(!lessonId)return toast('Lesson එකක් තෝරන්න','error');
   DB.set('mccs_gemini_key',apiKey);
@@ -1430,8 +1515,9 @@ async function generateAI(){
   const btn=qs('#gem-btn');btn.disabled=true;btn.textContent='Generating...';
   qs('#gem-output').innerHTML='<div class="loading"><div class="spinner"></div>Gemini AI ප්‍රශ්න සකසමින්...</div>';
   try{
-    const items=await callGemini(apiKey,subj,grade,lesson,type,count,context);
+    const items=await callGemini(apiKey,subj,grade,lesson,type,count,context,link);
     generatedPreview=items.map(q=>({...q,type,subject:subj,grade:parseInt(grade),lessonId,generatedAt:Date.now(),createdBy:currentUser().username}));
+    if(auto){approveGenerated();return}
     qs('#gem-output').innerHTML=previewHtml();
     toast('ප්‍රශ්න '+items.length+'ක් සකස් විය! 🎉','success');
   }catch(e){console.error(e);qs('#gem-output').innerHTML=`<div class="auth-msg error" style="margin-top:0">❌ ${esc(e.message)}</div>`}
@@ -1444,7 +1530,7 @@ function approveGenerated(){
   toast(generatedPreview.length+' ප්‍රශ්න එකතු කළා! ✓','success');
   generatedPreview=[];render();
 }
-async function callGemini(apiKey,subject,grade,lesson,type,count,context){
+async function callGemini(apiKey,subject,grade,lesson,type,count,context,link){
   const subjName=SUBJECTS[subject].en;
   const typePrompt={
     mcq:`MCQs. Each: "q", "options" (4 strings), "answer" (0-3 index), "explanation" (Sinhala), "difficulty".`,
@@ -1463,9 +1549,10 @@ Subject: ${subjName}, Grade: ${grade}, Lesson: ${lesson.title}
 ${context?`Context:\n${context}`:''}
 Generate exactly ${count} ${typePrompt}
 Rules: NIE A/L aligned, Sinhala medium, test understanding, exactly one correct answer, vary difficulty.
-Return ONLY JSON matching schema.`;
+${link?`Read and base ALL questions strictly on the content of this link: ${link}\nReturn ONLY a JSON object {"questions":[...]} with no markdown.`:'Return ONLY JSON matching schema.'}`;
   const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
-  const body={contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0.8,responseMimeType:'application/json',responseSchema:schema}};
+  const body={contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:link?{temperature:0.8}:{temperature:0.8,responseMimeType:'application/json',responseSchema:schema}};
+  if(link)body.tools=[{url_context:{}}];
   const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!res.ok){const err=await res.text();
     if(res.status===400&&/API key/i.test(err))throw new Error('API Key වැරදියි');
@@ -1475,7 +1562,7 @@ Return ONLY JSON matching schema.`;
   const data=await res.json();
   const text=data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if(!text)throw new Error('Gemini පිළිතුරක් නැත');
-  let parsed;try{parsed=JSON.parse(text)}catch(e){throw new Error('Invalid JSON')}
+  let parsed;try{parsed=JSON.parse(text.replace(/```json|```/g,'').trim())}catch(e){throw new Error('Invalid JSON')}
   if(!parsed.questions||!Array.isArray(parsed.questions))throw new Error('No questions array');
   return parsed.questions;
 }
@@ -1702,22 +1789,24 @@ function adminTeachers(){
       const subs=bySubj[k]||[];if(!subs.length)return '';
       return `<div style="margin-bottom:20px"><h4 style="color:var(--gold);margin-bottom:10px">${SUBJECTS[k].en} (${subs.length})</h4>
         <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-        <table class="students-table"><thead><tr><th>Username</th><th>Subject</th><th>Password</th><th></th></tr></thead>
+        <table class="students-table"><thead><tr><th>Username</th><th>Subject</th><th></th></tr></thead>
         <tbody>${subs.map(t=>`<tr><td>${esc(t.username)}</td><td>${SUBJECTS[t.subject].en}</td>
-          <td style="color:var(--muted);font-family:monospace">${esc(t.password)}</td>
           <td><button class="btn btn-sm btn-danger" onclick="delUser('${esc(t.username)}')">Delete</button></td></tr>`).join('')}</tbody></table></div></div>`;
     }).join('')}
   </div>`;
 }
-function addTeacher(){
-  const u=qs('#t-user').value.trim(),p=qs('#t-pass').value,subj=qs('#t-subject').value;
+async function addTeacher(){
+  const u=qs('#t-user').value.trim().toLowerCase(),p=qs('#t-pass').value,subj=qs('#t-subject').value;
   if(!u||!p)return toast('සියලු තොරතුරු පුරවන්න','error');
-  if(u.length<3)return toast('Username අවම 3','error');
-  if(p.length<4)return toast('Password අවම 4','error');
-  const users=DB.get('mccs_users',[]);
-  if(users.find(x=>x.username===u))return toast('මෙම username දැනටමත් ඇත','error');
-  users.push({username:u,password:p,role:'teacher',subject:subj,created:Date.now()});
-  DB.set('mccs_users',users);toast('ගුරුවරයා එකතු කළා ✓','success');render();
+  if(!/^[a-z0-9._\-]{3,30}$/.test(u))return toast('Username: a-z 0-9 . _ - පමණක්','error');
+  if(p.length<6)return toast('Password අවම 6','error');
+  if(DB.get('mccs_users',[]).find(x=>x.username===u))return toast('මෙම username දැනටමත් ඇත','error');
+  try{
+    const sec=firebase.apps.find(a=>a.name==='sec')||firebase.initializeApp(firebaseConfig,'sec');
+    const c=await sec.auth().createUserWithEmailAndPassword(u+EMAIL_DOMAIN,p);
+    await fs.collection('users').doc(c.user.uid).set({uid:c.user.uid,username:u,role:'teacher',subject:subj,created:Date.now()});
+    await sec.auth().signOut();toast('ගුරුවරයා එකතු කළා ✓','success');render();
+  }catch(e){toast(fbErr(e),'error')}
 }
 
 /* ===== STUDENTS ===== */
@@ -1777,6 +1866,10 @@ function resetQuizAttempts(){
 }
 
 /* ===== INIT ===== */
+['nav','setLessonTab','finishQuiz'].forEach(n=>{const f=window[n];window[n]=function(){_inGame=false;return f.apply(this,arguments)}});
+['playGame','startQuiz'].forEach(n=>{const f=window[n];window[n]=function(){_inGame=true;return f.apply(this,arguments)}});
+qs('#main-view').addEventListener('input',()=>{_dirty=true});
+qs('#main-view').addEventListener('change',()=>{_dirty=true});
 (function init(){
   playIntro();
   setInterval(()=>{
