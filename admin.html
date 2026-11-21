@@ -3,80 +3,290 @@
 <title>Admin · Mahinda College Commerce</title>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--m:#6b1020;--m2:#8c1a2e;--g:#c8993a;--bg:#f3f5f7;--ink:#1e1a1c;--mut:#6b6569}
+:root{--m:#6b1020;--m2:#8c1a2e;--g:#c8993a;--bg:#f3f5f7;--ink:#1e1a1c;--mut:#6b6569;--c:#fff;--bd:#e8e3e5;--inp:#fff;--inpbd:#d9d4d6}
 *{box-sizing:border-box}body{margin:0;font:15px/1.55 Figtree,sans-serif;color:var(--ink);background:var(--bg)}
-h1,h2,h3{font-family:Spectral,serif;margin:0 0 .5em}.hide{display:none!important}
+h1,h2,h3{font-family:Spectral,serif;margin:0 0 .5em}
+.hide{display:none!important}
 button,input,select,textarea{font:inherit}
-.btn{border:0;border-radius:99px;padding:.5em 1.2em;background:var(--m);color:#fff;cursor:pointer;transition:background .4s,transform .4s;text-decoration:none;display:inline-block}
-.btn:hover{background:var(--m2);transform:translateY(-1px)}.btn.alt{background:transparent;color:var(--m);border:1.5px solid var(--m)}.btn.ok{background:#1f7a4d}
-input,select,textarea{width:100%;padding:.55em .7em;border:1.5px solid #d9d4d6;border-radius:10px;margin:.2em 0 .7em;background:#fff}
+.btn{border:0;border-radius:99px;padding:.5em 1.2em;background:var(--m);color:#fff;cursor:pointer;transition:background .3s,transform .2s;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--m2);transform:translateY(-1px)}
+.btn.alt{background:transparent;color:var(--m);border:1.5px solid var(--m)}
+.btn.ok{background:#1f7a4d}.btn.danger{background:#b00020}
+.btn.sm{padding:.35em 1em;font-size:.85rem}
+input,select,textarea{width:100%;padding:.55em .7em;border:1.5px solid var(--inpbd);border-radius:10px;margin:.2em 0 .7em;background:var(--inp)}
 input:focus,select:focus,textarea:focus,.btn:focus-visible{outline:3px solid var(--g)}
 #login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(160deg,var(--m),#3d0a14);padding:1rem}
-.card{background:#fff;border-radius:14px;padding:1.2rem;border:1px solid #e8e3e5;margin-bottom:.8rem}
-#login .card{width:min(380px,100%);animation:fade .9s both}
-#app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
-aside{background:var(--m);color:#fff;padding:1.4rem 1rem;position:sticky;top:0;height:100vh}aside h3{color:var(--g)}
-aside button,aside a{display:block;width:100%;text-align:left;background:none;border:0;color:#f1dfe2;padding:.6rem .8rem;border-radius:10px;cursor:pointer;transition:background .4s;text-decoration:none;font-size:15px}
-aside button:hover,aside button.on,aside a:hover{background:rgba(255,255,255,.14);color:#fff}
-main{padding:1.6rem 3vw}#pane{animation:fade .7s both}
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.6rem;align-items:end}
-.tag{padding:.1em .7em;border-radius:99px;font-size:.8rem;background:#eee}.pending{background:#fff0c9}.approved{background:#d6f3e3}.rejected{background:#fbd5da}
-.err{color:#b00020}.mut{color:var(--mut)}
+.card{background:var(--c);border-radius:14px;padding:1.2rem;border:1px solid var(--bd);margin-bottom:.8rem}
+#login .card{width:min(380px,100%);animation:fade .6s both}
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--m);color:#fff;padding:1.4rem 1rem;position:sticky;top:0;height:100vh;z-index:40;transition:left .3s}
+aside h3{color:var(--g);margin:.2rem 0 1rem}
+aside button,aside a{display:block;width:100%;text-align:left;background:none;border:0;color:#f1dfe2;padding:.6rem .8rem;border-radius:10px;cursor:pointer;transition:background .3s;text-decoration:none;font-size:15px;margin-bottom:.15rem}
+aside button:hover,aside button.on,aside a:hover{background:rgba(255,255,255,.16);color:#fff}
+main{padding:1.6rem 3vw;min-width:0}
+#pane{animation:fade .4s both}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem;align-items:end}
+.tag{display:inline-block;padding:.1em .7em;border-radius:99px;font-size:.75rem;background:var(--bd);margin-left:.3rem}
+.tag.pending{background:#fff0c9;color:#6b4a00}.tag.approved{background:#d6f3e3;color:#0d4d2b}.tag.rejected{background:#fbd5da;color:#8c0016}
+.tag.student{background:#dbeafe;color:#1e3a8a}.tag.teacher{background:#ede9fe;color:#4c1d95}.tag.admin{background:#fee2e2;color:#7f1d1d}
+.err{color:#b00020}.mut{color:var(--mut);font-size:.9rem}
+.ham{display:none;position:fixed;top:12px;left:12px;z-index:50;background:var(--m);color:#fff;border:0;width:44px;height:44px;border-radius:12px;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.bd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:39}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem;margin-bottom:1rem}
+.stat{background:var(--c);border-radius:14px;padding:1rem;border:1px solid var(--bd);text-align:center}
+.stat .n{font-size:1.8rem;font-weight:700;color:var(--m);font-family:Spectral,serif}
+.stat .l{font-size:.8rem;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}}
-@media(max-width:760px){#app{grid-template-columns:1fr}aside{position:static;height:auto}}
+@media(max-width:760px){
+  .ham{display:block}
+  #app{grid-template-columns:1fr}
+  aside{position:fixed;left:-280px;width:260px;height:100vh;box-shadow:2px 0 10px rgba(0,0,0,.2)}
+  aside.open{left:0}
+  aside.open ~ .bd{display:block}
+  main{padding:4rem 1rem 2rem}
+}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
+
 <div id="login"><div class="card"><h2>Admin panel</h2><p class="mut">Mahinda College · Commerce LMS</p>
 <input id="em" type="email" placeholder="Admin email"><input id="pw" type="password" placeholder="Password">
 <div class="err" id="err"></div><button class="btn" id="go" style="width:100%">Login</button>
 <p><a href="index.html">← Back to LMS</a></p></div></div>
 
-<div id="app" class="hide"><aside><h3>Admin</h3>
-<button data-t="req" class="on">Requests <span id="cnt"></span></button><button data-t="users">All accounts</button>
-<button data-t="site">Edit website</button><button data-t="notices">Notices</button><button data-t="lessons">Lessons</button>
-<a href="index.html">Open LMS site</a><button id="out">Log out</button></aside><main><div id="pane"></div></main></div>
+<div id="app" class="hide">
+  <button class="ham" id="ham">☰</button>
+  <aside id="sidebar"><h3>Admin</h3>
+    <button data-t="dash" class="on">📊 Dashboard</button>
+    <button data-t="req">⏳ Requests <span id="cnt"></span></button>
+    <button data-t="users">👥 All accounts</button>
+    <button data-t="site">✏️ Edit website</button>
+    <button data-t="notices">📢 Notices</button>
+    <button data-t="lessons">📚 Lessons</button>
+    <button data-t="assign">📝 Assignments</button>
+    <a href="index.html">🌐 Open LMS site</a>
+    <button id="out">🚪 Log out</button>
+  </aside>
+  <div class="bd" id="bd"></div>
+  <main><div id="pane"></div></main>
+</div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,collection,getDocs}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-// === SAME FIREBASE CONFIG AS index.html ===
+import{getFirestore,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,collection,getDocs,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 const cfg={apiKey:"AIzaSyBwsXxjjwtOg_iYG12txuVuyg5q0sAxW1o",authDomain:"mccs-d7aa9.firebaseapp.com",projectId:"mccs-d7aa9",storageBucket:"mccs-d7aa9.firebasestorage.app",messagingSenderId:"1095138498376",appId:"1:1095138498376:web:80fe1cd40cfe0078a9857d"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 const $=i=>document.getElementById(i),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let tab="req";
+
+let tab="dash",isAdmin=false;
+let users=[],lessons=[],notices=[],assignments=[];
+const subs=[];
+const state={searchUsers:"",filterRole:"all"};
+
 $("go").onclick=()=>signInWithEmailAndPassword(auth,$("em").value,$("pw").value).catch(e=>$("err").textContent=e.message.replace("Firebase: ",""));
 $("out").onclick=()=>signOut(auth);
-onAuthStateChanged(auth,async u=>{let ok=false;
-if(u){const d=await getDoc(doc(db,"users",u.uid));ok=d.exists()&&d.data().role=="admin";if(!ok){$("err").textContent="This account is not an admin.";signOut(auth)}}
-$("login").classList.toggle("hide",ok);$("app").classList.toggle("hide",!ok);if(ok)render()});
-document.querySelectorAll("aside [data-t]").forEach(b=>b.onclick=()=>{tab=b.dataset.t;document.querySelectorAll("aside [data-t]").forEach(x=>x.classList.toggle("on",x==b));render()});
-const users=async()=>(await getDocs(collection(db,"users"))).docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.created-a.created);
-const colr=async n=>(await getDocs(collection(db,n))).docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
-const userCard=(u,full)=>`<div class="card"><b>${esc(u.name)}</b> <span class="tag ${u.status}">${u.status}</span> <span class="tag">${u.role}</span>
-<div class="mut">${esc(u.email)} ${u.studentId?"· "+esc(u.studentId):""}${u.subject?" · "+esc(u.subject):""}</div>
-${full?`<div class="row" style="margin-top:.6rem"><label>Name<input data-f="name" value="${esc(u.name)}"></label>
-<label>Grade<select data-f="grade"><option value="">—</option>${[10,11,12,13].map(g=>`<option ${u.grade==g?"selected":""}>${g}</option>`).join("")}</select></label>
-<label>Status<select data-f="status">${["pending","approved","rejected"].map(s=>`<option ${u.status==s?"selected":""}>${s}</option>`).join("")}</select></label></div>`:""}
-<div style="margin-top:.5rem">${full?`<button class="btn" data-save="${u.id}">Save</button> <button class="btn alt" data-rm="${u.id}">Delete</button>`
-:`<button class="btn ok" data-ap="${u.id}">Accept</button> <button class="btn alt" data-rj="${u.id}">Decline</button>`}</div></div>`;
-async function render(){const p=$("pane");p.style.animation="none";p.offsetHeight;p.style.animation="";
-if(tab=="req"||tab=="users"){const all=await users(),pend=all.filter(u=>u.status=="pending");$("cnt").textContent=pend.length?`(${pend.length})`:"";
-const L=tab=="req"?pend:all;p.innerHTML=`<h2>${tab=="req"?"Waiting for approval":"All accounts"}</h2>`+(L.map(u=>userCard(u,tab=="users")).join("")||'<p class="mut">Nothing here.</p>');
-const set=async(id,s)=>{await updateDoc(doc(db,"users",id),{status:s});render()};
-p.querySelectorAll("[data-ap]").forEach(b=>b.onclick=()=>set(b.dataset.ap,"approved"));
-p.querySelectorAll("[data-rj]").forEach(b=>b.onclick=()=>set(b.dataset.rj,"rejected"));
-p.querySelectorAll("[data-save]").forEach(b=>b.onclick=async()=>{const c=b.closest(".card"),v={};c.querySelectorAll("[data-f]").forEach(i=>v[i.dataset.f]=i.value);await updateDoc(doc(db,"users",b.dataset.save),v);b.textContent="Saved ✓"});
-p.querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{if(confirm("Delete this account record?")){await deleteDoc(doc(db,"users",b.dataset.rm));render()}});return}
-if(tab=="site"){const s=(await getDoc(doc(db,"content","site"))).data()||{};
-p.innerHTML=`<h2>Edit website</h2><div class="card">${[["title","Title"],["tagline","Tagline"],["contact","Contact line"]].map(([k,l])=>`<label>${l}<input id="s_${k}" value="${esc(s[k])}"></label>`).join("")}
-<label>About<textarea id="s_about" rows="4">${esc(s.about)}</textarea></label><label>Streams (one per line)<textarea id="s_streams" rows="4">${esc(s.streams)}</textarea></label>
-<button class="btn" id="sv">Save changes</button></div>`;
-$("sv").onclick=async()=>{const v={};["title","tagline","contact","about","streams"].forEach(k=>v[k]=$("s_"+k).value);await setDoc(doc(db,"content","site"),v,{merge:true});$("sv").textContent="Saved ✓"};return}
-const isN=tab=="notices",items=await colr(tab);
-p.innerHTML=`<h2>${isN?"Notices":"Lessons"}</h2><div class="card"><input id="a1" placeholder="Title"><textarea id="a2" placeholder="${isN?"Notice text":"Description"}"></textarea>
-${isN?"":`<input id="a3" placeholder="Link"><select id="a4"><option value="all">All grades</option>${[10,11,12,13].map(g=>`<option>${g}</option>`).join("")}</select>`}<button class="btn" id="add">Publish</button></div>`+
-items.map(x=>`<div class="card"><b>${esc(x.title)}</b><p>${esc(x.body||x.desc)}</p><button class="btn alt" data-d="${x.id}">Delete</button></div>`).join("");
-$("add").onclick=async()=>{if(!$("a1").value)return;await addDoc(collection(db,tab),isN?{title:$("a1").value,body:$("a2").value,at:Date.now()}:{title:$("a1").value,desc:$("a2").value,link:$("a3").value,grade:$("a4").value,by:"Admin",uid:auth.currentUser.uid,at:Date.now()});render()};
-p.querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{await deleteDoc(doc(db,tab,b.dataset.d));render()})}
+
+$("ham").onclick=()=>$("sidebar").classList.toggle("open");
+$("bd").onclick=()=>$("sidebar").classList.remove("open");
+const closeSidebar=()=>$("sidebar").classList.remove("open");
+
+document.querySelectorAll("aside [data-t]").forEach(b=>b.onclick=()=>{
+  tab=b.dataset.t;
+  document.querySelectorAll("aside [data-t]").forEach(x=>x.classList.toggle("on",x==b));
+  closeSidebar();render();
+});
+
+function clearSubs(){subs.forEach(f=>{try{f()}catch(e){}});subs.length=0}
+
+onAuthStateChanged(auth,async u=>{
+  let ok=false;
+  if(u){try{const d=await getDoc(doc(db,"users",u.uid));ok=d.exists()&&d.data().role=="admin"}catch(e){}
+    if(!ok){$("err").textContent="This account is not an admin.";signOut(auth)}}
+  isAdmin=ok;
+  $("login").classList.toggle("hide",ok);
+  $("app").classList.toggle("hide",!ok);
+  if(ok)startListening();
+});
+
+function startListening(){
+  clearSubs();
+  subs.push(onSnapshot(collection(db,"users"),snap=>{
+    users=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.created-a.created);
+    updateCount();
+    if(tab=="dash"||tab=="req"||tab=="users")render();
+  },()=>{}));
+  subs.push(onSnapshot(collection(db,"lessons"),snap=>{
+    lessons=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
+    if(tab=="dash"||tab=="lessons")render();
+  },()=>{}));
+  subs.push(onSnapshot(collection(db,"notices"),snap=>{
+    notices=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
+    if(tab=="dash"||tab=="notices")render();
+  },()=>{}));
+  subs.push(onSnapshot(collection(db,"assignments"),snap=>{
+    assignments=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
+    if(tab=="dash"||tab=="assign")render();
+  },()=>{}));
+  render();
+}
+
+function updateCount(){
+  const pend=users.filter(u=>u.status=="pending").length;
+  $("cnt").textContent=pend?`(${pend})`:"";
+  $("cnt").style.color="var(--g)";
+  $("cnt").style.fontWeight="600";
+}
+
+function csv(rows,filename){
+  const s=rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const blob=new Blob([s],{type:"text/csv"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();
+}
+
+function render(){
+  const p=$("pane");
+  p.style.animation="none";p.offsetHeight;p.style.animation="";
+  if(tab=="dash")return renderDash(p);
+  if(tab=="req"||tab=="users")return renderUsers(p);
+  if(tab=="site")return renderSite(p);
+  if(tab=="notices")return renderItems(p,"notices");
+  if(tab=="lessons")return renderItems(p,"lessons");
+  if(tab=="assign")return renderItems(p,"assignments");
+}
+
+function renderDash(p){
+  const s=users.filter(u=>u.role=="student"&&u.status=="approved").length;
+  const t=users.filter(u=>u.role=="teacher"&&u.status=="approved").length;
+  const pend=users.filter(u=>u.status=="pending").length;
+  p.innerHTML=`<h2>📊 Dashboard</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">${s}</div><div class="l">Students</div></div>
+    <div class="stat"><div class="n">${t}</div><div class="l">Teachers</div></div>
+    <div class="stat"><div class="n">${pend}</div><div class="l">Pending</div></div>
+    <div class="stat"><div class="n">${lessons.length}</div><div class="l">Lessons</div></div>
+    <div class="stat"><div class="n">${notices.length}</div><div class="l">Notices</div></div>
+    <div class="stat"><div class="n">${assignments.length}</div><div class="l">Assignments</div></div>
+  </div>
+  <div class="card"><h3>⚡ Quick actions</h3>
+    <button class="btn sm" onclick="document.querySelector('[data-t=req]').click()">Review requests</button>
+    <button class="btn alt sm" onclick="document.querySelector('[data-t=notices]').click()">Post a notice</button>
+  </div>
+  <div class="card"><h3>🕒 Recent signups</h3>
+    ${users.slice(0,5).map(u=>`<div style="padding:.4rem 0;border-bottom:1px solid var(--bd)">
+      <b>${esc(u.name)}</b> <span class="tag ${u.status}">${u.status}</span> <span class="tag ${u.role}">${u.role}</span>
+      <div class="mut">${esc(u.email)}</div></div>`).join("")||'<p class="mut">No users.</p>'}
+  </div>`;
+}
+
+function userCard(u,full){
+  return `<div class="card"><b>${esc(u.name)}</b>
+    <span class="tag ${u.status}">${u.status}</span>
+    <span class="tag ${u.role}">${u.role}</span>
+    <div class="mut">${esc(u.email)} ${u.studentId?"· "+esc(u.studentId):""}${u.subject?" · "+esc(u.subject):""}</div>
+    ${full?`<div class="row" style="margin-top:.6rem">
+      <label>Name<input data-f="name" value="${esc(u.name)}"></label>
+      <label>Grade<select data-f="grade"><option value="">—</option>${[10,11,12,13].map(g=>`<option ${u.grade==g?"selected":""}>${g}</option>`).join("")}</select></label>
+      <label>Status<select data-f="status">${["pending","approved","rejected"].map(s=>`<option ${u.status==s?"selected":""}>${s}</option>`).join("")}</select></label>
+    </div>`:""}
+    <div class="row" style="margin-top:.5rem">
+      ${full?`<button class="btn sm" data-save="${u.id}">Save</button><button class="btn danger sm" data-rm="${u.id}">Delete</button>`
+      :`<button class="btn ok sm" data-ap="${u.id}">Accept</button><button class="btn alt sm" data-rj="${u.id}">Decline</button>`}
+    </div>
+  </div>`;
+}
+
+function renderUsers(p){
+  const isReq=tab=="req";
+  const q=state.searchUsers.toLowerCase();
+  let list=isReq?users.filter(u=>u.status=="pending"):users;
+  if(state.filterRole!="all")list=list.filter(u=>u.role==state.filterRole);
+  if(q)list=list.filter(u=>((u.name||"")+(u.email||"")+(u.studentId||"")).toLowerCase().includes(q));
+
+  p.innerHTML=`<h2>${isReq?"⏳ Waiting for approval":"👥 All accounts"}</h2>
+  <div class="card">
+    <div class="row" style="margin:0">
+      <input id="usrSearch" placeholder="🔍 Search users..." value="${esc(state.searchUsers)}" style="margin:0">
+      <select id="usrRole" style="margin:0"><option value="all">All roles</option>
+        ${["student","teacher","admin"].map(r=>`<option ${state.filterRole==r?"selected":""}>${r}</option>`).join("")}
+      </select>
+    </div>
+    ${isReq&&list.length?`<div class="row" style="margin-top:.6rem">
+      <button class="btn ok sm" id="bulkAp">✓ Approve all (${list.length})</button>
+      <button class="btn danger sm" id="bulkRj">✕ Reject all</button>
+    </div>`:""}
+    ${!isReq?`<div class="row" style="margin-top:.6rem"><button class="btn alt sm" id="exportCsv">📥 Export CSV</button></div>`:""}
+  </div>
+  <div>${list.map(u=>userCard(u,!isReq)).join("")||'<p class="mut">Nothing here.</p>'}</div>`;
+
+  const si=$("usrSearch"),rf=$("usrRole");
+  if(si)si.addEventListener("input",e=>{state.searchUsers=e.target.value;render()});
+  if(rf)rf.addEventListener("change",e=>{state.filterRole=e.target.value;render()});
+
+  const setSt=async(id,s)=>{await updateDoc(doc(db,"users",id),{status:s})};
+  p.querySelectorAll("[data-ap]").forEach(b=>b.onclick=()=>setSt(b.dataset.ap,"approved"));
+  p.querySelectorAll("[data-rj]").forEach(b=>b.onclick=()=>setSt(b.dataset.rj,"rejected"));
+  p.querySelectorAll("[data-save]").forEach(b=>b.onclick=async()=>{
+    const c=b.closest(".card"),v={};c.querySelectorAll("[data-f]").forEach(i=>v[i.dataset.f]=i.value);
+    await updateDoc(doc(db,"users",b.dataset.save),v);b.textContent="Saved ✓";setTimeout(()=>b.textContent="Save",1500);
+  });
+  p.querySelectorAll("[data-rm]").forEach(b=>b.onclick=async()=>{
+    if(confirm("Delete this account record?"))await deleteDoc(doc(db,"users",b.dataset.rm));
+  });
+  if($("bulkAp"))$("bulkAp").onclick=async()=>{if(confirm("Approve all pending?")){for(const u of list)await setSt(u.id,"approved")}};
+  if($("bulkRj"))$("bulkRj").onclick=async()=>{if(confirm("Reject all pending?")){for(const u of list)await setSt(u.id,"rejected")}};
+  if($("exportCsv"))$("exportCsv").onclick=()=>{
+    const rows=[["Name","Email","Role","Grade","Student ID","Subject","Status","Created"]];
+    users.forEach(u=>rows.push([u.name,u.email,u.role,u.grade,u.studentId,u.subject,u.status,new Date(u.created).toLocaleString()]));
+    csv(rows,"mccs-users.csv");
+  };
+}
+
+async function renderSite(p){
+  const s=(await getDoc(doc(db,"content","site"))).data()||{};
+  p.innerHTML=`<h2>✏️ Edit website</h2><div class="card">
+  ${[["title","Title"],["tagline","Tagline"],["contact","Contact line"]].map(([k,l])=>`<label>${l}<input id="s_${k}" value="${esc(s[k])}"></label>`).join("")}
+  <label>About<textarea id="s_about" rows="4">${esc(s.about)}</textarea></label>
+  <label>Streams (one per line)<textarea id="s_streams" rows="4">${esc(s.streams)}</textarea></label>
+  <button class="btn" id="sv">Save changes</button></div>`;
+  $("sv").onclick=async()=>{
+    const v={};["title","tagline","contact","about","streams"].forEach(k=>v[k]=$("s_"+k).value);
+    await setDoc(doc(db,"content","site"),v,{merge:true});$("sv").textContent="Saved ✓";setTimeout(()=>$("sv").textContent="Save changes",1500);
+  };
+}
+
+async function renderItems(p,type){
+  const isN=type=="notices",isA=type=="assignments",isL=type=="lessons";
+  const items=isN?notices:isA?assignments:lessons;
+  p.innerHTML=`<h2>${isN?"📢 Notices":isA?"📝 Assignments":"📚 Lessons"}</h2>
+  <div class="card">
+    <input id="a1" placeholder="Title">
+    <textarea id="a2" placeholder="${isN?"Notice text":isA?"Instructions":"Description"}" rows="2"></textarea>
+    ${isN?`<select id="aP"><option value="">Priority: normal</option><option value="high">Priority: high</option><option value="urgent">Priority: urgent</option></select>`:""}
+    ${isA?`<input id="aDue" type="date">`:""}
+    ${isN?"":`<input id="a3" placeholder="Link ${isL?"(YouTube / Drive / PDF)":"(optional)"}">`}
+    ${isN?"":`<select id="a4"><option value="all">All grades</option>${[10,11,12,13].map(g=>`<option>${g}</option>`).join("")}</select>`}
+    <button class="btn" id="add">Publish</button>
+  </div>
+  <div>${items.map(x=>`<div class="card">
+    <b>${esc(x.title)}</b>
+    ${x.priority?`<span class="tag ${x.priority}">${x.priority}</span>`:""}
+    <p>${esc(x.body||x.desc)}</p>
+    <div class="row">
+      ${x.link?`<a class="btn sm" href="${esc(x.link)}" target="_blank" rel="noopener">Open</a>`:""}
+      <button class="btn danger sm" data-d="${x.id}">Delete</button>
+    </div>
+  </div>`).join("")||'<p class="mut">Nothing yet.</p>'}</div>`;
+
+  $("add").onclick=async()=>{
+    if(!$("a1").value)return;
+    if(isN)await addDoc(collection(db,"notices"),{title:$("a1").value,body:$("a2").value,priority:$("aP").value,at:Date.now()});
+    else if(isA)await addDoc(collection(db,"assignments"),{title:$("a1").value,desc:$("a2").value,due:$("aDue").value,grade:$("a4").value,by:"Admin",uid:auth.currentUser.uid,at:Date.now()});
+    else await addDoc(collection(db,"lessons"),{title:$("a1").value,desc:$("a2").value,link:$("a3").value,grade:$("a4").value,by:"Admin",uid:auth.currentUser.uid,at:Date.now()});
+    $("a1").value="";$("a2").value="";
+  };
+  p.querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{
+    if(confirm("Delete this item?"))await deleteDoc(doc(db,type,b.dataset.d));
+  });
+}
 </script></body></html>
