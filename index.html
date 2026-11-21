@@ -3,58 +3,84 @@
 <title>Mahinda College · Commerce LMS</title>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--m:#6b1020;--m2:#8c1a2e;--g:#c8993a;--bg:#f3f5f7;--ink:#1e1a1c;--mut:#6b6569;--c:#fff;--r:14px}
-*{box-sizing:border-box}body{margin:0;font:16px/1.6 Figtree,sans-serif;color:var(--ink);background:var(--bg)}
+:root{--m:#6b1020;--m2:#8c1a2e;--g:#c8993a;--bg:#f3f5f7;--ink:#1e1a1c;--mut:#6b6569;--c:#fff;--r:14px;--bd:#e8e3e5;--inp:#fff;--inpbd:#d9d4d6;--navbg:rgba(255,255,255,.9)}
+[data-theme=dark]{--bg:#141014;--ink:#ece7e9;--mut:#a39ba0;--c:#1e1820;--bd:#2e2830;--inp:#2a2428;--inpbd:#3a3438;--navbg:rgba(20,16,20,.9);--m:#a8203c;--m2:#8c1a2e}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 Figtree,sans-serif;color:var(--ink);background:var(--bg);transition:background .3s,color .3s}
 h1,h2,h3{font-family:Spectral,serif;line-height:1.2;margin:0 0 .5em}
 .hide{display:none!important}
 button,input,select,textarea{font:inherit}
-.btn{border:0;border-radius:99px;padding:.6em 1.4em;background:var(--m);color:#fff;cursor:pointer;transition:background .4s,transform .4s}
-.btn:hover{background:var(--m2);transform:translateY(-1px)}.btn.alt{background:transparent;color:var(--m);border:1.5px solid var(--m)}
+.btn{border:0;border-radius:99px;padding:.6em 1.4em;background:var(--m);color:#fff;cursor:pointer;transition:background .3s,transform .2s;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--m2);transform:translateY(-1px)}
+.btn.alt{background:transparent;color:var(--m);border:1.5px solid var(--m)}
+.btn.alt:hover{background:var(--m);color:#fff}
 .btn.gold{background:var(--g);color:#2a1a00}
-input,select,textarea{width:100%;padding:.65em .8em;border:1.5px solid #d9d4d6;border-radius:10px;margin:.25em 0 .8em;background:#fff}
+.btn.sm{padding:.35em 1em;font-size:.9rem}
+input,select,textarea{width:100%;padding:.65em .8em;border:1.5px solid var(--inpbd);border-radius:10px;margin:.25em 0 .8em;background:var(--inp);color:var(--ink)}
 input:focus,select:focus,textarea:focus,.btn:focus-visible{outline:3px solid var(--g);outline-offset:1px}
-/* loader */
 #loader{position:fixed;inset:0;background:var(--m);color:#fff;display:grid;place-items:center;z-index:99;transition:opacity 1s,visibility 1s;text-align:center}
 #loader.out{opacity:0;visibility:hidden}
 .ring{width:84px;height:84px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:var(--g);margin:0 auto 1.2rem;animation:spin 2.4s linear infinite}
 #loader h1{font-size:1.7rem;animation:fade 1.6s ease both}#loader p{color:var(--g);animation:fade 2s .4s ease both}
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
-/* nav + landing */
-nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:.8rem 5vw;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid #e6e1e3}
-nav b{font-family:Spectral,serif;color:var(--m);font-size:1.15rem}nav div{display:flex;gap:.6rem}
+nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.8rem 5vw;background:var(--navbg);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd);flex-wrap:wrap}
+nav b{font-family:Spectral,serif;color:var(--m);font-size:1.15rem}
+nav>div{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+#themeBtn{background:transparent;border:1.5px solid var(--bd);border-radius:50%;width:38px;height:38px;cursor:pointer;color:var(--ink);font-size:1.1rem}
 .hero{position:relative;overflow:hidden;padding:12vh 5vw 10vh;background:linear-gradient(160deg,var(--m),#3d0a14);color:#fff}
 .hero:before{content:"";position:absolute;width:520px;height:520px;right:-120px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(200,153,58,.45),transparent 70%);animation:float 12s ease-in-out infinite alternate}
 @keyframes float{to{transform:translate(-60px,50px) scale(1.15)}}
 .hero h1{font-size:clamp(2rem,6vw,3.8rem);max-width:15ch;position:relative}.hero p{max-width:55ch;color:#f1dfe2;position:relative}
-.hero .btn{position:relative;margin-right:.5rem}
+.hero .btn{position:relative;margin:.25rem .5rem .25rem 0}
 section.s{padding:7vh 5vw;max-width:1100px;margin:auto}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
-.card{background:var(--c);border-radius:var(--r);padding:1.2rem;border:1px solid #e8e3e5}
+.card{background:var(--c);border-radius:var(--r);padding:1.2rem;border:1px solid var(--bd);margin-bottom:.8rem}
 .card.l{border-left:4px solid var(--g)}
 .mut{color:var(--mut);font-size:.9rem}
 footer{padding:2rem 5vw;text-align:center;color:var(--mut)}footer a{color:var(--m)}
-#banner{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:20;background:#fff8e6;border:1.5px solid var(--g);padding:.8rem 1.2rem;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);max-width:92vw;animation:fade .9s both}
-/* modal */
-#modal{position:fixed;inset:0;background:rgba(30,10,15,.55);display:grid;place-items:center;z-index:30;padding:1rem;animation:fade .5s both}
-#modal .card{width:min(440px,100%);max-height:92vh;overflow:auto}
+#banner{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:20;background:#fff8e6;border:1.5px solid var(--g);padding:.8rem 1.2rem;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);max-width:92vw;animation:fade .9s both;color:#3a2a00}
+#modal,#detail{position:fixed;inset:0;background:rgba(30,10,15,.55);display:grid;place-items:center;z-index:30;padding:1rem;animation:fade .3s both;overflow:auto}
+#modal .card,#detail .card{width:min(460px,100%);margin:1rem}
+#detail .card{width:min(640px,100%);max-height:92vh;overflow:auto;position:relative}
 .tabs{display:flex;gap:.5rem;margin-bottom:1rem}.tabs .btn{flex:1}
 .err{color:#b00020;font-size:.9rem;min-height:1.2em}
-/* LMS */
+.tag{display:inline-block;padding:.1em .7em;border-radius:99px;font-size:.75rem;background:var(--bd);color:var(--ink);margin-left:.3rem}
+.tag.urgent{background:#fbd5da;color:#8c0016}.tag.high{background:#fff0c9;color:#6b4a00}
 #lms{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
-aside{background:var(--m);color:#fff;padding:1.4rem 1rem;position:sticky;top:0;height:100vh}
-aside h3{color:var(--g)}aside button{display:block;width:100%;text-align:left;background:none;border:0;color:#f1dfe2;padding:.65rem .8rem;border-radius:10px;cursor:pointer;transition:background .4s}
-aside button:hover,aside button.on{background:rgba(255,255,255,.14);color:#fff}
-main{padding:2rem 4vw}.pane{animation:fade .7s both}
-@media(max-width:760px){#lms{grid-template-columns:1fr}aside{position:static;height:auto}}
+aside{background:var(--m);color:#fff;padding:1.4rem 1rem;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:.3rem;z-index:40;transition:left .3s}
+aside h3{color:var(--g);margin:.2rem 0 .8rem}
+aside button,aside a{display:block;width:100%;text-align:left;background:none;border:0;color:#f1dfe2;padding:.65rem .8rem;border-radius:10px;cursor:pointer;transition:background .3s;text-decoration:none;font-size:15px}
+aside button:hover,aside button.on,aside a:hover{background:rgba(255,255,255,.16);color:#fff}
+main{padding:2rem 4vw;min-width:0}
+.pane{animation:fade .5s both}
+.ham{display:none;position:fixed;top:12px;left:12px;z-index:50;background:var(--m);color:#fff;border:0;width:44px;height:44px;border-radius:12px;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.bd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:39}
+@media(max-width:760px){
+  .ham{display:block}
+  #lms{grid-template-columns:1fr}
+  aside{position:fixed;left:-280px;width:260px;height:100vh;box-shadow:2px 0 10px rgba(0,0,0,.2)}
+  aside.open{left:0}
+  aside.open ~ .bd{display:block}
+  main{padding:4rem 1rem 2rem}
+  .card{padding:1rem}
+}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.progress{background:var(--bd);height:10px;border-radius:5px;overflow:hidden;margin:.6rem 0}
+.progress>div{background:var(--g);height:100%;transition:width .6s}
+.lesson-card{position:relative}
+.lesson-card.done{border-left-color:#1f7a4d}
+.badge{position:absolute;top:.8rem;right:.8rem;background:#1f7a4d;color:#fff;font-size:.7rem;padding:.15em .6em;border-radius:99px}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}
+.row>*{flex:0 0 auto}
+.comment{padding:.6rem .8rem;border-radius:10px;background:var(--bg);margin-bottom:.5rem;font-size:.95rem}
+.comment b{color:var(--m)}
 </style></head><body>
 
 <div id="loader"><div><div class="ring"></div><h1>Mahinda College</h1><p>Commerce Section · LMS</p></div></div>
 
 <div id="site">
-<nav><b>Mahinda College · Commerce</b><div id="navbtns"></div></nav>
-<header class="hero"><h1 id="t">Commerce Section</h1><p id="tag"></p>
-<span id="heroBtns"></span></header>
+<nav><b>Mahinda College · Commerce</b>
+<div><button id="themeBtn" title="Toggle theme">🌙</button><span id="navbtns"></span></div></nav>
+<header class="hero"><h1 id="t">Commerce Section</h1><p id="tag"></p><span id="heroBtns"></span></header>
 <section class="s"><h2>අප ගැන · About us</h2><p id="about"></p></section>
 <section class="s"><h2>Streams</h2><div class="grid" id="streams"></div></section>
 <section class="s"><h2>Notices</h2><div class="grid" id="notices"></div></section>
@@ -62,12 +88,24 @@ main{padding:2rem 4vw}.pane{animation:fade .7s both}
 </div>
 
 <div id="lms" class="hide">
-<aside><h3>Commerce LMS</h3><div id="who" class="mut" style="color:#f1dfe2"></div><br>
-<button data-t="lessons" class="on">Lessons</button><button data-t="notices">Notices</button><button data-t="profile">My profile</button>
-<button id="toSite">Visiting page</button><button id="out">Log out</button></aside>
-<main><div id="pane" class="pane"></div></main></div>
+  <button class="ham" id="ham">☰</button>
+  <aside id="sidebar">
+    <h3>Commerce LMS</h3>
+    <div id="who" class="mut" style="color:#f1dfe2;margin-bottom:.6rem"></div>
+    <button data-t="lessons" class="on">📚 Lessons</button>
+    <button data-t="assignments">📝 Assignments</button>
+    <button data-t="notices">📢 Notices<span id="noticeBadge"></span></button>
+    <button data-t="students" id="studentsTab">👥 Students</button>
+    <button data-t="profile">👤 My profile</button>
+    <button id="toSite">🌐 Visiting page</button>
+    <button id="out">🚪 Log out</button>
+  </aside>
+  <div class="bd" id="bd"></div>
+  <main><div id="pane" class="pane"></div></main>
+</div>
 
 <div id="banner" class="hide"></div>
+
 <div id="modal" class="hide"><div class="card">
 <div class="tabs"><button class="btn" id="tL">Login</button><button class="btn alt" id="tR">Register</button></div>
 <form id="f" onsubmit="return false">
@@ -82,70 +120,391 @@ main{padding:2rem 4vw}.pane{animation:fade .7s both}
 <button class="btn" id="go" style="width:100%">Login</button>
 <button type="button" class="btn alt" id="x" style="width:100%;margin-top:.5rem">Close</button></form></div></div>
 
+<div id="detail" class="hide"><div class="card">
+<button class="btn alt sm" id="closeDetail" style="float:right">✕</button>
+<div id="detailBody"></div>
+<hr style="border:none;border-top:1px solid var(--bd);margin:1rem 0">
+<h3 style="margin-bottom:.5rem">💬 Comments</h3>
+<div id="comments"></div>
+<textarea id="newComment" placeholder="Write a comment..." rows="2"></textarea>
+<button class="btn sm" id="postComment">Post comment</button>
+</div></div>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,doc,getDoc,setDoc,addDoc,deleteDoc,collection,getDocs,runTransaction}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-// === PASTE YOUR FIREBASE CONFIG (Project settings > Your apps > Web) ===
+import{getFirestore,doc,getDoc,setDoc,addDoc,deleteDoc,collection,getDocs,onSnapshot,runTransaction,updateDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 const cfg={apiKey:"AIzaSyBwsXxjjwtOg_iYG12txuVuyg5q0sAxW1o",authDomain:"mccs-d7aa9.firebaseapp.com",projectId:"mccs-d7aa9",storageBucket:"mccs-d7aa9.firebasestorage.app",messagingSenderId:"1095138498376",appId:"1:1095138498376:web:80fe1cd40cfe0078a9857d"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 const $=i=>document.getElementById(i),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
 let me=null,mode="login",tab="lessons";
-setTimeout(()=>$("loader").classList.add("out"),2200);
+let lessons=[],notices=[],assignments=[],myProgress=new Set(),mySubs={},students=[];
+const subs=[];
+const state={search:"",gradeFilter:"all"};
+let unsubComments=null,currentLessonId=null;
 
-// public content
+const theme=localStorage.getItem("theme")||"light";
+document.documentElement.setAttribute("data-theme",theme);
+$("themeBtn").textContent=theme=="dark"?"☀️":"🌙";
+$("themeBtn").onclick=()=>{
+  const n=document.documentElement.getAttribute("data-theme")=="dark"?"light":"dark";
+  document.documentElement.setAttribute("data-theme",n);
+  localStorage.setItem("theme",n);
+  $("themeBtn").textContent=n=="dark"?"☀️":"🌙";
+};
+
+setTimeout(()=>$("loader").classList.add("out"),2000);
+
 const D={title:"Commerce Section",tagline:"Accounting, Business Studies and Economics at Mahinda College, Galle.",about:"Our commerce section prepares students for the G.C.E. Advanced Level with dedicated teachers and a learning space that is open any time.",contact:"Mahinda College, Galle, Sri Lanka",streams:"Accounting\nBusiness Studies\nEconomics\nBusiness Statistics & ICT"};
-async function loadSite(){let s=D;try{const d=await getDoc(doc(db,"content","site"));if(d.exists())s={...D,...d.data()}}catch(e){}
-$("t").textContent=s.title;$("tag").textContent=s.tagline;$("about").textContent=s.about;$("contact").textContent=s.contact;
-$("streams").innerHTML=s.streams.split("\n").filter(Boolean).map(x=>`<div class="card l"><h3>${esc(x)}</h3></div>`).join("");
-try{const n=await getDocs(collection(db,"notices"));const a=n.docs.map(d=>d.data()).sort((x,y)=>y.at-x.at);
-$("notices").innerHTML=a.map(x=>`<div class="card"><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></div>`).join("")||'<p class="mut">No notices yet.</p>'}catch(e){}}
-loadSite();
+function applySite(s){
+  s={...D,...s};
+  $("t").textContent=s.title;$("tag").textContent=s.tagline;$("about").textContent=s.about;$("contact").textContent=s.contact;
+  $("streams").innerHTML=s.streams.split("\n").filter(Boolean).map(x=>`<div class="card l"><h3>${esc(x)}</h3></div>`).join("");
+}
+const unsubSite=onSnapshot(doc(db,"content","site"),d=>{applySite(d.exists()?d.data():{})},()=>applySite({}));
+const unsubPublicNotices=onSnapshot(collection(db,"notices"),snap=>{
+  const a=snap.docs.map(d=>({id:d.id,...d.data()})).sort((x,y)=>y.at-x.at);
+  $("notices").innerHTML=a.slice(0,6).map(x=>`<div class="card"><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></div>`).join("")||'<p class="mut">No notices yet.</p>';
+});
 
-// modal
 const setMode=m=>{mode=m;$("rOnly").classList.toggle("hide",m=="login");$("go").textContent=m=="login"?"Login":"Register";
 $("tL").className="btn"+(m=="login"?"":" alt");$("tR").className="btn"+(m=="reg"?"":" alt");$("err").textContent="";if(m=="reg")previewId()};
 const open=m=>{setMode(m);$("modal").classList.remove("hide")};
-$("x").onclick=()=>$("modal").classList.add("hide");$("tL").onclick=()=>setMode("login");$("tR").onclick=()=>setMode("reg");
+$("x").onclick=()=>$("modal").classList.add("hide");
+$("tL").onclick=()=>setMode("login");$("tR").onclick=()=>setMode("reg");
 $("role").onchange=e=>{$("stuF").classList.toggle("hide",e.target.value!="student");$("teaF").classList.toggle("hide",e.target.value!="teacher")};
 const nextId=n=>`MC-COM-${new Date().getFullYear()}-${String(n).padStart(4,"0")}`;
 async function previewId(){try{const d=await getDoc(doc(db,"meta","counter"));$("sid").value=nextId((d.exists()?d.data().n:0)+1)}catch(e){$("sid").value="Assigned on register"}}
 
 $("go").onclick=async()=>{$("err").textContent="";const em=$("em").value.trim(),pw=$("pw").value;
-try{if(mode=="login"){await signInWithEmailAndPassword(auth,em,pw)}
-else{const name=$("name").value.trim(),role=$("role").value;if(!name)throw{message:"Enter your full name"};
-const c=await createUserWithEmailAndPassword(auth,em,pw);let sid="";
-if(role=="student")sid=await runTransaction(db,async t=>{const r=doc(db,"meta","counter"),s=await t.get(r),n=(s.exists()?s.data().n:0)+1;t.set(r,{n});return nextId(n)});
-await setDoc(doc(db,"users",c.user.uid),{name,email:em,role,grade:role=="student"?$("grade").value:"",studentId:sid,subject:role=="teacher"?$("subj").value:"",status:"pending",created:Date.now()});
-me=null;await boot(c.user)}
-$("modal").classList.add("hide")}catch(e){$("err").textContent=(e.message||"Error").replace("Firebase: ","")}};
+try{
+  if(mode=="login"){await signInWithEmailAndPassword(auth,em,pw)}
+  else{
+    const name=$("name").value.trim(),role=$("role").value;
+    if(!name)throw{message:"Enter your full name"};
+    const c=await createUserWithEmailAndPassword(auth,em,pw);
+    let sid="";
+    if(role=="student")sid=await runTransaction(db,async t=>{const r=doc(db,"meta","counter"),s=await t.get(r),n=(s.exists()?s.data().n:0)+1;t.set(r,{n});return nextId(n)});
+    await setDoc(doc(db,"users",c.user.uid),{name,email:em,role,grade:role=="student"?$("grade").value:"",studentId:sid,subject:role=="teacher"?$("subj").value:"",status:"pending",created:Date.now()});
+    me=null;await boot(c.user);
+  }
+  $("modal").classList.add("hide");
+}catch(e){$("err").textContent=(e.message||"Error").replace("Firebase: ","")}};
 
-// auth state
-const banner=(h)=>{$("banner").innerHTML=h;$("banner").classList.toggle("hide",!h)};
-async function boot(u){me=null;
-if(u){const d=await getDoc(doc(db,"users",u.uid));me=d.exists()?{id:u.uid,...d.data()}:null}
-$("navbtns").innerHTML=me?`<span class="mut" style="align-self:center">${esc(me.name)}</span><button class="btn alt" id="lo">Log out</button>`:`<button class="btn alt" id="nl">Login</button><button class="btn" id="nr">Register</button>`;
-$("heroBtns").innerHTML=me?"":`<button class="btn gold" id="hr">Register</button><button class="btn alt" style="color:#fff;border-color:#fff" id="hl">Login</button>`;
-const w=(i,f)=>$(i)&&($(i).onclick=f);w("nl",()=>open("login"));w("nr",()=>open("reg"));w("hr",()=>open("reg"));w("hl",()=>open("login"));w("lo",()=>signOut(auth));
-const ok=me&&(me.status=="approved"||me.role=="admin");
-$("site").classList.toggle("hide",!!ok);$("lms").classList.toggle("hide",!ok);
-if(me&&!ok)banner(me.status=="rejected"?"❌ Your request was declined. Please contact the school.":"⏳ <b>Wait to accept.</b> Your account is waiting for admin approval. You can keep browsing this page.");
-else banner("");
-if(ok){$("who").innerHTML=`${esc(me.name)}<br>${me.role=="teacher"?"Teacher":me.role=="admin"?"Admin":"Student · Grade "+esc(me.grade)}`;render()}}
+const banner=h=>{$("banner").innerHTML=h;$("banner").classList.toggle("hide",!h)};
+function clearSubs(){subs.forEach(f=>{try{f()}catch(e){}});subs.length=0;if(unsubComments){try{unsubComments()}catch(e){};unsubComments=null}}
+
+async function boot(u){
+  clearSubs();me=null;
+  if(u){try{const d=await getDoc(doc(db,"users",u.uid));me=d.exists()?{id:u.uid,...d.data()}:null}catch(e){}}
+  const signedIn=!!me;
+  $("navbtns").innerHTML=signedIn
+    ? `<span class="mut">${esc(me.name)}</span><button class="btn alt sm" id="lo">Log out</button>`
+    : `<button class="btn alt sm" id="nl">Login</button><button class="btn sm" id="nr">Register</button>`;
+  $("heroBtns").innerHTML=signedIn?"":`<button class="btn gold" id="hr">Register</button><button class="btn alt" style="color:#fff;border-color:#fff" id="hl">Login</button>`;
+  const w=(i,f)=>$(i)&&($(i).onclick=f);
+  w("nl",()=>open("login"));w("nr",()=>open("reg"));w("hr",()=>open("reg"));w("hl",()=>open("login"));w("lo",()=>signOut(auth));
+
+  const ok=me&&(me.status=="approved"||me.role=="admin");
+  $("site").classList.toggle("hide",!!ok);
+  $("lms").classList.toggle("hide",!ok);
+  $("studentsTab").style.display=(me&&(me.role=="teacher"||me.role=="admin"))?"":"none";
+
+  if(me&&!ok)banner(me.status=="rejected"?"❌ Your request was declined. Please contact the school.":"⏳ <b>Wait to accept.</b> Your account is waiting for admin approval.");
+  else banner("");
+
+  if(ok){
+    $("who").innerHTML=`<b>${esc(me.name)}</b><br>${me.role=="teacher"?"Teacher":me.role=="admin"?"Admin":"Student · Grade "+esc(me.grade)}`;
+    subs.push(onSnapshot(collection(db,"lessons"),snap=>{
+      lessons=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
+      if(tab=="lessons")renderLessonsList();
+      else if(tab=="profile")render();
+    },()=>{}));
+    subs.push(onSnapshot(collection(db,"notices"),snap=>{
+      notices=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
+      updateNoticeBadge();
+      if(tab=="notices")renderNoticesList();
+    },()=>{}));
+    subs.push(onSnapshot(collection(db,"assignments"),snap=>{
+      assignments=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
+      if(tab=="assignments")render();
+    },()=>{}));
+    subs.push(onSnapshot(collection(db,"progress",me.id,"done"),snap=>{
+      myProgress=new Set(snap.docs.map(d=>d.id));
+      if(tab=="lessons")renderLessonsList();
+      else if(tab=="profile")render();
+    },()=>{}));
+    if(me.role=="student"){
+      subs.push(onSnapshot(collection(db,"submissions"),snap=>{
+        mySubs={};
+        snap.docs.forEach(d=>{const x=d.data();if(x.uid==me.id)mySubs[x.assignmentId]=x});
+        if(tab=="assignments"||tab=="profile")render();
+      },()=>{}));
+    }
+    render();
+  }
+}
+
 onAuthStateChanged(auth,boot);
-$("out").onclick=()=>signOut(auth);$("toSite").onclick=()=>{$("lms").classList.add("hide");$("site").classList.remove("hide");window.scrollTo(0,0);
-$("navbtns").innerHTML='<button class="btn" id="bk">Back to LMS</button>';$("bk").onclick=()=>{$("site").classList.add("hide");$("lms").classList.remove("hide");boot(auth.currentUser)}};
-document.querySelectorAll("aside [data-t]").forEach(b=>b.onclick=()=>{tab=b.dataset.t;document.querySelectorAll("aside [data-t]").forEach(x=>x.classList.toggle("on",x==b));render()});
+$("out").onclick=()=>signOut(auth);
 
-// LMS panes
-async function render(){const p=$("pane");p.style.animation="none";p.offsetHeight;p.style.animation="";
-if(tab=="profile"){p.innerHTML=`<h2>My profile</h2><div class="card"><p><b>Name:</b> ${esc(me.name)}</p><p><b>Email:</b> ${esc(me.email)}</p>${me.role=="student"?`<p><b>Student ID:</b> ${esc(me.studentId)}</p><p><b>Grade:</b> ${esc(me.grade)}</p>`:`<p><b>Subject:</b> ${esc(me.subject)}</p>`}</div>`;return}
-if(tab=="notices"){const n=(await getDocs(collection(db,"notices"))).docs.map(d=>d.data()).sort((a,b)=>b.at-a.at);
-p.innerHTML="<h2>Notices</h2>"+(n.map(x=>`<div class="card l" style="margin-bottom:.8rem"><h3>${esc(x.title)}</h3><p>${esc(x.body)}</p></div>`).join("")||'<p class="mut">No notices.</p>');return}
-const all=(await getDocs(collection(db,"lessons"))).docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);
-const L=all.filter(x=>me.role!="student"||x.grade=="all"||x.grade==me.grade);
-const form=me.role=="student"?"":`<div class="card" style="margin-bottom:1rem"><h3>Add a lesson</h3><input id="lt" placeholder="Title"><textarea id="ld" placeholder="Description"></textarea><input id="ll" placeholder="Link (YouTube / Drive / PDF)"><select id="lg"><option value="all">All grades</option><option>10</option><option>11</option><option>12</option><option>13</option></select><button class="btn" id="la">Publish</button></div>`;
-p.innerHTML=`<h2>Lessons</h2>${form}<div class="grid">${L.map(x=>`<div class="card l"><h3>${esc(x.title)}</h3><p>${esc(x.desc)}</p><p class="mut">Grade ${esc(x.grade)} · ${esc(x.by)}</p>${x.link?`<a class="btn" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${esc(x.link)}">Open</a>`:""}${me.role!="student"&&(x.uid==me.id||me.role=="admin")?` <button class="btn alt" data-del="${x.id}">Delete</button>`:""}</div>`).join("")||'<p class="mut">No lessons yet.</p>'}</div>`;
-if($("la"))$("la").onclick=async()=>{if(!$("lt").value)return;await addDoc(collection(db,"lessons"),{title:$("lt").value,desc:$("ld").value,link:$("ll").value,grade:$("lg").value,by:me.name,uid:me.id,at:Date.now()});render()};
-p.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{await deleteDoc(doc(db,"lessons",b.dataset.del));render()})}
+$("ham").onclick=()=>$("sidebar").classList.toggle("open");
+$("bd").onclick=()=>$("sidebar").classList.remove("open");
+const closeSidebar=()=>$("sidebar").classList.remove("open");
+
+document.querySelectorAll("aside [data-t]").forEach(b=>b.onclick=()=>{
+  tab=b.dataset.t;
+  document.querySelectorAll("aside [data-t]").forEach(x=>x.classList.toggle("on",x==b));
+  closeSidebar();render();
+});
+
+$("toSite").onclick=()=>{
+  $("lms").classList.add("hide");$("site").classList.remove("hide");window.scrollTo(0,0);
+  $("navbtns").innerHTML='<button class="btn sm" id="bk">Back to LMS</button>';
+  $("bk").onclick=()=>{$("site").classList.add("hide");$("lms").classList.remove("hide");boot(auth.currentUser)};
+};
+
+function updateNoticeBadge(){
+  const seen=parseInt(localStorage.getItem("seenNotices")||0);
+  const unread=notices.filter(n=>n.at>seen).length;
+  $("noticeBadge").textContent=unread>0?` (${unread})`:"";
+  $("noticeBadge").style.color="var(--g)";
+  $("noticeBadge").style.fontWeight="600";
+}
+
+function render(){
+  if(!me)return;
+  const p=$("pane");
+  if(tab=="lessons")return renderLessons(p);
+  if(tab=="notices")return renderNotices(p);
+  if(tab=="assignments")return renderAssignments(p);
+  if(tab=="students")return renderStudents(p);
+  if(tab=="profile")return renderProfile(p);
+}
+
+function renderLessons(p){
+  p.innerHTML=`<h2>📚 Lessons</h2>
+  <div class="card">
+    <div class="row" style="margin:0">
+      <input id="lessonSearch" placeholder="🔍 Search lessons..." value="${esc(state.search)}" style="flex:1;min-width:180px;margin:0">
+      <select id="gradeFilter" style="width:auto;margin:0">
+        <option value="all">All grades</option>
+        ${[10,11,12,13].map(g=>`<option value="${g}" ${state.gradeFilter==g?"selected":""}>Grade ${g}</option>`).join("")}
+      </select>
+    </div>
+  </div>
+  ${me.role=="teacher"||me.role=="admin"?`<div class="card">
+    <h3>+ Add a lesson</h3>
+    <input id="lt" placeholder="Title">
+    <textarea id="ld" placeholder="Description" rows="2"></textarea>
+    <input id="ll" placeholder="Link (YouTube / Drive / PDF)">
+    <select id="lg"><option value="all">All grades</option><option>10</option><option>11</option><option>12</option><option>13</option></select>
+    <button class="btn" id="la">Publish lesson</button>
+  </div>`:""}
+  <div id="lessonsList" class="grid"></div>`;
+
+  const si=$("lessonSearch"),gf=$("gradeFilter");
+  if(si)si.addEventListener("input",e=>{state.search=e.target.value;renderLessonsList()});
+  if(gf)gf.addEventListener("change",e=>{state.gradeFilter=e.target.value;renderLessonsList()});
+  if($("la"))$("la").onclick=async()=>{
+    if(!$("lt").value)return;
+    await addDoc(collection(db,"lessons"),{title:$("lt").value,desc:$("ld").value,link:$("ll").value,grade:$("lg").value,by:me.name,uid:me.id,at:Date.now()});
+    $("lt").value="";$("ld").value="";$("ll").value="";
+  };
+  renderLessonsList();
+}
+
+function renderLessonsList(){
+  const el=$("lessonsList");if(!el)return;
+  const q=state.search.toLowerCase();
+  const gf=state.gradeFilter;
+  const L=lessons.filter(x=>{
+    if(me.role=="student"&&x.grade!="all"&&x.grade!=me.grade)return false;
+    if(gf!="all"&&x.grade!="all"&&x.grade!=gf)return false;
+    if(q&&!((x.title||"")+(x.desc||"")).toLowerCase().includes(q))return false;
+    return true;
+  });
+  el.innerHTML=L.map(x=>{
+    const done=myProgress.has(x.id);
+    return `<div class="card l lesson-card ${done?"done":""}">
+      ${done?'<span class="badge">✓ Done</span>':""}
+      <h3>${esc(x.title)}</h3>
+      <p>${esc(x.desc)}</p>
+      <p class="mut">Grade ${esc(x.grade)} · ${esc(x.by)} · ${new Date(x.at).toLocaleDateString()}</p>
+      <div class="row">
+        <button class="btn sm" data-open="${x.id}">View</button>
+        ${me.role=="student"?`<button class="btn alt sm" data-toggle="${x.id}">${done?"Undo":"Mark done"}</button>`:""}
+        ${(me.role=="admin"||(me.role=="teacher"&&x.uid==me.id))?`<button class="btn alt sm" data-del="${x.id}">Delete</button>`:""}
+      </div>
+    </div>`;
+  }).join("")||'<p class="mut">No lessons match.</p>';
+
+  el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openDetail(b.dataset.open));
+  el.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=async()=>{
+    const id=b.dataset.toggle;
+    if(myProgress.has(id))await deleteDoc(doc(db,"progress",me.id,"done",id));
+    else await setDoc(doc(db,"progress",me.id,"done",id),{at:Date.now()});
+  });
+  el.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{
+    if(confirm("Delete this lesson?"))await deleteDoc(doc(db,"lessons",b.dataset.del));
+  });
+}
+
+function renderNotices(p){
+  localStorage.setItem("seenNotices",Date.now());
+  updateNoticeBadge();
+  p.innerHTML=`<h2>📢 Notices</h2><div id="noticesList" class="grid"></div>`;
+  renderNoticesList();
+}
+function renderNoticesList(){
+  const el=$("noticesList");if(!el)return;
+  el.innerHTML=notices.map(x=>`<div class="card l">
+    <h3>${esc(x.title)} ${x.priority?"<span class='tag "+x.priority+"'>"+x.priority+"</span>":""}</h3>
+    <p>${esc(x.body)}</p>
+    <p class="mut">${new Date(x.at).toLocaleString()}</p>
+  </div>`).join("")||'<p class="mut">No notices yet.</p>';
+}
+
+function renderAssignments(p){
+  const isTeacher=me.role=="teacher"||me.role=="admin";
+  p.innerHTML=`<h2>📝 Assignments</h2>
+  ${isTeacher?`<div class="card"><h3>+ Create assignment</h3>
+    <input id="at" placeholder="Title"><textarea id="ad" placeholder="Instructions" rows="2"></textarea>
+    <input id="adue" type="date"><select id="ag"><option value="all">All grades</option><option>10</option><option>11</option><option>12</option><option>13</option></select>
+    <button class="btn" id="acreate">Create</button></div>`:""}
+  <div id="assignList" class="grid"></div>`;
+  if($("acreate"))$("acreate").onclick=async()=>{
+    if(!$("at").value)return;
+    await addDoc(collection(db,"assignments"),{title:$("at").value,desc:$("ad").value,due:$("adue").value,grade:$("ag").value,by:me.name,uid:me.id,at:Date.now()});
+    $("at").value="";$("ad").value="";$("adue").value="";
+  };
+  renderAssignList(isTeacher);
+}
+function renderAssignList(isTeacher){
+  const el=$("assignList");if(!el)return;
+  const A=assignments.filter(x=>me.role!="student"||x.grade=="all"||x.grade==me.grade);
+  el.innerHTML=A.map(a=>{
+    const sub=mySubs[a.id];
+    return `<div class="card l">
+      <h3>${esc(a.title)}</h3>
+      <p>${esc(a.desc)}</p>
+      <p class="mut">Grade ${esc(a.grade)} · Due ${a.due?esc(a.due):"—"} · ${esc(a.by)}</p>
+      ${me.role=="student"?
+        (sub?`<p style="color:#1f7a4d"><b>✓ Submitted</b> ${sub.grade?"· Grade: <b>"+esc(sub.grade)+"</b>":""}</p>
+        <button class="btn alt sm" data-resub="${a.id}">Update submission</button>`
+        :`<button class="btn sm" data-submit="${a.id}">Submit</button>`)
+        :`<button class="btn sm" data-viewsubs="${a.id}">View submissions</button>
+          <button class="btn alt sm" data-del="${a.id}">Delete</button>`}
+    </div>`;
+  }).join("")||'<p class="mut">No assignments.</p>';
+
+  el.querySelectorAll("[data-submit],[data-resub]").forEach(b=>b.onclick=()=>openSubmit(b.dataset.submit||b.dataset.resub));
+  el.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(confirm("Delete assignment?"))await deleteDoc(doc(db,"assignments",b.dataset.del))});
+  el.querySelectorAll("[data-viewsubs]").forEach(b=>b.onclick=()=>viewSubmissions(b.dataset.viewsubs));
+}
+
+async function openSubmit(aid){
+  const a=assignments.find(x=>x.id==aid);if(!a)return;
+  const existing=mySubs[aid];
+  $("detailBody").innerHTML=`<h2>Submit: ${esc(a.title)}</h2>
+    <textarea id="subText" placeholder="Your answer / notes..." rows="5">${esc(existing?.text||"")}</textarea>
+    <input id="subLink" placeholder="Link to your work (optional)" value="${esc(existing?.link||"")}">
+    <button class="btn" id="submitGo">Submit</button>`;
+  $("detail").classList.remove("hide");
+  $("closeDetail").onclick=closeDetail;
+  $("postComment").style.display="none";
+  $("newComment").style.display="none";
+  $("submitGo").onclick=async()=>{
+    await setDoc(doc(db,"submissions",aid+"_"+me.id),{
+      assignmentId:aid,uid:me.id,name:me.name,studentId:me.studentId||"",text:$("subText").value,link:$("subLink").value,at:Date.now()
+    },{merge:true});
+    closeDetail();
+  };
+}
+
+async function viewSubmissions(aid){
+  const snap=await getDocs(collection(db,"submissions"));
+  const list=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.assignmentId==aid);
+  $("detailBody").innerHTML=`<h2>Submissions</h2>${list.map(s=>`<div class="comment">
+    <b>${esc(s.name)}</b> ${s.studentId?"("+esc(s.studentId)+")":""}
+    <p>${esc(s.text)}</p>${s.link?`<a href="${esc(s.link)}" target="_blank" rel="noopener">Open link</a>`:""}
+    <div class="row">
+      <input data-grade="${s.id}" placeholder="Grade" value="${esc(s.grade||"")}" style="width:100px;margin:0">
+      <button class="btn sm" data-savegrade="${s.id}">Save</button>
+    </div></div>`).join("")||'<p class="mut">No submissions yet.</p>'}`;
+  $("detail").classList.remove("hide");
+  $("closeDetail").onclick=closeDetail;
+  $("postComment").style.display="none";$("newComment").style.display="none";
+  $("detailBody").querySelectorAll("[data-savegrade]").forEach(b=>b.onclick=async()=>{
+    const id=b.dataset.savegrade,grade=$("detailBody").querySelector(`[data-grade="${id}"]`).value;
+    await updateDoc(doc(db,"submissions",id),{grade,gradedBy:me.name,gradedAt:Date.now()});
+    b.textContent="Saved ✓";setTimeout(()=>b.textContent="Save",1500);
+  });
+}
+
+async function renderStudents(p){
+  if(!(me.role=="teacher"||me.role=="admin"))return p.innerHTML='<p class="mut">Only teachers/admins.</p>';
+  const snap=await getDocs(collection(db,"users"));
+  const list=snap.docs.map(d=>({id:d.id,...d.data()})).filter(u=>u.role=="student"&&u.status=="approved");
+  p.innerHTML=`<h2>👥 Students (${list.length})</h2>
+  <div class="grid">${list.map(u=>`<div class="card">
+    <b>${esc(u.name)}</b><br>
+    <span class="mut">${esc(u.email)}</span><br>
+    <span class="mut">${esc(u.studentId)} · Grade ${esc(u.grade)}</span>
+  </div>`).join("")||'<p class="mut">No students yet.</p>'}</div>`;
+}
+
+async function renderProfile(p){
+  const totalLessons=lessons.filter(x=>me.role!="student"||x.grade=="all"||x.grade==me.grade).length;
+  const doneCount=myProgress.size;
+  const pct=totalLessons?Math.round(doneCount/totalLessons*100):0;
+  const subCount=Object.keys(mySubs).length;
+  p.innerHTML=`<h2>👤 My profile</h2>
+  <div class="card">
+    <p><b>Name:</b> ${esc(me.name)}</p>
+    <p><b>Email:</b> ${esc(me.email)}</p>
+    <p><b>Role:</b> ${esc(me.role)}</p>
+    ${me.role=="student"?`<p><b>Student ID:</b> ${esc(me.studentId)}</p><p><b>Grade:</b> ${esc(me.grade)}</p>`:`<p><b>Subject:</b> ${esc(me.subject||"—")}</p>`}
+    <p><b>Status:</b> <span style="color:${me.status=="approved"?"#1f7a4d":"#b00020"}">${esc(me.status)}</span></p>
+  </div>
+  ${me.role=="student"?`<div class="card">
+    <h3>📊 Progress</h3>
+    <p>${doneCount} / ${totalLessons} lessons completed <b>(${pct}%)</b></p>
+    <div class="progress"><div style="width:${pct}%"></div></div>
+    <p class="mut">Assignments submitted: ${subCount}</p>
+  </div>`:""}
+  <div class="card"><h3>⚙️ Settings</h3>
+    <button class="btn alt sm" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')=='dark'?'light':'dark');localStorage.setItem('theme',document.documentElement.getAttribute('data-theme'))">Toggle theme</button>
+  </div>`;
+}
+
+function openDetail(id){
+  currentLessonId=id;
+  const L=lessons.find(x=>x.id==id);if(!L)return;
+  $("detailBody").innerHTML=`<h2>${esc(L.title)}</h2>
+    <p>${esc(L.desc)}</p>
+    <p class="mut">Grade ${esc(L.grade)} · by ${esc(L.by)}</p>
+    ${L.link?`<a class="btn" href="${esc(L.link)}" target="_blank" rel="noopener">📎 Open material</a>`:""}`;
+  $("detail").classList.remove("hide");
+  $("closeDetail").onclick=closeDetail;
+  $("postComment").style.display="";
+  $("newComment").style.display="";
+  $("comments").innerHTML='<p class="mut">Loading comments…</p>';
+  if(unsubComments){try{unsubComments()}catch(e){}}
+  unsubComments=onSnapshot(collection(db,"comments",id,"items"),snap=>{
+    const list=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.at-b.at);
+    $("comments").innerHTML=list.map(c=>`<div class="comment"><b>${esc(c.by)}</b> <span class="mut">${new Date(c.at).toLocaleString()}</span><p style="margin:.3rem 0 0">${esc(c.text)}</p></div>`).join("")||'<p class="mut">No comments yet.</p>';
+  },()=>{});
+  $("postComment").onclick=async()=>{
+    const t=$("newComment").value.trim();if(!t)return;
+    await addDoc(collection(db,"comments",id,"items"),{text:t,by:me.name,uid:me.id,at:Date.now()});
+    $("newComment").value="";
+  };
+}
+function closeDetail(){
+  $("detail").classList.add("hide");
+  if(unsubComments){try{unsubComments()}catch(e){};unsubComments=null}
+}
 </script></body></html>
